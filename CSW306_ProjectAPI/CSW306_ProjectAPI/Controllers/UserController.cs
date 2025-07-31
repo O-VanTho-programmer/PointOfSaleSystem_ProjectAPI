@@ -6,11 +6,11 @@ namespace CSW306_ProjectAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LoginController : ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly CSW306_ProjectAPIContext _context;
 
-        public LoginController(CSW306_ProjectAPIContext context)
+        public UserController(CSW306_ProjectAPIContext context)
         {
             _context = context;
         }
