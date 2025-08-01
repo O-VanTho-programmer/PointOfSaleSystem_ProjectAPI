@@ -55,7 +55,7 @@ namespace CSW306_ProjectAPI.Controllers
             }
 
             var discounts = await _context.Discounts
-                .Where(o => o.isActive == true)
+                .Where(o => o.isActive == false)
                 .ToListAsync();
 
             decimal discountAmount = 0;

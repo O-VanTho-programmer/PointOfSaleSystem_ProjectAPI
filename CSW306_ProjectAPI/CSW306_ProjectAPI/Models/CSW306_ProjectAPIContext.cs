@@ -13,6 +13,8 @@ namespace CSW306_ProjectAPI.Models
         public DbSet<Categories> Categories { get; set; }
         public DbSet<Discounts> Discounts { get; set; }
         public DbSet<Payments> Payments { get; set; }
+        public DbSet<Table> Tables { get; set; }
+        public DbSet<Reservation> Reservations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

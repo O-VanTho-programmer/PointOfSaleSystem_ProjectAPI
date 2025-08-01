@@ -1,42 +1,78 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\LY DAT\\Desktop\\csw306\\project\\CSW306_ProjectAPI\\",
+  "WorkspaceRootPath": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|c:\\users\\ly dat\\desktop\\csw306\\project\\csw306_projectapi\\csw306_projectapi\\controllers\\paymentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|solutionrelative:csw306_projectapi\\controllers\\paymentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|d:\\cse_folder\\csw306_backenddotnetcore\\csw306_project\\csw306_projectapi\\csw306_projectapi\\controllers\\reservationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|solutionrelative:csw306_projectapi\\controllers\\reservationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|c:\\users\\ly dat\\desktop\\csw306\\project\\csw306_projectapi\\csw306_projectapi\\controllers\\discountscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|solutionrelative:csw306_projectapi\\controllers\\discountscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|d:\\cse_folder\\csw306_backenddotnetcore\\csw306_project\\csw306_projectapi\\csw306_projectapi\\dto\\reservationcreatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|solutionrelative:csw306_projectapi\\dto\\reservationcreatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|c:\\users\\ly dat\\desktop\\csw306\\project\\csw306_projectapi\\csw306_projectapi\\dto\\ordersuploaddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|solutionrelative:csw306_projectapi\\dto\\ordersuploaddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|d:\\cse_folder\\csw306_backenddotnetcore\\csw306_project\\csw306_projectapi\\csw306_projectapi\\dto\\tablecreatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|solutionrelative:csw306_projectapi\\dto\\tablecreatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|c:\\users\\ly dat\\desktop\\csw306\\project\\csw306_projectapi\\csw306_projectapi\\dto\\itemsuploaddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|solutionrelative:csw306_projectapi\\dto\\itemsuploaddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|c:\\users\\ly dat\\desktop\\csw306\\project\\csw306_projectapi\\csw306_projectapi\\dto\\orderitemuploaddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|d:\\cse_folder\\csw306_backenddotnetcore\\csw306_project\\csw306_projectapi\\csw306_projectapi\\dto\\orderitemuploaddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|solutionrelative:csw306_projectapi\\dto\\orderitemuploaddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|c:\\users\\ly dat\\desktop\\csw306\\project\\csw306_projectapi\\csw306_projectapi\\controllers\\categoriescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|solutionrelative:csw306_projectapi\\controllers\\categoriescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|d:\\cse_folder\\csw306_backenddotnetcore\\csw306_project\\csw306_projectapi\\csw306_projectapi\\controllers\\tablecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|solutionrelative:csw306_projectapi\\controllers\\tablecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|c:\\users\\ly dat\\desktop\\csw306\\project\\csw306_projectapi\\csw306_projectapi\\models\\discounts.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|solutionrelative:csw306_projectapi\\models\\discounts.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|d:\\cse_folder\\csw306_backenddotnetcore\\csw306_project\\csw306_projectapi\\csw306_projectapi\\models\\reservation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|solutionrelative:csw306_projectapi\\models\\reservation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|c:\\users\\ly dat\\desktop\\csw306\\project\\csw306_projectapi\\csw306_projectapi\\models\\orders.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|d:\\cse_folder\\csw306_backenddotnetcore\\csw306_project\\csw306_projectapi\\csw306_projectapi\\models\\table.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|solutionrelative:csw306_projectapi\\models\\table.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|d:\\cse_folder\\csw306_backenddotnetcore\\csw306_project\\csw306_projectapi\\csw306_projectapi\\models\\payments.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|solutionrelative:csw306_projectapi\\models\\payments.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|d:\\cse_folder\\csw306_backenddotnetcore\\csw306_project\\csw306_projectapi\\csw306_projectapi\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|solutionrelative:csw306_projectapi\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|d:\\cse_folder\\csw306_backenddotnetcore\\csw306_project\\csw306_projectapi\\csw306_projectapi\\dto\\tablereservationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|solutionrelative:csw306_projectapi\\dto\\tablereservationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|d:\\cse_folder\\csw306_backenddotnetcore\\csw306_project\\csw306_projectapi\\csw306_projectapi\\models\\orders.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|solutionrelative:csw306_projectapi\\models\\orders.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|c:\\users\\ly dat\\desktop\\csw306\\project\\csw306_projectapi\\csw306_projectapi\\models\\orderitems.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|d:\\cse_folder\\csw306_backenddotnetcore\\csw306_project\\csw306_projectapi\\csw306_projectapi\\models\\orderitems.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|solutionrelative:csw306_projectapi\\models\\orderitems.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|d:\\cse_folder\\csw306_backenddotnetcore\\csw306_project\\csw306_projectapi\\csw306_projectapi\\models\\items.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|solutionrelative:csw306_projectapi\\models\\items.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|d:\\cse_folder\\csw306_backenddotnetcore\\csw306_project\\csw306_projectapi\\csw306_projectapi\\models\\csw306_projectapicontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|solutionrelative:csw306_projectapi\\models\\csw306_projectapicontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|d:\\cse_folder\\csw306_backenddotnetcore\\csw306_project\\csw306_projectapi\\csw306_projectapi\\models\\discounts.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|solutionrelative:csw306_projectapi\\models\\discounts.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|d:\\cse_folder\\csw306_backenddotnetcore\\csw306_project\\csw306_projectapi\\csw306_projectapi\\controllers\\paymentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|solutionrelative:csw306_projectapi\\controllers\\paymentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|d:\\cse_folder\\csw306_backenddotnetcore\\csw306_project\\csw306_projectapi\\csw306_projectapi\\controllers\\discountscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|solutionrelative:csw306_projectapi\\controllers\\discountscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|d:\\cse_folder\\csw306_backenddotnetcore\\csw306_project\\csw306_projectapi\\csw306_projectapi\\controllers\\categoriescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306_ProjectAPI.csproj|solutionrelative:csw306_projectapi\\controllers\\categoriescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -46,7 +82,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -58,120 +94,220 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "CategoriesController.cs",
-              "DocumentMoniker": "C:\\Users\\LY DAT\\Desktop\\csw306\\project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\CategoriesController.cs",
-              "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Controllers\\CategoriesController.cs",
-              "ToolTip": "C:\\Users\\LY DAT\\Desktop\\csw306\\project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\CategoriesController.cs",
-              "RelativeToolTip": "CSW306_ProjectAPI\\Controllers\\CategoriesController.cs",
+              "DocumentIndex": 3,
+              "Title": "OrderItemUploadDTO.cs",
+              "DocumentMoniker": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\DTO\\OrderItemUploadDTO.cs",
+              "RelativeDocumentMoniker": "CSW306_ProjectAPI\\DTO\\OrderItemUploadDTO.cs",
+              "ToolTip": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\DTO\\OrderItemUploadDTO.cs",
+              "RelativeToolTip": "CSW306_ProjectAPI\\DTO\\OrderItemUploadDTO.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-01T08:48:17.323Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-01T18:16:38.338Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ReservationCreateDTO.cs",
+              "DocumentMoniker": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\DTO\\ReservationCreateDTO.cs",
+              "RelativeDocumentMoniker": "CSW306_ProjectAPI\\DTO\\ReservationCreateDTO.cs",
+              "ToolTip": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\DTO\\ReservationCreateDTO.cs",
+              "RelativeToolTip": "CSW306_ProjectAPI\\DTO\\ReservationCreateDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-01T18:08:35.587Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "OrdersUploadDTO.cs",
-              "DocumentMoniker": "C:\\Users\\LY DAT\\Desktop\\csw306\\project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\DTO\\OrdersUploadDTO.cs",
-              "RelativeDocumentMoniker": "CSW306_ProjectAPI\\DTO\\OrdersUploadDTO.cs",
-              "ToolTip": "C:\\Users\\LY DAT\\Desktop\\csw306\\project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\DTO\\OrdersUploadDTO.cs",
-              "RelativeToolTip": "CSW306_ProjectAPI\\DTO\\OrdersUploadDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "TableCreateDTO.cs",
+              "DocumentMoniker": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\DTO\\TableCreateDTO.cs",
+              "RelativeDocumentMoniker": "CSW306_ProjectAPI\\DTO\\TableCreateDTO.cs",
+              "ToolTip": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\DTO\\TableCreateDTO.cs",
+              "RelativeToolTip": "CSW306_ProjectAPI\\DTO\\TableCreateDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-01T08:34:49.881Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-01T18:07:34.647Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "ItemsUploadDTO.cs",
-              "DocumentMoniker": "C:\\Users\\LY DAT\\Desktop\\csw306\\project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\DTO\\ItemsUploadDTO.cs",
-              "RelativeDocumentMoniker": "CSW306_ProjectAPI\\DTO\\ItemsUploadDTO.cs",
-              "ToolTip": "C:\\Users\\LY DAT\\Desktop\\csw306\\project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\DTO\\ItemsUploadDTO.cs",
-              "RelativeToolTip": "CSW306_ProjectAPI\\DTO\\ItemsUploadDTO.cs",
+              "DocumentIndex": 8,
+              "Title": "UserController.cs",
+              "DocumentMoniker": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\UserController.cs",
+              "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Controllers\\UserController.cs",
+              "ToolTip": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\UserController.cs",
+              "RelativeToolTip": "CSW306_ProjectAPI\\Controllers\\UserController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-01T08:34:48.99Z",
+              "WhenOpened": "2025-08-01T17:15:31.024Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Payments.cs",
+              "DocumentMoniker": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Models\\Payments.cs",
+              "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Models\\Payments.cs",
+              "ToolTip": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Models\\Payments.cs",
+              "RelativeToolTip": "CSW306_ProjectAPI\\Models\\Payments.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-01T17:01:57.024Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ReservationController.cs",
+              "DocumentMoniker": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\ReservationController.cs",
+              "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Controllers\\ReservationController.cs",
+              "ToolTip": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\ReservationController.cs",
+              "RelativeToolTip": "CSW306_ProjectAPI\\Controllers\\ReservationController.cs",
+              "ViewState": "AgIAAFAAAAAAAAAAAAAIwH0AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-01T16:40:32.482Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "OrderItemUploadDTO.cs",
-              "DocumentMoniker": "C:\\Users\\LY DAT\\Desktop\\csw306\\project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\DTO\\OrderItemUploadDTO.cs",
-              "RelativeDocumentMoniker": "CSW306_ProjectAPI\\DTO\\OrderItemUploadDTO.cs",
-              "ToolTip": "C:\\Users\\LY DAT\\Desktop\\csw306\\project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\DTO\\OrderItemUploadDTO.cs",
-              "RelativeToolTip": "CSW306_ProjectAPI\\DTO\\OrderItemUploadDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAASAAAAAAAAAA==",
+              "Title": "TableController.cs",
+              "DocumentMoniker": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\TableController.cs",
+              "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Controllers\\TableController.cs",
+              "ToolTip": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\TableController.cs",
+              "RelativeToolTip": "CSW306_ProjectAPI\\Controllers\\TableController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-01T08:34:42.01Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-01T16:40:18.2Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Reservation.cs",
+              "DocumentMoniker": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Models\\Reservation.cs",
+              "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Models\\Reservation.cs",
+              "ToolTip": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Models\\Reservation.cs",
+              "RelativeToolTip": "CSW306_ProjectAPI\\Models\\Reservation.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-01T16:35:06.701Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Items.cs",
+              "DocumentMoniker": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Models\\Items.cs",
+              "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Models\\Items.cs",
+              "ToolTip": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Models\\Items.cs",
+              "RelativeToolTip": "CSW306_ProjectAPI\\Models\\Items.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-01T16:35:00.812Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 6,
+              "Title": "Table.cs",
+              "DocumentMoniker": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Models\\Table.cs",
+              "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Models\\Table.cs",
+              "ToolTip": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Models\\Table.cs",
+              "RelativeToolTip": "CSW306_ProjectAPI\\Models\\Table.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-01T16:27:30.591Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "CSW306_ProjectAPIContext.cs",
+              "DocumentMoniker": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Models\\CSW306_ProjectAPIContext.cs",
+              "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Models\\CSW306_ProjectAPIContext.cs",
+              "ToolTip": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Models\\CSW306_ProjectAPIContext.cs",
+              "RelativeToolTip": "CSW306_ProjectAPI\\Models\\CSW306_ProjectAPIContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-01T16:17:52.921Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
               "Title": "Discounts.cs",
-              "DocumentMoniker": "C:\\Users\\LY DAT\\Desktop\\csw306\\project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Models\\Discounts.cs",
+              "DocumentMoniker": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Models\\Discounts.cs",
               "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Models\\Discounts.cs",
-              "ToolTip": "C:\\Users\\LY DAT\\Desktop\\csw306\\project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Models\\Discounts.cs",
+              "ToolTip": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Models\\Discounts.cs",
               "RelativeToolTip": "CSW306_ProjectAPI\\Models\\Discounts.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAA1wBsAAAAqAAAAAAAAAA==",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAQwBsAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-01T08:31:22.505Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-01T08:31:22.505Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "DiscountsController.cs",
-              "DocumentMoniker": "C:\\Users\\LY DAT\\Desktop\\csw306\\project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\DiscountsController.cs",
-              "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Controllers\\DiscountsController.cs",
-              "ToolTip": "C:\\Users\\LY DAT\\Desktop\\csw306\\project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\DiscountsController.cs",
-              "RelativeToolTip": "CSW306_ProjectAPI\\Controllers\\DiscountsController.cs",
-              "ViewState": "AgIAABsAAAAAAAAAAAAAACkAAAAMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-01T07:58:37.048Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 15,
               "Title": "PaymentsController.cs",
-              "DocumentMoniker": "C:\\Users\\LY DAT\\Desktop\\csw306\\project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\PaymentsController.cs",
+              "DocumentMoniker": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\PaymentsController.cs",
               "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Controllers\\PaymentsController.cs",
-              "ToolTip": "C:\\Users\\LY DAT\\Desktop\\csw306\\project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\PaymentsController.cs",
+              "ToolTip": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\PaymentsController.cs",
               "RelativeToolTip": "CSW306_ProjectAPI\\Controllers\\PaymentsController.cs",
-              "ViewState": "AgIAADIAAAAAAAAAAAAYwGUAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAACAAAAAAAAAAAAAwwDAAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-01T03:08:57.43Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-01T03:08:57.43Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 10,
               "Title": "Orders.cs",
-              "DocumentMoniker": "C:\\Users\\LY DAT\\Desktop\\csw306\\project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Models\\Orders.cs",
+              "DocumentMoniker": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Models\\Orders.cs",
               "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Models\\Orders.cs",
-              "ToolTip": "C:\\Users\\LY DAT\\Desktop\\csw306\\project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Models\\Orders.cs",
+              "ToolTip": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Models\\Orders.cs",
               "RelativeToolTip": "CSW306_ProjectAPI\\Models\\Orders.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAxAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-01T08:04:42.876Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-01T08:04:42.876Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 11,
               "Title": "OrderItems.cs",
-              "DocumentMoniker": "C:\\Users\\LY DAT\\Desktop\\csw306\\project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Models\\OrderItems.cs",
+              "DocumentMoniker": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Models\\OrderItems.cs",
               "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Models\\OrderItems.cs",
-              "ToolTip": "C:\\Users\\LY DAT\\Desktop\\csw306\\project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Models\\OrderItems.cs",
+              "ToolTip": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Models\\OrderItems.cs",
               "RelativeToolTip": "CSW306_ProjectAPI\\Models\\OrderItems.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAjAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-01T08:04:34.522Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-01T08:04:34.522Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "TableReservationDTO.cs",
+              "DocumentMoniker": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\DTO\\TableReservationDTO.cs",
+              "RelativeDocumentMoniker": "CSW306_ProjectAPI\\DTO\\TableReservationDTO.cs",
+              "ToolTip": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\DTO\\TableReservationDTO.cs",
+              "RelativeToolTip": "CSW306_ProjectAPI\\DTO\\TableReservationDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-01T16:40:07.985Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "DiscountsController.cs",
+              "DocumentMoniker": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\DiscountsController.cs",
+              "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Controllers\\DiscountsController.cs",
+              "ToolTip": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\DiscountsController.cs",
+              "RelativeToolTip": "CSW306_ProjectAPI\\Controllers\\DiscountsController.cs",
+              "ViewState": "AgIAACAAAAAAAAAAAAAwwEYAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-01T07:58:37.048Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "CategoriesController.cs",
+              "DocumentMoniker": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\CategoriesController.cs",
+              "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Controllers\\CategoriesController.cs",
+              "ToolTip": "D:\\CSE_folder\\CSW306_backendDOTNETCORE\\CSW306_project\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\CategoriesController.cs",
+              "RelativeToolTip": "CSW306_ProjectAPI\\Controllers\\CategoriesController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-01T08:48:17.323Z"
             }
           ]
         }
