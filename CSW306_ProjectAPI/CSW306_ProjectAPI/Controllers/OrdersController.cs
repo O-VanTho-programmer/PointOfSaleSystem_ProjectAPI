@@ -10,7 +10,7 @@ namespace CSW306_ProjectAPI.Controllers
     [ApiController]
     public class OrdersController : ControllerBase
     {
-        CSW306_ProjectAPIContext _context;
+        private readonly CSW306_ProjectAPIContext _context;
 
         public OrdersController(CSW306_ProjectAPIContext context) { 
             _context = context;

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using CSW306_ProjectAPI.Models;
 using CSW306_ProjectAPI.DTO;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CSW306_ProjectAPI.Controllers
 {
@@ -37,6 +38,8 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+
         public async Task<ActionResult<Categories>> CreateCategory([FromForm] CategoryUploadDTO dto)
         {
             var category = new Categories
@@ -52,6 +55,7 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpPost("assign-item")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> AssginItemToCategory([FromForm] int ItemId, int CategoryId)
         {
             var item = await _context.Items.FirstOrDefaultAsync(i => i.ItemId == ItemId);
