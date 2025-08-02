@@ -1,10 +1,12 @@
 ﻿using CSW306_ProjectAPI.DTO;
 using CSW306_ProjectAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace CSW306_ProjectAPI.Controllers
 {
+    [Authorize(Roles = "Employee")]
     [Route("api/[controller]")]
     [ApiController]
     public class TableController : ControllerBase

@@ -1,10 +1,12 @@
 ﻿using CSW306_ProjectAPI.DTO;
 using CSW306_ProjectAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace CSW306_ProjectAPI.Controllers
 {
+    [Authorize(Roles = "Customer,Employee")]
     [Route("api/[controller]")]
     [ApiController]
     public class ReservationController : ControllerBase
@@ -60,7 +62,11 @@ namespace CSW306_ProjectAPI.Controllers
 
             DateTime now = DateTime.Now;
             DateTime reservationDateTime = dto.Date.Date + dto.Time.TimeOfDay;
-            table.Status = reservationDateTime > now ? "Reserved" : "Occupied";
+            if (reservationDateTime <= now)
+            {
+                return BadRequest("reservation must be in future");
+            }
+
 
             var reservation = new Reservation
             {
@@ -112,7 +118,10 @@ namespace CSW306_ProjectAPI.Controllers
 
             DateTime now = DateTime.Now;
             DateTime reservationDateTime = dto.Date.Date + dto.Time.TimeOfDay;
-            table.Status = reservationDateTime > now ? "Reserved" : "Occupied";
+            if (reservationDateTime <= now)
+            {
+                return BadRequest("reservation must be in future");
+            }
 
             existingReservation.TableId = dto.TableId;
             existingReservation.NumberOfPeople = dto.NumberOfPeople;
