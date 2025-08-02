@@ -11,7 +11,7 @@ namespace CSW306_ProjectAPI.Controllers
     public class DiscountsController : ControllerBase
     {
         private readonly CSW306_ProjectAPIContext _context;
-
+        
         public DiscountsController(CSW306_ProjectAPIContext context)
         {
             _context = context;
@@ -37,6 +37,7 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpPost("{id}")]
+        
         public async Task<IActionResult> isValid([FromBody] OrdersUploadDTO dto, int id)
         {
             var discount = await _context.Discounts.FirstOrDefaultAsync(o => o.DiscountId == id);

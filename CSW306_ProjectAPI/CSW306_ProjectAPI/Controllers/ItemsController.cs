@@ -9,7 +9,7 @@ namespace CSW306_ProjectAPI.Controllers
     [ApiController]
     public class ItemsController : ControllerBase
     {
-        CSW306_ProjectAPIContext _context;
+        private readonly CSW306_ProjectAPIContext _context;
 
         public ItemsController(CSW306_ProjectAPIContext context)
         {
