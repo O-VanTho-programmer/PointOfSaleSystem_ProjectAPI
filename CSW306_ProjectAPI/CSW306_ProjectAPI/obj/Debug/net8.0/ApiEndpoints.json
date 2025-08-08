@@ -396,6 +396,37 @@
     ]
   },
   {
+    "ContainingType": "CSW306_ProjectAPI.Controllers.OrdersController",
+    "Method": "UpdateStatusOrder",
+    "RelativePath": "api/Orders/{id}/status",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "CSW306_ProjectAPI.DTO.Upload.UpdateStatusOrderDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "CSW306_ProjectAPI.Models.Orders",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "CSW306_ProjectAPI.Controllers.PaymentsController",
     "Method": "GetPayments",
     "RelativePath": "api/Payments",
@@ -506,7 +537,8 @@
         ],
         "StatusCode": 200
       }
-    ]
+    ],
+    "EndpointName": "BookTable"
   },
   {
     "ContainingType": "CSW306_ProjectAPI.Controllers.ReservationController",

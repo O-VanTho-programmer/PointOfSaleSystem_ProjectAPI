@@ -11,6 +11,7 @@ namespace CSW306_ProjectAPI.Models
         public int OrderId { get; set; }
 
         [Required]
+        //0: pending, 1: cooking, 2: completed
         public int Status { get; set; }
         [Required]
         public DateTime CreatedDate { get; set; }

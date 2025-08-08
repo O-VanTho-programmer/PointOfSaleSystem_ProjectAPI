@@ -38,7 +38,7 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager")]
 
         public async Task<ActionResult<Categories>> CreateCategory([FromForm] CategoryUploadDTO dto)
         {
@@ -55,7 +55,7 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpPost("assign-item")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager")]
         public async Task<ActionResult> AssginItemToCategory([FromForm] int ItemId, int CategoryId)
         {
             var item = await _context.Items.FirstOrDefaultAsync(i => i.ItemId == ItemId);

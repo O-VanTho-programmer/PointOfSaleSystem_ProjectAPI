@@ -1,4 +1,5 @@
-﻿using CSW306_ProjectAPI.DTO.Upload;
+﻿using Azure.Core;
+using CSW306_ProjectAPI.DTO.Upload;
 using CSW306_ProjectAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -118,6 +119,19 @@ namespace CSW306_ProjectAPI.Controllers
             };
 
             _context.Orders.Add(order);
+            await _context.SaveChangesAsync();
+
+            return Ok(order);
+        }
+
+        [HttpPatch("{id}/status")]
+        public async Task<ActionResult<Orders>> UpdateStatusOrder(int id, [FromBody] UpdateStatusOrderDTO request)
+        {
+            var order = await _context.Orders.FindAsync(id);
+
+            if (order == null)
+                return NotFound(new { message = "Order not found" });
+            order.Status = request.Status;
             await _context.SaveChangesAsync();
 
             return Ok(order);

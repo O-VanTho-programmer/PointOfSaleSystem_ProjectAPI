@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CSW306_ProjectAPI.Controllers
 {
-    [Authorize(Roles = "Employee")]
+    [Authorize(Roles = "Cashier,Manager")]
     [Route("api/[controller]")]
     [ApiController]
     public class TableController : ControllerBase
