@@ -37,8 +37,8 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpPost("{id}")]
-        
-        public async Task<IActionResult> isValid([FromBody] OrdersUploadDTO dto, int id)
+
+        public async Task<IActionResult> isValid(int id, int OrderId)
         {
             var discount = await _context.Discounts.FirstOrDefaultAsync(o => o.DiscountId == id);
 
@@ -47,16 +47,23 @@ namespace CSW306_ProjectAPI.Controllers
                 return NotFound("Discount code not found.");
             }
 
+            var orders = await _context.Orders.Include(o => o.OrderItems).ThenInclude(oi => oi.Item).FirstOrDefaultAsync(o => o.OrderId == OrderId);
+
+            if (orders == null)
+            {
+                return NotFound("Order not found.");
+            }
+
             var sumAmount = 0;
 
-            foreach (var item in dto.Items)
+            foreach (var orderItem in orders.OrderItems)
             {
-                sumAmount += item.Quantity;
+                sumAmount += orderItem.Quantity;
             }
 
             if (sumAmount >= discount.minOrderAmount)
             {
-                discount.isActive = true;
+                orders.DiscountId = id;
                 _context.SaveChanges();
                 return Ok(new
                 {

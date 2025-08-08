@@ -25,6 +25,5 @@ namespace CSW306_ProjectAPI.Models
         public DateTime startDate { get; set; }
         public DateTime endDate { get; set; }
 
-        public bool isActive { get; set; }
     }
 }

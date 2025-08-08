@@ -260,14 +260,14 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "dto",
-        "Type": "CSW306_ProjectAPI.DTO.Upload.OrdersUploadDTO",
-        "IsRequired": true
-      },
-      {
         "Name": "id",
         "Type": "System.Int32",
         "IsRequired": true
+      },
+      {
+        "Name": "OrderId",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -480,11 +480,6 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [
-      {
-        "Name": "orders",
-        "Type": "CSW306_ProjectAPI.Models.Orders",
-        "IsRequired": true
-      },
       {
         "Name": "id",
         "Type": "System.Int32",

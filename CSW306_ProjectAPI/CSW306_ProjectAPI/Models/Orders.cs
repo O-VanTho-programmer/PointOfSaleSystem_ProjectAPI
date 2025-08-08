@@ -10,6 +10,8 @@ namespace CSW306_ProjectAPI.Models
         [Required]
         public int OrderId { get; set; }
 
+        public int? DiscountId { get; set; }
+
         [Required]
         //0: pending, 1: cooking, 2: completed
         public int Status { get; set; }

@@ -37,12 +37,25 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpPost("{id}")]
-        public async Task<IActionResult> ProcessPayment([FromBody] Orders orders, int id)
+        public async Task<IActionResult> ProcessPayment(int id)
         {
             var payment = await _context.Payments.FirstOrDefaultAsync(o => o.PaymentId == id);
+
             if (payment == null)
             {
                 return NotFound("Payment not found.");
+            }
+
+            if (payment.Status.Equals("paid"))
+            {
+                return Ok("Payment has paid");
+            }
+
+            var orders = await _context.Orders.Include(o => o.OrderItems).ThenInclude(oi => oi.Item).FirstOrDefaultAsync(o => o.OrderId == payment.OrderId);
+
+            if (orders == null)
+            {
+                return NotFound("Order not found.");
             }
 
             decimal totalAmount = 0;
@@ -54,27 +67,30 @@ namespace CSW306_ProjectAPI.Controllers
                 totalQuantity += item.Quantity;
             }
 
-            var discounts = await _context.Discounts
-                .Where(o => o.isActive == false)
-                .ToListAsync();
-
             decimal discountAmount = 0;
 
-            if (discounts.Any())
+            if (orders.DiscountId != null)
             {
-                foreach (var discount in discounts)
+                int? DisID = orders.DiscountId;
+                var discounts = await _context.Discounts
+                    .Where(o => o.DiscountId == DisID)
+                    .ToListAsync();
+                if (discounts.Any())
                 {
-                    if (discount.type == "fixed")
+                    foreach (var discount in discounts)
                     {
-                        discountAmount += discount.value;
+                        if (discount.type.Equals("fixed"))
+                        {
+                            discountAmount += discount.value;
+                        }
+                        else if (discount.type.Equals("percentage"))
+                        {
+                            discountAmount += totalAmount * (discount.value / 100m);
+                        }
                     }
-                    else if (discount.type == "percent")
-                    {
-                        discountAmount += totalAmount * (discount.value / 100m);
-                    }
-                }
 
-                totalAmount -= discountAmount;
+                    totalAmount -= discountAmount;
+                }
             }
 
             if (payment.Amount < totalAmount)
@@ -89,7 +105,9 @@ namespace CSW306_ProjectAPI.Controllers
             }
 
             decimal change = payment.Amount - totalAmount;
-
+            orders.Status = 3;
+            payment.Status = "paid";
+            _context.SaveChanges();
             return Ok(new
             {
                 Message = "Payment successful.",
