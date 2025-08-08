@@ -1,4 +1,4 @@
-﻿using CSW306_ProjectAPI.DTO;
+﻿using CSW306_ProjectAPI.DTO.Upload;
 using CSW306_ProjectAPI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.Data;
@@ -33,6 +33,7 @@ namespace CSW306_ProjectAPI.Controllers
                 Name = dto.Name,
                 Email = dto.Email,
                 Password = dto.Password,
+                Phone = dto.Phone,
                 Role = "Customer",
             };
 
@@ -50,6 +51,7 @@ namespace CSW306_ProjectAPI.Controllers
                 Name = dto.Name,
                 Email = dto.Email,
                 Password = dto.Password,
+                Phone = dto.Phone,
                 Role = dto.Role,
             };
 

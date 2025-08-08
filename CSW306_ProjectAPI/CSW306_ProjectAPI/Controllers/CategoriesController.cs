@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using CSW306_ProjectAPI.Models;
-using CSW306_ProjectAPI.DTO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using CSW306_ProjectAPI.DTO.Upload;
 
 namespace CSW306_ProjectAPI.Controllers
 {

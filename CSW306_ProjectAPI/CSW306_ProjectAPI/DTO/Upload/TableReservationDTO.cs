@@ -1,4 +1,4 @@
-﻿namespace CSW306_ProjectAPI.DTO
+﻿namespace CSW306_ProjectAPI.DTO.Upload
 {
     public class TableReservationDTO
     {

@@ -1,5 +1,113 @@
 [
   {
+    "ContainingType": "CSW306_ProjectAPI.Controllers.AuthsController",
+    "Method": "RegisterCustomer",
+    "RelativePath": "api/Auths/customer/register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Phone",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Email",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Password",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "CSW306_ProjectAPI.Models.Users",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CSW306_ProjectAPI.Controllers.AuthsController",
+    "Method": "RegisterEmployee",
+    "RelativePath": "api/Auths/employee/register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Phone",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Email",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Password",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Role",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "CSW306_ProjectAPI.Models.Users",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CSW306_ProjectAPI.Controllers.AuthsController",
+    "Method": "Login",
+    "RelativePath": "api/Auths/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Phone",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Password",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "CSW306_ProjectAPI.Controllers.CategoriesController",
     "Method": "GetCategories",
     "RelativePath": "api/Categories",
@@ -153,7 +261,7 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "CSW306_ProjectAPI.DTO.OrdersUploadDTO",
+        "Type": "CSW306_ProjectAPI.DTO.Upload.OrdersUploadDTO",
         "IsRequired": true
       },
       {
@@ -225,7 +333,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[CSW306_ProjectAPI.Models.Orders, CSW306_ProjectAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[OrderResponseDTO, CSW306_ProjectAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -245,7 +353,7 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "CSW306_ProjectAPI.DTO.OrdersUploadDTO",
+        "Type": "CSW306_ProjectAPI.DTO.Upload.OrdersUploadDTO",
         "IsRequired": true
       }
     ],
@@ -277,7 +385,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CSW306_ProjectAPI.Models.Orders",
+        "Type": "OrderResponseDTO",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -384,7 +492,7 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "CSW306_ProjectAPI.DTO.ReservationCreateDTO",
+        "Type": "CSW306_ProjectAPI.DTO.Upload.ReservationCreateDTO",
         "IsRequired": true
       }
     ],
@@ -441,7 +549,7 @@
       },
       {
         "Name": "dto",
-        "Type": "CSW306_ProjectAPI.DTO.ReservationCreateDTO",
+        "Type": "CSW306_ProjectAPI.DTO.Upload.ReservationCreateDTO",
         "IsRequired": true
       }
     ],
@@ -493,7 +601,7 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "CSW306_ProjectAPI.DTO.TableCreateDTO",
+        "Type": "CSW306_ProjectAPI.DTO.Upload.TableCreateDTO",
         "IsRequired": true
       }
     ],
@@ -550,7 +658,7 @@
       },
       {
         "Name": "dto",
-        "Type": "CSW306_ProjectAPI.DTO.TableCreateDTO",
+        "Type": "CSW306_ProjectAPI.DTO.Upload.TableCreateDTO",
         "IsRequired": true
       }
     ],
@@ -574,7 +682,7 @@
   },
   {
     "ContainingType": "CSW306_ProjectAPI.Controllers.UserController",
-    "Method": "GetBook",
+    "Method": "GetUsers",
     "RelativePath": "api/User",
     "HttpMethod": "GET",
     "IsController": true,
@@ -582,7 +690,33 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[CSW306_ProjectAPI.Models.User, CSW306_ProjectAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[CSW306_ProjectAPI.Models.Users, CSW306_ProjectAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CSW306_ProjectAPI.Controllers.UserController",
+    "Method": "CreateUser",
+    "RelativePath": "api/User",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "user",
+        "Type": "CSW306_ProjectAPI.Models.Users",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "CSW306_ProjectAPI.Models.Users",
         "MediaTypes": [
           "text/plain",
           "application/json",

@@ -16,14 +16,14 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<User> GetUsers()
+        public IEnumerable<Users> GetUsers()
         {
             var users = _context.Users.ToList();
             return (users);
         }
 
         [HttpPost]
-        public ActionResult<User> CreateUser(User user) { 
+        public ActionResult<Users> CreateUser(Users user) { 
             _context.Users.Add(user);
             _context.SaveChanges();
             return Ok(user);

@@ -1,4 +1,4 @@
-﻿using CSW306_ProjectAPI.DTO;
+﻿using CSW306_ProjectAPI.DTO.Upload;
 using CSW306_ProjectAPI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

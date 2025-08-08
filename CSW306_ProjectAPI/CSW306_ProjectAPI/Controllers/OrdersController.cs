@@ -1,4 +1,4 @@
-﻿using CSW306_ProjectAPI.DTO;
+﻿using CSW306_ProjectAPI.DTO.Upload;
 using CSW306_ProjectAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,17 +17,69 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Orders>>> Get() {
-            return await _context.Orders.Include(o => o.OrderItems).ThenInclude(oi => oi.Item).ToListAsync();
+        public async Task<ActionResult<IEnumerable<OrderResponseDTO>>> Get()
+        {
+            var orders = await _context.Orders
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Item)
+                .Select(o => new OrderResponseDTO
+                {
+                    OrderId = o.OrderId,
+                    Status = o.Status,
+                    CreatedDate = o.CreatedDate,
+                    OrderItems = o.OrderItems.Select(oi => new OrderItemResponseDTO
+                    {
+                        ItemId = oi.ItemId,
+                        OrderId = oi.OrderId,
+                        Quantity = oi.Quantity,
+                        PriceAtOrder = oi.PriceAtOrder,
+                        Item = new ItemResponseDTO
+                        {
+                            ItemId = oi.Item.ItemId,
+                            Name = oi.Item.Name,
+                            QuantityInStock = oi.Item.QuantityInStock,
+                            Price = oi.Item.Price,
+                            CategoryId = oi.Item.CategoryId
+                        }
+                    }).ToList()
+                })
+                .ToListAsync();
+
+            return Ok(orders);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Orders>> Get(int id) { 
-            var order = await _context.Orders.Include(o => o.OrderItems).ThenInclude(oi => oi.Item).FirstOrDefaultAsync(o => o.OrderId == id);
+        public async Task<ActionResult<OrderResponseDTO>> Get(int id)
+        {
+            var order = await _context.Orders
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Item)
+                .Where(o => o.OrderId == id)
+                .Select(o => new OrderResponseDTO
+                {
+                    OrderId = o.OrderId,
+                    Status = o.Status,
+                    CreatedDate = o.CreatedDate,
+                    OrderItems = o.OrderItems.Select(oi => new OrderItemResponseDTO
+                    {
+                        ItemId = oi.ItemId,
+                        OrderId = oi.OrderId,
+                        Quantity = oi.Quantity,
+                        PriceAtOrder = oi.PriceAtOrder,
+                        Item = new ItemResponseDTO
+                        {
+                            ItemId = oi.Item.ItemId,
+                            Name = oi.Item.Name,
+                            QuantityInStock = oi.Item.QuantityInStock,
+                            Price = oi.Item.Price,
+                            CategoryId = oi.Item.CategoryId
+                        }
+                    }).ToList()
+                })
+                .FirstOrDefaultAsync();
 
-            if (order == null) {
+            if (order == null)
                 return NotFound("Order Id not found");
-            }
 
             return Ok(order);
         }

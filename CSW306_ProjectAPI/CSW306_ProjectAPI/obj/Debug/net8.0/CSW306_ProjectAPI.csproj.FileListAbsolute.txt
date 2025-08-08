@@ -317,3 +317,4 @@ D:\CSE_folder\CSW306_backendDOTNETCORE\CSW306_project\CSW306_ProjectAPI\CSW306_P
 D:\CSE_folder\CSW306_backendDOTNETCORE\CSW306_project\CSW306_ProjectAPI\CSW306_ProjectAPI\obj\Debug\net8.0\CSW306_ProjectAPI.pdb
 D:\CSE_folder\CSW306_backendDOTNETCORE\CSW306_project\CSW306_ProjectAPI\CSW306_ProjectAPI\obj\Debug\net8.0\CSW306_ProjectAPI.genruntimeconfig.cache
 D:\CSE_folder\CSW306_backendDOTNETCORE\CSW306_project\CSW306_ProjectAPI\CSW306_ProjectAPI\obj\Debug\net8.0\ref\CSW306_ProjectAPI.dll
+D:\MyProgramme\ReactJSWithTypeScript\CSW306_ProjectAPI\CSW306_ProjectAPI\CSW306_ProjectAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

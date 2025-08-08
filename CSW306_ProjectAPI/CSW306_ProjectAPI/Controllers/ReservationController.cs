@@ -1,4 +1,4 @@
-﻿using CSW306_ProjectAPI.DTO;
+﻿using CSW306_ProjectAPI.DTO.Upload;
 using CSW306_ProjectAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -35,7 +35,7 @@ namespace CSW306_ProjectAPI.Controllers
             return Ok(reservation);
         }
 
-        [HttpPost]
+        [HttpPost(Name ="BookTable")]
         public async Task<ActionResult<Reservation>> AddReservation([FromBody] ReservationCreateDTO dto)
         {
             if (dto == null || dto.TableId <= 0)
