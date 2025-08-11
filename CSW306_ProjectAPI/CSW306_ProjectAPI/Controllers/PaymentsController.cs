@@ -1,5 +1,6 @@
 ﻿using CSW306_ProjectAPI.DTO;
 using CSW306_ProjectAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -36,7 +37,65 @@ namespace CSW306_ProjectAPI.Controllers
             return Ok(payment);
         }
 
-        [HttpPost("{id}")]
+        [HttpPost("add")]
+        public async Task<IActionResult> AddPayment(PaymentResponseDTO paymentRes)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            bool exists = await _context.Payments.AnyAsync(p => p.PaymentId == paymentRes.PaymentId);
+
+            if (exists)
+                return BadRequest($"PaymentId {paymentRes.PaymentId} already exists");
+
+            var payment = new Payments();
+            payment.PaymentId = paymentRes.PaymentId;
+            payment.OrderId = paymentRes.OrderId;
+            payment.Amount = paymentRes.Amount;
+            payment.PaymentMethod = paymentRes.PaymentMethod;
+            payment.CreatedDate = DateTime.Now;
+            payment.Status = "unpaid";
+
+            _context.Payments.Add(payment);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Payment added successfully", payment });
+        }
+
+        [HttpPut("edit/{id}")]
+        public async Task<IActionResult> EditPayment(int id, [FromBody] Payments updatedPayment)
+        {
+            if (id != updatedPayment.PaymentId)
+                return BadRequest("ID mismatch");
+
+            var existing = await _context.Payments.FindAsync(id);
+            if (existing == null)
+                return NotFound("Payment not found");
+
+            existing.OrderId = updatedPayment.OrderId;
+            existing.Amount = updatedPayment.Amount;
+            existing.PaymentMethod = updatedPayment.PaymentMethod;
+            existing.CreatedDate = updatedPayment.CreatedDate;
+            existing.Status = updatedPayment.Status;
+
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "Payment updated successfully", existing });
+        }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeletePayment(int id)
+        {
+            var payment = await _context.Payments.FindAsync(id);
+            if (payment == null)
+                return NotFound("Payment not found");
+
+            _context.Payments.Remove(payment);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Payment deleted successfully" });
+        }
+
+        [HttpPost("pay/{id}")]
         public async Task<IActionResult> ProcessPayment(int id)
         {
             var payment = await _context.Payments.FirstOrDefaultAsync(o => o.PaymentId == id);

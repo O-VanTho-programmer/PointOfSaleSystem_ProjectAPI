@@ -253,8 +253,24 @@
   },
   {
     "ContainingType": "CSW306_ProjectAPI.Controllers.DiscountsController",
+    "Method": "AddDiscount",
+    "RelativePath": "api/Discounts/add",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "discount",
+        "Type": "CSW306_ProjectAPI.Models.Discounts",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CSW306_ProjectAPI.Controllers.DiscountsController",
     "Method": "isValid",
-    "RelativePath": "api/Discounts/{id}",
+    "RelativePath": "api/Discounts/apply/{id}",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -268,6 +284,43 @@
         "Name": "OrderId",
         "Type": "System.Int32",
         "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CSW306_ProjectAPI.Controllers.DiscountsController",
+    "Method": "DeleteDiscount",
+    "RelativePath": "api/Discounts/delete/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CSW306_ProjectAPI.Controllers.DiscountsController",
+    "Method": "EditDiscount",
+    "RelativePath": "api/Discounts/edit/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "updatedDiscount",
+        "Type": "CSW306_ProjectAPI.Models.Discounts",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -505,8 +558,61 @@
   },
   {
     "ContainingType": "CSW306_ProjectAPI.Controllers.PaymentsController",
+    "Method": "AddPayment",
+    "RelativePath": "api/Payments/add",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "paymentRes",
+        "Type": "PaymentResponseDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CSW306_ProjectAPI.Controllers.PaymentsController",
+    "Method": "DeletePayment",
+    "RelativePath": "api/Payments/delete/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CSW306_ProjectAPI.Controllers.PaymentsController",
+    "Method": "EditPayment",
+    "RelativePath": "api/Payments/edit/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "updatedPayment",
+        "Type": "CSW306_ProjectAPI.Models.Payments",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CSW306_ProjectAPI.Controllers.PaymentsController",
     "Method": "ProcessPayment",
-    "RelativePath": "api/Payments/{id}",
+    "RelativePath": "api/Payments/pay/{id}",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,

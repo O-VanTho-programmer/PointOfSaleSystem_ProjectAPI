@@ -400,3 +400,9 @@ C:\Users\LY DAT\Desktop\csw306\newTest\CSW306_ProjectAPI\CSW306_ProjectAPI\CSW30
 C:\Users\LY DAT\Desktop\csw306\newTest\CSW306_ProjectAPI\CSW306_ProjectAPI\CSW306_ProjectAPI\obj\Debug\net8.0\CSW306_ProjectAPI.pdb
 C:\Users\LY DAT\Desktop\csw306\newTest\CSW306_ProjectAPI\CSW306_ProjectAPI\CSW306_ProjectAPI\obj\Debug\net8.0\CSW306_ProjectAPI.genruntimeconfig.cache
 C:\Users\LY DAT\Desktop\csw306\newTest\CSW306_ProjectAPI\CSW306_ProjectAPI\CSW306_ProjectAPI\obj\Debug\net8.0\ref\CSW306_ProjectAPI.dll
+C:\Users\LY DAT\Desktop\csw306\project\CSW306_ProjectAPI\CSW306_ProjectAPI\CSW306_ProjectAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\LY DAT\Desktop\csw306\project\CSW306_ProjectAPI\CSW306_ProjectAPI\CSW306_ProjectAPI\bin\Debug\net8.0\Microsoft.OpenApi.dll
+C:\Users\LY DAT\Desktop\csw306\project\CSW306_ProjectAPI\CSW306_ProjectAPI\CSW306_ProjectAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\LY DAT\Desktop\csw306\project\CSW306_ProjectAPI\CSW306_ProjectAPI\CSW306_ProjectAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\LY DAT\Desktop\csw306\project\CSW306_ProjectAPI\CSW306_ProjectAPI\CSW306_ProjectAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\LY DAT\Desktop\csw306\project\CSW306_ProjectAPI\CSW306_ProjectAPI\CSW306_ProjectAPI\obj\Debug\net8.0\CSW306_ProjectAPI.MvcApplicationPartsAssemblyInfo.cs

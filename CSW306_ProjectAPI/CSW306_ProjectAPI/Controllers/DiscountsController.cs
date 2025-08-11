@@ -36,7 +36,59 @@ namespace CSW306_ProjectAPI.Controllers
             return Ok(discount);
         }
 
-        [HttpPost("{id}")]
+        [HttpPost("add")]
+        public async Task<IActionResult> AddDiscount([FromBody] Discounts discount)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            bool exists = await _context.Discounts.AnyAsync(p => p.DiscountId == discount.DiscountId);
+
+            if (exists)
+                return BadRequest($"DiscountId {discount.DiscountId} already exists");
+
+            _context.Discounts.Add(discount);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Discount added successfully", discount });
+        }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeleteDiscount(int id)
+        {
+            var discount = await _context.Discounts.FindAsync(id);
+            if (discount == null)
+                return NotFound("Discount not found");
+
+            _context.Discounts.Remove(discount);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Discount deleted successfully" });
+        }
+
+        [HttpPut("edit/{id}")]
+        public async Task<IActionResult> EditDiscount(int id, [FromBody] Discounts updatedDiscount)
+        {
+            if (id != updatedDiscount.DiscountId)
+                return BadRequest("ID mismatch");
+
+            var existing = await _context.Discounts.FindAsync(id);
+            if (existing == null)
+                return NotFound("Discount not found");
+
+            // Update properties
+            existing.DiscountCode = updatedDiscount.DiscountCode;
+            existing.value = updatedDiscount.value;
+            existing.type = updatedDiscount.type;
+            existing.minOrderAmount = updatedDiscount.minOrderAmount;
+            existing.startDate = updatedDiscount.startDate;
+            existing.endDate = updatedDiscount.endDate;
+
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "Discount updated successfully", existing });
+        }
+
+        [HttpPost("apply/{id}")]
 
         public async Task<IActionResult> isValid(int id, int OrderId)
         {
