@@ -86,6 +86,50 @@ namespace CSW306_ProjectAPI.Controllers
             return Ok(order);
         }
 
+        // Filter {this year} as default
+        [HttpGet("filter_by_date_range")]
+        public async Task<ActionResult<OrderResponseDTO>> Get(DateTime? start_date, DateTime? end_date)
+        {
+            start_date ??= new DateTime(DateTime.Now.Year, 1, 1);
+            end_date ??= new DateTime(DateTime.Now.Year, 12, 31);
+                
+            var order = await _context.Orders
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Item)
+                .Where(o => o.CreatedDate >= start_date && o.CreatedDate <= end_date)
+                .Select(o => new OrderResponseDTO
+                {
+                    OrderId = o.OrderId,
+                    Status = o.Status,
+                    CreatedDate = o.CreatedDate,
+                    DiscountId = o.DiscountId,
+                    OrderItems = o.OrderItems.Select(oi => new OrderItemResponseDTO
+                    {
+                        ItemId = oi.ItemId,
+                        OrderId = oi.OrderId,
+                        Quantity = oi.Quantity,
+                        PriceAtOrder = oi.PriceAtOrder,
+                        Item = new ItemResponseDTO
+                        {
+                            ItemId = oi.Item.ItemId,
+                            Name = oi.Item.Name,
+                            QuantityInStock = oi.Item.QuantityInStock,
+                            Price = oi.Item.Price,
+                            CategoryId = oi.Item.CategoryId
+                        }
+                    }).ToList()
+                })
+                .FirstOrDefaultAsync();
+
+            if (order == null)
+            {
+                return NotFound("Order Id not found");
+            }
+                
+
+            return Ok(order);
+        }
+
         [HttpPost]
         public async Task<ActionResult<Orders>> AddOrder([FromBody] OrdersUploadDTO dto) {
             if (dto.Items == null || !dto.Items.Any())
