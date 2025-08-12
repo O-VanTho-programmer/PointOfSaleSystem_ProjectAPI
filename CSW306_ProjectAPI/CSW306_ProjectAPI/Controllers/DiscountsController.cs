@@ -1,5 +1,6 @@
 ﻿using CSW306_ProjectAPI.DTO.Upload;
 using CSW306_ProjectAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -37,6 +38,7 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpPost("add")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> AddDiscount([FromBody] Discounts discount)
         {
             if (!ModelState.IsValid)
@@ -54,6 +56,7 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpDelete("delete/{id}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> DeleteDiscount(int id)
         {
             var discount = await _context.Discounts.FindAsync(id);
@@ -67,6 +70,7 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpPut("edit/{id}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> EditDiscount(int id, [FromBody] Discounts updatedDiscount)
         {
             if (id != updatedDiscount.DiscountId)

@@ -38,6 +38,7 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpPost("add")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> AddPayment(PaymentResponseDTO paymentRes)
         {
             if (!ModelState.IsValid)
@@ -63,6 +64,7 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpPut("edit/{id}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> EditPayment(int id, [FromBody] Payments updatedPayment)
         {
             if (id != updatedPayment.PaymentId)
@@ -75,7 +77,6 @@ namespace CSW306_ProjectAPI.Controllers
             existing.OrderId = updatedPayment.OrderId;
             existing.Amount = updatedPayment.Amount;
             existing.PaymentMethod = updatedPayment.PaymentMethod;
-            existing.CreatedDate = updatedPayment.CreatedDate;
             existing.Status = updatedPayment.Status;
 
             await _context.SaveChangesAsync();
@@ -83,6 +84,7 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpDelete("delete/{id}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> DeletePayment(int id)
         {
             var payment = await _context.Payments.FindAsync(id);
