@@ -26,6 +26,8 @@ namespace CSW306_ProjectAPI.Controllers
                 .Select(o => new OrderResponseDTO
                 {
                     OrderId = o.OrderId,
+                    DiscountId = o.DiscountId,
+                    UsserId = o.UserId,
                     Status = o.Status,
                     CreatedDate = o.CreatedDate,
                     OrderItems = o.OrderItems.Select(oi => new OrderItemResponseDTO
