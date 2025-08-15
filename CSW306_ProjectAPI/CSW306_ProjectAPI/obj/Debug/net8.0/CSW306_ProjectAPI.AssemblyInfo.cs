@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CSW306_ProjectAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0aa57ae0b0d746953b274d1e0f0227d2a0c4403c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e6680d46750f7c7c8ac25d7c7725ca7cc4360940")]
 [assembly: System.Reflection.AssemblyProductAttribute("CSW306_ProjectAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CSW306_ProjectAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
