@@ -153,7 +153,7 @@ namespace CSW306_ProjectAPI.Controllers
 
             var orderItems = dto.Items.Select(i => new OrderItems
             {
-                ItemId = i.ItemId,
+                ItemId = i.ItemId,         
                 Quantity = i.Quantity,
                 PriceAtOrder = itemsInDb[i.ItemId].Price
             }).ToList();
@@ -161,6 +161,8 @@ namespace CSW306_ProjectAPI.Controllers
             var order = new Orders
             {
                 Status = dto.Status,
+                DiscountId = dto.DiscountId,
+                UserId = dto.UserId,
                 CreatedDate = dto.CreatedDate,
                 OrderItems = orderItems
             };

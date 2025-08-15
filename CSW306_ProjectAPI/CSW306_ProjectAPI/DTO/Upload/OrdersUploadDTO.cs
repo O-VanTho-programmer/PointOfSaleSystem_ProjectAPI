@@ -7,6 +7,11 @@ namespace CSW306_ProjectAPI.DTO.Upload
         [Required]
         public int Status { get; set; }
 
+        public int DiscountId { get; set; }
+
+        [Required]
+        public int UserId { get; set; }
+
         [Required]
         public List<OrderItemUploadDTO> Items { get; set; }
 
