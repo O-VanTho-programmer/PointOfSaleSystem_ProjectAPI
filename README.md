@@ -1,6 +1,6 @@
 # Point Of Sale System (Project .NET API)
 ### Description
-The Restaurant Management API offers features for ordering food, booking tables, and making payments. With structured endpoints, users can view the menu, order meal, confirm orders, reserve tables, and pay securely.
+The Restaurant Management API offers features for ordering food, booking tables, and making payments. With structured endpoints, users can view the menu, order meals, confirm orders, reserve tables, and pay securely.
 
 ## Tech Stack
 - ASP.NET CORE Web API 8
@@ -10,10 +10,24 @@ The Restaurant Management API offers features for ordering food, booking tables,
 - Swagger (OpenAPI)
 
 ## Project Architecture
-- Layered Architecture:
-  + Models
-  + Controllers
-  + DTO
+
+The project follows a layered architecture to ensure separation of concerns:
+- Controllers: Handle HTTP requests and responses
+- DTOs: Define data contracts between client and server
+- Models (Entities): Represent database tables
+- Data Access: Entity Framework Core with SQL Server
+    
+## System Design
+
+### Use Case Diagram
+The following use case diagram illustrates the main interactions between users and the system, including authentication, product management, and order processing.
+
+![Use Case Diagram](doc/usecase_diagram.jpg)
+
+### Class Diagram
+The class diagram describes the system structure, including entities, relationships, and core business logic.
+
+![Class Diagram](doc/class_diagram.jpg)
 
 ## Features
 - User authentication with JWT
@@ -54,7 +68,7 @@ The Restaurant Management API offers features for ordering food, booking tables,
 | Method | Endpoint        | Description |
 |------|-----------------|-------------|
 | GET | /api/Orders | Get all items |
-| GET | /api/Orders/{id} | Get a order by id |
+| GET | /api/Orders/{id} | Get an order by id |
 | GET | /api/Orders/filter_by_date_range | Get a orders filtered from date range |
 | POST | /api/Orders | Create order |
 | PATCH | /api/Orders/{id} | Adjust order status |
@@ -62,7 +76,7 @@ The Restaurant Management API offers features for ordering food, booking tables,
 ### Table
 | Method | Endpoint        | Description |
 |------|-----------------|-------------|
-| GET | /api/Table | Get all table |
+| GET | /api/Table | Get all tables |
 | GET | /api/Table/{id} | Get a table by id |
 | POST | /api/Table | Create table |
 | PUT | /api/Table/{id} | Update table status by id |
@@ -93,23 +107,68 @@ The Restaurant Management API offers features for ordering food, booking tables,
 | GET | /api/Payments | Get all payments |
 | GET | /api/Payments/{id} | Get a discounts by id |
 | POST | /api/Payments/add | Create payment |
-| POST | /api/Payments/pay/{id} | Purchase a payment |
+| POST | /api/Payments/pay/{id} | Process a payment |
 | PUT | /api/Payments/edit/{id} | Update payment by id |
 | DELETE | /api/Payments/delete/{id} | Delete payment by id |
+
+## Use Case to API Mapping
+
+| Use Case | Endpoint |
+|--------|----------|
+| Customer Registration | POST /api/Auths/customer/register |
+| Create Order | POST /api/Orders |
+| Reserve Table | POST /api/Reservation |
+| Process Payment | POST /api/Payments/pay/{id} |
 
 ## How to Run Locally
 
 ### Prerequisites
 - .NET SDK 8.0
-- MySQL / SQL Server
+- SQL Server
+- SQL Server Management Studio (SSMS)
 - Visual Studio or VS Code
 
 ### Installation
 ```bash
-git clone https://github.com/yourusername/project-api.git
-cd project-api
+git clone https://github.com/O-VanTho-programmer/PointOfSaleSystem_ProjectAPI.git
+cd CSW306_ProjectAPI/CSW306_ProjectAPI
 dotnet restore
 dotnet run
 ```
 
+### Restore Database from Backup
+1. Open **SQL Server Management Studio (SSMS)**
+2. Right-click **Databases** → **Restore Database**
+3. Select **Device** → **Browse**
+4. Choose the file:  
+   `CSW306_ProjectAPI.bak`
+5. Set the database name (e.g. `CSW306_ProjectAPI`)
+6. Click **OK**
 
+After restoring, update the connection string in `appsettings.json`.
+
+```json
+{
+  "ConnectionStrings": {
+    "DBConnection": "Server=.;Database=CSW306_ProjectAPI;Trusted_Connection=True;TrustServerCertificate=True;"
+  },
+}
+```
+
+### Security Configuration (JWT)
+
+Update `appsettings.json` with your own secret key:
+
+```json
+"JwtSettings": {
+  "SecretKey": "your-strong-secret-key",
+  "Issuer": "PointOfSale.AuthServer",
+  "Audience": "PointOfSale.Client",
+  "ExpiryMinutes": 60
+}
+```
+
+## Author
+- Contributors: Ong Van Tho, Pham Tran Gia Hung, Ly Dat
+- Course: CSW306 – Backend
+- Major: Software Engineering
