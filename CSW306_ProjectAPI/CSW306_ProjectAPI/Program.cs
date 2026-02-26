@@ -1,9 +1,11 @@
-using CSW306_ProjectAPI.Models;
+using CSW306.Domain.Entities;
+using CSW306.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json.Serialization;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +24,9 @@ builder.Services.AddControllers()
         {
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         });
+builder.Services.AddScoped<CSW306.Application.Interfaces.IRepositories.ICategoryRepository, CSW306.Infrastructure.Repositories.CategoryRepository>();
+builder.Services.AddScoped<CSW306.Application.Interfaces.IRepositories.IItemRepository, CSW306.Infrastructure.Repositories.ItemRepository>();
+builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.ICategoryService, CSW306.Application.Services.CategoryService>();
 builder.Services.AddDbContext<CSW306_ProjectAPIContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection")));
 

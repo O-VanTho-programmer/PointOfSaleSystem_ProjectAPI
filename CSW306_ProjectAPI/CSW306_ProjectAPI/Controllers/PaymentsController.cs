@@ -1,5 +1,6 @@
-﻿using CSW306_ProjectAPI.DTO;
-using CSW306_ProjectAPI.Models;
+using CSW306.Application.DTO;
+using CSW306.Domain.Entities;
+using CSW306.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
