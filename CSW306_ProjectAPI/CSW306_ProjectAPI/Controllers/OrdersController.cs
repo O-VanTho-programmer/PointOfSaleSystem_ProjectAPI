@@ -1,6 +1,7 @@
-﻿using Azure.Core;
-using CSW306_ProjectAPI.DTO.Upload;
-using CSW306_ProjectAPI.Models;
+using Azure.Core;
+using CSW306.Application.DTO.Upload;
+using CSW306.Domain.Entities;
+using CSW306.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
