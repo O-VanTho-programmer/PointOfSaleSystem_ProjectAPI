@@ -18,7 +18,6 @@ namespace CSW306.Infrastructure.Repositories
         public async Task<T> AddAsync(T entity)
         {
             await _dbSet.AddAsync(entity);
-            await _context.SaveChangesAsync();
             return entity;
         }
 
@@ -28,7 +27,6 @@ namespace CSW306.Infrastructure.Repositories
             if (entity != null)
             {
                 _dbSet.Remove(entity);
-                await _context.SaveChangesAsync();
             }
         }
 
@@ -45,7 +43,6 @@ namespace CSW306.Infrastructure.Repositories
         public async Task<T> UpdateAsync(T entity)
         {
             _dbSet.Update(entity);
-            await _context.SaveChangesAsync();
             return entity;
         }
     }
