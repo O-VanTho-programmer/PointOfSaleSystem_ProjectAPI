@@ -3,6 +3,9 @@ using CSW306.Domain.Entities;
 using CSW306.Infrastructure.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using CSW306.Application.Services;
+using CSW306.Application.Interfaces.IServices;
+using CSW306.Application.Utils;
 
 namespace CSW306_ProjectAPI.Controllers
 {
@@ -10,46 +13,52 @@ namespace CSW306_ProjectAPI.Controllers
     [ApiController]
     public class ItemsController : ControllerBase
     {
-        private readonly CSW306_ProjectAPIContext _context;
+        private readonly IItemService _itemService;
 
-        public ItemsController(CSW306_ProjectAPIContext context)
+        public ItemsController(IItemService itemService)
         {
-            _context = context;
+            _itemService = itemService;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Items>> Get() { 
-            return _context.Items.ToList();
+        public async Task<ActionResult<TemplateApi<Items>>> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10) { 
+            var result = await _itemService.GetItemsAsync(pageNumber, pageSize);
+            return Ok(result);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<TemplateApi<Items>>> GetById(int id) { 
+            var result = await _itemService.GetItemAsync(id);
+
+            if (!result.Success) { 
+                return NotFound(result);
+            }
+
+            return Ok(result);
         }
 
         [HttpPost]
-        public ActionResult Post([FromForm] ItemsUploadDTO dto)
+        public async Task<ActionResult> CreateItem([FromForm] ItemsUploadDTO dto)
         {
-            var item = _context.Items.FirstOrDefault(i => i.Name.ToLower().Equals(dto.Name.ToLower()));
+            var item = await _itemService.CreateItemAsync(dto);
             
-            if (item != null) {
-                return BadRequest("Item's name has already used");
+            if (!item.Success) {
+                return BadRequest(item);
             }
 
-            var category = _context.Categories.FirstOrDefault(c => c.CategoryId == dto.CategoryId);
+            return Ok(item);
+        }
 
-            if (category == null) { 
-                return NotFound("Selected Category not found");
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateItem(int id, [FromForm] ItemsUploadDTO uploadDTO)
+        {
+            var item = await _itemService.UpdateItemAsync(id, uploadDTO);
+            
+            if (!item.Success) {
+                return BadRequest(item);
             }
 
-            var newItem = new Items
-            {
-                Name = dto.Name,
-                QuantityInStock = dto.QuantityInStock,
-                Price = dto.Price,
-                CategoryId = dto.CategoryId,
-                Category = category
-            };
-
-            _context.Items.Add(newItem);
-            _context.SaveChanges();
-
-            return Ok(newItem);
+            return Ok(item);
         }
     }
 }
