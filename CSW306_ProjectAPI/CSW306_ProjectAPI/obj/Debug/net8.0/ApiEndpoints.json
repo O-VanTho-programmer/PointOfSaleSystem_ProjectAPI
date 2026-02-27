@@ -30,7 +30,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CSW306_ProjectAPI.Models.Users",
+        "Type": "CSW306.Domain.Entities.Users",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -76,7 +76,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CSW306_ProjectAPI.Models.Users",
+        "Type": "CSW306.Domain.Entities.Users",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -114,10 +114,21 @@
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "pageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[CSW306_ProjectAPI.Models.Categories, CSW306_ProjectAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "CSW306.Application.Utils.TemplateApi\u00601[[CSW306.Domain.Entities.Categories, CSW306.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -148,7 +159,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CSW306_ProjectAPI.Models.Categories",
+        "Type": "CSW306.Domain.Entities.Categories",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -174,7 +185,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CSW306_ProjectAPI.Models.Categories",
+        "Type": "CSW306.Application.Utils.TemplateApi\u00601[[CSW306.Domain.Entities.Categories, CSW306.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -215,7 +226,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[CSW306_ProjectAPI.Models.Discounts, CSW306_ProjectAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[CSW306.Domain.Entities.Discounts, CSW306.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -241,7 +252,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CSW306_ProjectAPI.Models.Discounts",
+        "Type": "CSW306.Domain.Entities.Discounts",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -261,7 +272,7 @@
     "Parameters": [
       {
         "Name": "discount",
-        "Type": "CSW306_ProjectAPI.Models.Discounts",
+        "Type": "CSW306.Domain.Entities.Discounts",
         "IsRequired": true
       }
     ],
@@ -319,7 +330,7 @@
       },
       {
         "Name": "updatedDiscount",
-        "Type": "CSW306_ProjectAPI.Models.Discounts",
+        "Type": "CSW306.Domain.Entities.Discounts",
         "IsRequired": true
       }
     ],
@@ -327,15 +338,26 @@
   },
   {
     "ContainingType": "CSW306_ProjectAPI.Controllers.ItemsController",
-    "Method": "Get",
+    "Method": "GetAll",
     "RelativePath": "api/Items",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "pageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[CSW306_ProjectAPI.Models.Items, CSW306_ProjectAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "CSW306.Application.Utils.TemplateApi\u00601[[CSW306.Domain.Entities.Items, CSW306.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -347,12 +369,74 @@
   },
   {
     "ContainingType": "CSW306_ProjectAPI.Controllers.ItemsController",
-    "Method": "Post",
+    "Method": "CreateItem",
     "RelativePath": "api/Items",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
+      {
+        "Name": "Name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "QuantityInStock",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Price",
+        "Type": "System.Decimal",
+        "IsRequired": false
+      },
+      {
+        "Name": "CategoryId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CSW306_ProjectAPI.Controllers.ItemsController",
+    "Method": "GetById",
+    "RelativePath": "api/Items/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "CSW306.Application.Utils.TemplateApi\u00601[[CSW306.Domain.Entities.Items, CSW306.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CSW306_ProjectAPI.Controllers.ItemsController",
+    "Method": "UpdateItem",
+    "RelativePath": "api/Items/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
       {
         "Name": "Name",
         "Type": "System.String",
@@ -386,7 +470,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[OrderResponseDTO, CSW306_ProjectAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[OrderResponseDTO, CSW306.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -406,13 +490,13 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "CSW306_ProjectAPI.DTO.Upload.OrdersUploadDTO",
+        "Type": "CSW306.Application.DTO.Upload.OrdersUploadDTO",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "CSW306_ProjectAPI.Models.Orders",
+        "Type": "CSW306.Domain.Entities.Orders",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -463,13 +547,13 @@
       },
       {
         "Name": "request",
-        "Type": "CSW306_ProjectAPI.DTO.Upload.UpdateStatusOrderDTO",
+        "Type": "CSW306.Application.DTO.Upload.UpdateStatusOrderDTO",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "CSW306_ProjectAPI.Models.Orders",
+        "Type": "CSW306.Domain.Entities.Orders",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -520,7 +604,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[CSW306_ProjectAPI.Models.Payments, CSW306_ProjectAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[CSW306.Domain.Entities.Payments, CSW306.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -546,7 +630,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CSW306_ProjectAPI.Models.Payments",
+        "Type": "CSW306.Domain.Entities.Payments",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -603,7 +687,7 @@
       },
       {
         "Name": "updatedPayment",
-        "Type": "CSW306_ProjectAPI.Models.Payments",
+        "Type": "CSW306.Domain.Entities.Payments",
         "IsRequired": true
       }
     ],
@@ -635,7 +719,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[CSW306_ProjectAPI.Models.Reservation, CSW306_ProjectAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[CSW306.Domain.Entities.Reservation, CSW306.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -655,13 +739,13 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "CSW306_ProjectAPI.DTO.Upload.ReservationCreateDTO",
+        "Type": "CSW306.Application.DTO.Upload.ReservationCreateDTO",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "CSW306_ProjectAPI.Models.Reservation",
+        "Type": "CSW306.Domain.Entities.Reservation",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -688,7 +772,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CSW306_ProjectAPI.Models.Reservation",
+        "Type": "CSW306.Domain.Entities.Reservation",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -713,7 +797,7 @@
       },
       {
         "Name": "dto",
-        "Type": "CSW306_ProjectAPI.DTO.Upload.ReservationCreateDTO",
+        "Type": "CSW306.Application.DTO.Upload.ReservationCreateDTO",
         "IsRequired": true
       }
     ],
@@ -745,7 +829,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[CSW306_ProjectAPI.Models.Table, CSW306_ProjectAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[CSW306.Domain.Entities.Table, CSW306.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -765,13 +849,13 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "CSW306_ProjectAPI.DTO.Upload.TableCreateDTO",
+        "Type": "CSW306.Application.DTO.Upload.TableCreateDTO",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "CSW306_ProjectAPI.Models.Table",
+        "Type": "CSW306.Domain.Entities.Table",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -797,7 +881,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CSW306_ProjectAPI.Models.Table",
+        "Type": "CSW306.Domain.Entities.Table",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -822,7 +906,7 @@
       },
       {
         "Name": "dto",
-        "Type": "CSW306_ProjectAPI.DTO.Upload.TableCreateDTO",
+        "Type": "CSW306.Application.DTO.Upload.TableCreateDTO",
         "IsRequired": true
       }
     ],
@@ -854,7 +938,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[CSW306_ProjectAPI.Models.Users, CSW306_ProjectAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[CSW306.Domain.Entities.Users, CSW306.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -874,13 +958,13 @@
     "Parameters": [
       {
         "Name": "user",
-        "Type": "CSW306_ProjectAPI.Models.Users",
+        "Type": "CSW306.Domain.Entities.Users",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "CSW306_ProjectAPI.Models.Users",
+        "Type": "CSW306.Domain.Entities.Users",
         "MediaTypes": [
           "text/plain",
           "application/json",

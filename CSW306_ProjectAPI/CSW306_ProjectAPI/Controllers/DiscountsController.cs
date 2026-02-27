@@ -1,5 +1,6 @@
-﻿using CSW306_ProjectAPI.DTO.Upload;
-using CSW306_ProjectAPI.Models;
+using CSW306.Application.DTO.Upload;
+using CSW306.Domain.Entities;
+using CSW306.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -38,7 +39,7 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpPost("add")]
-        [Authorize(Roles = "Manager")]
+        [Authorize]
         public async Task<IActionResult> AddDiscount([FromBody] Discounts discount)
         {
             if (!ModelState.IsValid)
