@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using CSW306_ProjectAPI.Models;
+using CSW306.Domain.Entities;
+using CSW306.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
-using CSW306_ProjectAPI.DTO.Upload;
+using CSW306.Application.DTO.Upload;
+using CSW306.Application.Interfaces.IServices;
+using CSW306.Application.Utils;
 
 namespace CSW306_ProjectAPI.Controllers
 {
@@ -11,30 +14,31 @@ namespace CSW306_ProjectAPI.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        private readonly CSW306_ProjectAPIContext _context;
+        private readonly ICategoryService _categoryService;
 
-        public CategoriesController(CSW306_ProjectAPIContext context)
+        public CategoriesController(ICategoryService categoryService)
         {
-            _context = context;
+            _categoryService = categoryService;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Categories>> GetCategories()
+        public async Task<ActionResult<TemplateApi<Categories>>> GetCategories([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
-            return _context.Categories.ToList();
+            var result = await _categoryService.GetCategoriesAsync(pageNumber, pageSize);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Categories>> GetCategory(int id)
+        public async Task<ActionResult<TemplateApi<Categories>>> GetCategory(int id)
         {
-            var category = await _context.Categories.FirstOrDefaultAsync(c => c.CategoryId == id);
+            var result = await _categoryService.GetCategoryAsync(id);
 
-            if (category == null)
+            if (!result.Success)
             {
-                return NotFound("Category Id not Found");
+                return NotFound(result);
             }
 
-            return Ok(category);
+            return Ok(result);
         }
 
         [HttpPost]
@@ -42,15 +46,7 @@ namespace CSW306_ProjectAPI.Controllers
 
         public async Task<ActionResult<Categories>> CreateCategory([FromForm] CategoryUploadDTO dto)
         {
-            var category = new Categories
-            {
-                Name = dto.Name,
-                Description = dto.Description
-            };
-
-            _context.Categories.Add(category);
-            await _context.SaveChangesAsync();
-
+            var category = await _categoryService.CreateCategoryAsync(dto);
             return Ok(category);
         }
 
@@ -58,21 +54,12 @@ namespace CSW306_ProjectAPI.Controllers
         [Authorize(Roles = "Manager")]
         public async Task<ActionResult> AssginItemToCategory([FromForm] int ItemId, int CategoryId)
         {
-            var item = await _context.Items.FirstOrDefaultAsync(i => i.ItemId == ItemId);
-            var category = await _context.Categories.FirstOrDefaultAsync(c =>c.CategoryId == CategoryId);
+            var item = await _categoryService.AssignItemToCategoryAsync(ItemId, CategoryId);
 
             if (item == null) {
-                return NotFound("Not Found Item Id");
+                return BadRequest("Invalid Item Id or Category Id");
             }
 
-            if (category == null) {
-                return NotFound("Not Found Category Id");
-            }
-
-            item.CategoryId = CategoryId;
-            item.Category = category;
-                
-            await _context.SaveChangesAsync();
             return Ok(item);
         }
     }
