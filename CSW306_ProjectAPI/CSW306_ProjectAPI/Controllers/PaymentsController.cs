@@ -1,10 +1,10 @@
 using CSW306.Application.DTO;
+using CSW306.Application.Interfaces.IServices;
 using CSW306.Domain.Entities;
-using CSW306.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CSW306_ProjectAPI.Controllers
 {
@@ -12,23 +12,24 @@ namespace CSW306_ProjectAPI.Controllers
     [ApiController]
     public class PaymentsController : ControllerBase
     {
-        private readonly CSW306_ProjectAPIContext _context;
+        private readonly IPaymentService _paymentService;
 
-        public PaymentsController(CSW306_ProjectAPIContext context)
+        public PaymentsController(IPaymentService paymentService)
         {
-            _context = context;
+            _paymentService = paymentService;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Payments>> GetPayments()
+        public async Task<ActionResult<IEnumerable<Payments>>> GetPayments()
         {
-            return _context.Payments.ToList();
+            var payments = await _paymentService.GetAllPaymentsAsync();
+            return Ok(payments);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Payments>> GetPayment(int id)
         {
-            var payment = await _context.Payments.FirstOrDefaultAsync(o => o.PaymentId == id);
+            var payment = await _paymentService.GetPaymentByIdAsync(id);
 
             if (payment == null)
             {
@@ -45,21 +46,10 @@ namespace CSW306_ProjectAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            bool exists = await _context.Payments.AnyAsync(p => p.PaymentId == paymentRes.PaymentId);
+            var (payment, errorMessage) = await _paymentService.CreatePaymentAsync(paymentRes);
 
-            if (exists)
-                return BadRequest($"PaymentId {paymentRes.PaymentId} already exists");
-
-            var payment = new Payments();
-            payment.PaymentId = paymentRes.PaymentId;
-            payment.OrderId = paymentRes.OrderId;
-            payment.Amount = paymentRes.Amount;
-            payment.PaymentMethod = paymentRes.PaymentMethod;
-            payment.CreatedDate = DateTime.Now;
-            payment.Status = "unpaid";
-
-            _context.Payments.Add(payment);
-            await _context.SaveChangesAsync();
+            if (errorMessage != null)
+                return BadRequest(errorMessage);
 
             return Ok(new { message = "Payment added successfully", payment });
         }
@@ -68,19 +58,14 @@ namespace CSW306_ProjectAPI.Controllers
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> EditPayment(int id, [FromBody] Payments updatedPayment)
         {
-            if (id != updatedPayment.PaymentId)
-                return BadRequest("ID mismatch");
+            var (existing, errorMessage) = await _paymentService.UpdatePaymentAsync(id, updatedPayment);
 
-            var existing = await _context.Payments.FindAsync(id);
-            if (existing == null)
-                return NotFound("Payment not found");
+            if (errorMessage != null)
+            {
+                if (errorMessage == "Payment not found") return NotFound(errorMessage);
+                return BadRequest(errorMessage);
+            }
 
-            existing.OrderId = updatedPayment.OrderId;
-            existing.Amount = updatedPayment.Amount;
-            existing.PaymentMethod = updatedPayment.PaymentMethod;
-            existing.Status = updatedPayment.Status;
-
-            await _context.SaveChangesAsync();
             return Ok(new { message = "Payment updated successfully", existing });
         }
 
@@ -88,12 +73,9 @@ namespace CSW306_ProjectAPI.Controllers
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> DeletePayment(int id)
         {
-            var payment = await _context.Payments.FindAsync(id);
-            if (payment == null)
+            var success = await _paymentService.DeletePaymentAsync(id);
+            if (!success)
                 return NotFound("Payment not found");
-
-            _context.Payments.Remove(payment);
-            await _context.SaveChangesAsync();
 
             return Ok(new { message = "Payment deleted successfully" });
         }
@@ -101,83 +83,42 @@ namespace CSW306_ProjectAPI.Controllers
         [HttpPost("pay/{id}")]
         public async Task<IActionResult> ProcessPayment(int id)
         {
-            var payment = await _context.Payments.FirstOrDefaultAsync(o => o.PaymentId == id);
+            var result = await _paymentService.ProcessPaymentAsync(id);
 
-            if (payment == null)
+            if (!result.Success)
             {
-                return NotFound("Payment not found.");
-            }
-
-            if (payment.Status.Equals("paid"))
-            {
-                return Ok("Payment has paid");
-            }
-
-            var orders = await _context.Orders.Include(o => o.OrderItems).ThenInclude(oi => oi.Item).FirstOrDefaultAsync(o => o.OrderId == payment.OrderId);
-
-            if (orders == null)
-            {
-                return NotFound("Order not found.");
-            }
-
-            decimal totalAmount = 0;
-            int totalQuantity = 0;
-
-            foreach (var item in orders.OrderItems)
-            {
-                totalAmount += item.PriceAtOrder * item.Quantity;
-                totalQuantity += item.Quantity;
-            }
-
-            decimal discountAmount = 0;
-
-            if (orders.DiscountId != null)
-            {
-                int? DisID = orders.DiscountId;
-                var discounts = await _context.Discounts
-                    .Where(o => o.DiscountId == DisID)
-                    .ToListAsync();
-                if (discounts.Any())
+                if (result.Message == "Payment not found." || result.Message == "Order not found.")
                 {
-                    foreach (var discount in discounts)
-                    {
-                        if (discount.type.Equals("fixed"))
-                        {
-                            discountAmount += discount.value;
-                        }
-                        else if (discount.type.Equals("percentage"))
-                        {
-                            discountAmount += totalAmount * (discount.value / 100m);
-                        }
-                    }
-
-                    totalAmount -= discountAmount;
+                    return NotFound(result.Message);
                 }
-            }
-
-            if (payment.Amount < totalAmount)
-            {
-                return BadRequest(new
+                
+                if (result.Message == "Payment has paid")
                 {
-                    Message = "Not enough money.",
-                    TotalAmount = totalAmount,
-                    PaidAmount = payment.Amount,
-                    Shortage = totalAmount - payment.Amount
-                });
+                    return Ok(result.Message);
+                }
+
+                if (result.Message == "Not enough money.")
+                {
+                    return BadRequest(new
+                    {
+                        Message = result.Message,
+                        TotalAmount = result.TotalAmountToPay,
+                        PaidAmount = result.PaidAmount,
+                        Shortage = result.Change
+                    });
+                }
+
+                return BadRequest(result.Message);
             }
 
-            decimal change = payment.Amount - totalAmount;
-            orders.Status = 3;
-            payment.Status = "paid";
-            _context.SaveChanges();
             return Ok(new
             {
-                Message = "Payment successful.",
-                TotalQuantity = totalQuantity,
-                DiscountApplied = discountAmount,
-                TotalAmountToPay = totalAmount,
-                PaidAmount = payment.Amount,
-                Change = change
+                Message = result.Message,
+                TotalQuantity = result.TotalQuantity,
+                DiscountApplied = result.DiscountApplied,
+                TotalAmountToPay = result.TotalAmountToPay,
+                PaidAmount = result.PaidAmount,
+                Change = result.Change
             });
         }
     }

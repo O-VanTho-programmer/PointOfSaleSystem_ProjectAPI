@@ -1,9 +1,10 @@
 using CSW306.Application.DTO.Upload;
+using CSW306.Application.Interfaces.IServices;
 using CSW306.Domain.Entities;
-using CSW306.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CSW306_ProjectAPI.Controllers
 {
@@ -12,23 +13,24 @@ namespace CSW306_ProjectAPI.Controllers
     [ApiController]
     public class ReservationController : ControllerBase
     {
-        private readonly CSW306_ProjectAPIContext _context;
+        private readonly IReservationService _reservationService;
 
-        public ReservationController(CSW306_ProjectAPIContext context)
+        public ReservationController(IReservationService reservationService)
         {
-            _context = context;
+            _reservationService = reservationService;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Reservation>>> Get()
         {
-            return await _context.Reservations.ToListAsync();
+            var reservations = await _reservationService.GetAllReservationsAsync();
+            return Ok(reservations);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Reservation>> Get(int id)
         {
-            var reservation = await _context.Reservations.FirstOrDefaultAsync(r => r.ReservationId == id);
+            var reservation = await _reservationService.GetReservationByIdAsync(id);
             if (reservation == null)
             {
                 return NotFound("reservation id invalid");
@@ -36,116 +38,43 @@ namespace CSW306_ProjectAPI.Controllers
             return Ok(reservation);
         }
 
-        [HttpPost(Name ="BookTable")]
+        [HttpPost(Name = "BookTable")]
         public async Task<ActionResult<Reservation>> AddReservation([FromBody] ReservationCreateDTO dto)
         {
-            if (dto == null || dto.TableId <= 0)
+            var (reservation, errorMessage) = await _reservationService.CreateReservationAsync(dto);
+
+            if (errorMessage != null)
             {
-                return BadRequest("reservation id not found");
+                if (errorMessage == "table dont exist") return NotFound(errorMessage);
+                return BadRequest(errorMessage);
             }
 
-            var table = await _context.Tables.FindAsync(dto.TableId);
-            if (table == null)
-            {
-                return NotFound("table dont exist");
-            }
-
-            if (dto.NumberOfPeople > table.Capacity)
-            {
-                return BadRequest($"table capacity exceeded ({table.Capacity})");
-            }
-
-            bool exists = await _context.Reservations.AnyAsync(r => r.TableId == dto.TableId && r.Date == dto.Date && r.Time == dto.Time);
-            if (exists)
-            {
-                return BadRequest("table is already reserved");
-            }
-
-            DateTime now = DateTime.Now;
-            DateTime reservationDateTime = dto.Date.Date + dto.Time.TimeOfDay;
-            if (reservationDateTime <= now)
-            {
-                return BadRequest("reservation must be in future");
-            }
-
-
-            var reservation = new Reservation
-            {
-                ReservationId = dto.ReservationId,
-                TableId = dto.TableId,
-                NumberOfPeople = dto.NumberOfPeople,
-                Note = dto.Note,
-                Time = dto.Time,
-                Date = dto.Date,
-                CustomerName = dto.CustomerName
-            };
-
-
-            _context.Reservations.Add(reservation);
-            await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(Get), new { id = reservation.ReservationId }, reservation);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateReservation(int id, [FromBody] ReservationCreateDTO dto)
         {
-            if (dto == null)
+            var (reservation, errorMessage) = await _reservationService.UpdateReservationAsync(id, dto);
+
+            if (errorMessage != null)
             {
-                return BadRequest("reservation data is invalid");
+                if (errorMessage == "reservation id not found" || errorMessage == "table dont exist") return NotFound(errorMessage);
+                return BadRequest(errorMessage);
             }
 
-            var existingReservation = await _context.Reservations.FindAsync(id);
-            if (existingReservation == null)
-            {
-                return NotFound("reservation id not found");
-            }
-
-            var table = await _context.Tables.FindAsync(dto.TableId);
-            if (table == null)
-            {
-                return NotFound("table dont exist");
-            }
-
-            if (dto.NumberOfPeople > table.Capacity)
-            {
-                return BadRequest($"table capacity exceeded ({table.Capacity})");
-            }
-
-            bool exists = await _context.Reservations.AnyAsync(r => r.TableId == dto.TableId && r.Date == dto.Date && r.Time == dto.Time && r.ReservationId != id);
-            if (exists)
-            {
-                return BadRequest("table is already reserved");
-            }
-
-            DateTime now = DateTime.Now;
-            DateTime reservationDateTime = dto.Date.Date + dto.Time.TimeOfDay;
-            if (reservationDateTime <= now)
-            {
-                return BadRequest("reservation must be in future");
-            }
-
-            existingReservation.TableId = dto.TableId;
-            existingReservation.NumberOfPeople = dto.NumberOfPeople;
-            existingReservation.Note = dto.Note;
-            existingReservation.Time = dto.Time;
-            existingReservation.Date = dto.Date;
-            existingReservation.CustomerName = dto.CustomerName;
-
-            await _context.SaveChangesAsync();
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteReservation(int id)
         {
-            var reservation = await _context.Reservations.FindAsync(id);
-            if (reservation == null)
+            var success = await _reservationService.DeleteReservationAsync(id);
+            if (!success)
             {
                 return NotFound("reservation id invalid");
             }
 
-            _context.Reservations.Remove(reservation);
-            await _context.SaveChangesAsync();
             return NoContent();
         }
     }
