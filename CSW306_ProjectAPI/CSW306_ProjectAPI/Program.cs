@@ -29,6 +29,7 @@ builder.Services.AddScoped<CSW306.Application.Interfaces.IRepositories.ICategory
 builder.Services.AddScoped<CSW306.Application.Interfaces.IRepositories.IItemRepository, CSW306.Infrastructure.Repositories.ItemRepository>();
 builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.ICategoryService, CSW306.Application.Services.CategoryService>();
 builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IItemService, CSW306.Application.Services.ItemService>();
+builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IOrderService, CSW306.Application.Services.OrderService>();
 
 
 builder.Services.AddDbContext<CSW306_ProjectAPIContext>(options =>
