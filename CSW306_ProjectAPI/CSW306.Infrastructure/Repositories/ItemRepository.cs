@@ -13,7 +13,7 @@ namespace CSW306.Infrastructure.Repositories
 
         public async Task<Items> GetByName(string name)
         {
-            var item = await _context.Items.FirstOrDefaultAsync(i => i.Name.ToLower().Equals(name.ToLower()));
+            var item = await _dbSet.FirstOrDefaultAsync(i => i.Name.ToLower().Equals(name.ToLower()));
             return item;
         }
     }

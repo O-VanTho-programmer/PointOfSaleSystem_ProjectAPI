@@ -11,5 +11,7 @@ namespace CSW306.Application.Interfaces.IRepositories
         Task<T> AddAsync(T entity);
         Task<T> UpdateAsync(T entity);
         Task DeleteAsync(int id);
+        Task<IEnumerable<T>> GetPagedAsync(int pageNumber, int pageSize);
+        Task<int> CountAsync();
     }
 }
