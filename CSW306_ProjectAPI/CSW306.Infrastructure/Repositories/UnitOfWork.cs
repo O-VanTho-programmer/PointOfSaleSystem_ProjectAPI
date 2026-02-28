@@ -18,12 +18,12 @@ namespace CSW306.Infrastructure.Repositories
         // public IPaymentRepository Payments { get; private set; } 
         // public IReservationRepository Reservations { get; private set; } 
         // public ITableRepository Tables { get; private set; } 
-        // public IUserRepository Users { get; private set; } 
+        public IUserRepository Users { get; private set; } 
 
         public UnitOfWork(CSW306_ProjectAPIContext context  )
         {
             _context = context;
-            // Orders = new OrderRepository(context);
+            Orders = new OrderRepository(context);
             // OrderItems = new OrderItemRepository(context);
             Items = new ItemRepository(context);
             Categories = new CategoryRepository(context);
@@ -31,7 +31,7 @@ namespace CSW306.Infrastructure.Repositories
             // Payments = new PaymentRepository(context);
             // Reservations = new ReservationRepository(context);
             // Tables = new TableRepository(context);
-            // Users = new UserRepository(context);
+            Users = new UserRepository(context);
         }       
 
         public async Task<int> SaveChangesAsync()
