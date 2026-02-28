@@ -14,9 +14,9 @@ namespace CSW306.Infrastructure.Repositories
         // public IOrderItemRepository OrderItems { get; private set; } 
         public IItemRepository Items { get; private set; } 
         public ICategoryRepository Categories { get; private set; } 
-        // public IDiscountRepository Discounts { get; private set; } 
-        // public IPaymentRepository Payments { get; private set; } 
-        // public IReservationRepository Reservations { get; private set; } 
+        public IDiscountRepository Discounts { get; private set; } 
+        public IPaymentRepository Payments { get; private set; } 
+        public IReservationRepository Reservations { get; private set; } 
         public ITableRepository Tables { get; private set; } 
         public IUserRepository Users { get; private set; } 
 
@@ -27,9 +27,9 @@ namespace CSW306.Infrastructure.Repositories
             // OrderItems = new OrderItemRepository(context);
             Items = new ItemRepository(context);
             Categories = new CategoryRepository(context);
-            // Discounts = new DiscountRepository(context);
-            // Payments = new PaymentRepository(context);
-            // Reservations = new ReservationRepository(context);
+            Discounts = new DiscountRepository(context);
+            Payments = new PaymentRepository(context);
+            Reservations = new ReservationRepository(context);
             Tables = new TableRepository(context);
             Users = new UserRepository(context);
         }       

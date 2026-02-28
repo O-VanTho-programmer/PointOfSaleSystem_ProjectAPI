@@ -29,11 +29,19 @@ builder.Services.AddScoped<CSW306.Application.Interfaces.IRepositories.ICategory
 builder.Services.AddScoped<CSW306.Application.Interfaces.IRepositories.IItemRepository, CSW306.Infrastructure.Repositories.ItemRepository>();
 builder.Services.AddScoped<CSW306.Application.Interfaces.IRepositories.ITableRepository, CSW306.Infrastructure.Repositories.TableRepository>();
 builder.Services.AddScoped<CSW306.Application.Interfaces.IRepositories.IUserRepository, CSW306.Infrastructure.Repositories.UserRepository>();
+builder.Services.AddScoped<CSW306.Application.Interfaces.IRepositories.IReservationRepository, CSW306.Infrastructure.Repositories.ReservationRepository>();
+builder.Services.AddScoped<CSW306.Application.Interfaces.IRepositories.IPaymentRepository, CSW306.Infrastructure.Repositories.PaymentRepository>();
+builder.Services.AddScoped<CSW306.Application.Interfaces.IRepositories.IDiscountRepository, CSW306.Infrastructure.Repositories.DiscountRepository>();
+
+
 builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.ICategoryService, CSW306.Application.Services.CategoryService>();
 builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IItemService, CSW306.Application.Services.ItemService>();
 builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IOrderService, CSW306.Application.Services.OrderService>();
 builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IAuthService, CSW306.Application.Services.AuthService>();
 builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.ITableService, CSW306.Application.Services.TableService>();
+builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IReservationService, CSW306.Application.Services.ReservationService>();
+builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IPaymentService, CSW306.Application.Services.PaymentService>();
+builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IDiscountService, CSW306.Application.Services.DiscountService>();
 
 
 builder.Services.AddDbContext<CSW306_ProjectAPIContext>(options =>

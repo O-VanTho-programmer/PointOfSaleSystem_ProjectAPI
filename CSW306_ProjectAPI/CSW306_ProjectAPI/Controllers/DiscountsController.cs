@@ -1,10 +1,9 @@
-using CSW306.Application.DTO.Upload;
+using CSW306.Application.Interfaces.IServices;
 using CSW306.Domain.Entities;
-using CSW306.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CSW306_ProjectAPI.Controllers
 {
@@ -12,23 +11,24 @@ namespace CSW306_ProjectAPI.Controllers
     [ApiController]
     public class DiscountsController : ControllerBase
     {
-        private readonly CSW306_ProjectAPIContext _context;
-        
-        public DiscountsController(CSW306_ProjectAPIContext context)
+        private readonly IDiscountService _discountService;
+
+        public DiscountsController(IDiscountService discountService)
         {
-            _context = context;
+            _discountService = discountService;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Discounts>> GetDiscounts()
+        public async Task<ActionResult<IEnumerable<Discounts>>> GetDiscounts()
         {
-            return _context.Discounts.ToList();
+            var discounts = await _discountService.GetAllDiscountsAsync();
+            return Ok(discounts);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Discounts>> GetDiscount(int id)
         {
-            var discount = await _context.Discounts.FirstOrDefaultAsync(o => o.DiscountId == id);
+            var discount = await _discountService.GetDiscountByIdAsync(id);
 
             if (discount == null)
             {
@@ -45,27 +45,21 @@ namespace CSW306_ProjectAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            bool exists = await _context.Discounts.AnyAsync(p => p.DiscountId == discount.DiscountId);
+            var (createdDiscount, errorMessage) = await _discountService.CreateDiscountAsync(discount);
 
-            if (exists)
-                return BadRequest($"DiscountId {discount.DiscountId} already exists");
+            if (errorMessage != null)
+                return BadRequest(errorMessage);
 
-            _context.Discounts.Add(discount);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { message = "Discount added successfully", discount });
+            return Ok(new { message = "Discount added successfully", discount = createdDiscount });
         }
 
         [HttpDelete("delete/{id}")]
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> DeleteDiscount(int id)
         {
-            var discount = await _context.Discounts.FindAsync(id);
-            if (discount == null)
+            var success = await _discountService.DeleteDiscountAsync(id);
+            if (!success)
                 return NotFound("Discount not found");
-
-            _context.Discounts.Remove(discount);
-            await _context.SaveChangesAsync();
 
             return Ok(new { message = "Discount deleted successfully" });
         }
@@ -74,71 +68,44 @@ namespace CSW306_ProjectAPI.Controllers
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> EditDiscount(int id, [FromBody] Discounts updatedDiscount)
         {
-            if (id != updatedDiscount.DiscountId)
-                return BadRequest("ID mismatch");
+            var (existing, errorMessage) = await _discountService.UpdateDiscountAsync(id, updatedDiscount);
 
-            var existing = await _context.Discounts.FindAsync(id);
-            if (existing == null)
-                return NotFound("Discount not found");
+            if (errorMessage != null)
+            {
+                if (errorMessage == "Discount not found") return NotFound(errorMessage);
+                return BadRequest(errorMessage);
+            }
 
-            // Update properties
-            existing.DiscountCode = updatedDiscount.DiscountCode;
-            existing.value = updatedDiscount.value;
-            existing.type = updatedDiscount.type;
-            existing.minOrderAmount = updatedDiscount.minOrderAmount;
-            existing.startDate = updatedDiscount.startDate;
-            existing.endDate = updatedDiscount.endDate;
-
-            await _context.SaveChangesAsync();
             return Ok(new { message = "Discount updated successfully", existing });
         }
 
         [HttpPost("apply/{id}")]
-
         public async Task<IActionResult> isValid(int id, int OrderId)
         {
-            var discount = await _context.Discounts.FirstOrDefaultAsync(o => o.DiscountId == id);
+            var result = await _discountService.IsDiscountValidAsync(id, OrderId);
 
-            if (discount == null)
+            if (!result.Applicable)
             {
-                return NotFound("Discount code not found.");
-            }
-
-            var orders = await _context.Orders.Include(o => o.OrderItems).ThenInclude(oi => oi.Item).FirstOrDefaultAsync(o => o.OrderId == OrderId);
-
-            if (orders == null)
-            {
-                return NotFound("Order not found.");
-            }
-
-            var sumAmount = 0;
-
-            foreach (var orderItem in orders.OrderItems)
-            {
-                sumAmount += orderItem.Quantity;
-            }
-
-            if (sumAmount >= discount.minOrderAmount)
-            {
-                orders.DiscountId = id;
-                _context.SaveChanges();
-                return Ok(new
+                if (result.Message == "Discount code not found." || result.Message == "Order not found.")
                 {
-                    Applicable = true,
-                    DiscountType = discount.type,
-                    DiscountValue = discount.value,
-                    Message = "Discount is applicable."
-                });
-            }
-            else
-            {
+                    return NotFound(result.Message);
+                }
+
                 return Ok(new
                 {
                     Applicable = false,
-                    RequiredMinAmount = discount.minOrderAmount,
-                    Message = "Order total is less than the minimum required to apply this discount."
+                    RequiredMinAmount = result.RequiredMinAmount,
+                    Message = result.Message
                 });
             }
+
+            return Ok(new
+            {
+                Applicable = true,
+                DiscountType = result.DiscountType,
+                DiscountValue = result.DiscountValue,
+                Message = result.Message
+            });
         }
     }
 }

@@ -97,7 +97,7 @@ namespace CSW306.Application.Services
                 return false;
             }
 
-            await _unitOfWork.Tables.DeleteAsync(table);
+            await _unitOfWork.Tables.DeleteAsync(id);
             await _unitOfWork.SaveChangesAsync();
 
             return true;
