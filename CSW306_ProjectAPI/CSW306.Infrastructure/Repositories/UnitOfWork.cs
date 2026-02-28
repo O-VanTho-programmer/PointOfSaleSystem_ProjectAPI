@@ -10,7 +10,7 @@ namespace CSW306.Infrastructure.Repositories
     {
         private readonly CSW306_ProjectAPIContext _context;
         
-        // public IOrderRepository Orders { get; private set; } 
+         public IOrderRepository Orders { get; private set; } 
         // public IOrderItemRepository OrderItems { get; private set; } 
         public IItemRepository Items { get; private set; } 
         public ICategoryRepository Categories { get; private set; } 

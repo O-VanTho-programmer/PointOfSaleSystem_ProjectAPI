@@ -6,7 +6,7 @@ namespace CSW306.Application.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
-        // IOrderRepository Orders { get; }
+         IOrderRepository Orders { get; }
         // IOrderItemRepository OrderItems { get; }
         IItemRepository Items { get; }
         ICategoryRepository Categories { get; }

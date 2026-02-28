@@ -57,9 +57,10 @@ namespace CSW306.Application.Services
 
         public async Task<TemplateApi<Items>> GetItemsAsync(int pageNumber, int pageSize)
         {
-            var items = await _unitOfWork.Items.GetAllAsync();
+            var totalCount = await _unitOfWork.Items.CountAsync();
+            var items = await _unitOfWork.Items.GetPagedAsync(pageNumber, pageSize);
             var pagination = new Pagination();
-            return pagination.HandleGetAllRespond(pageNumber, pageSize, items, items.Count());
+            return pagination.HandlePagedRespond(pageNumber, pageSize, items, totalCount);
         }
 
         public async Task<TemplateApi<Items>> UpdateItemAsync(int id, ItemsUploadDTO uploadDTO)

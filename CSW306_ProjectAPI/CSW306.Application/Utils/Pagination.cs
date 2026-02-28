@@ -82,4 +82,38 @@ public class Pagination
             1,
             0);
     }
+
+    /// <summary>
+    /// this function to handle pagination when the data is already paginated at the database level
+    /// </summary>
+    public TemplateApi<T> HandlePagedRespond<T>(int pageNumber, int pageSize, IEnumerable<T> lstObject, int countRecord)
+    {
+        var enumerable = lstObject as T[] ?? lstObject.ToArray();
+        
+        if (!enumerable.Any())
+        {
+            return new TemplateApi<T>(
+                default,
+                Array.Empty<T>(),
+                "Không tìm thấy dữ liệu !",
+                false,
+                0,
+                0,
+                0,
+                0);
+        }
+
+        var numPageSize = pageSize == 0 ? 1 : pageSize;
+        var totalPages = (int)Math.Ceiling(countRecord / (double)numPageSize);
+
+        return new TemplateApi<T>(
+            default,
+            enumerable.ToArray(),
+            "Lấy danh sách thành công !!!",
+            true,
+            pageNumber,
+            pageSize,
+            countRecord,
+            totalPages);
+    }
 }

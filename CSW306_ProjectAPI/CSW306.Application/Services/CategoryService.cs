@@ -50,9 +50,10 @@ namespace CSW306.Application.Services
 
         public async Task<TemplateApi<Categories>> GetCategoriesAsync(int pageNumber, int pageSize)
         {
-            var categories = await _unitOfWork.Categories.GetAllAsync();
+            var totalCount = await _unitOfWork.Categories.CountAsync();
+            var categories = await _unitOfWork.Categories.GetPagedAsync(pageNumber, pageSize);
             var pagination = new Pagination();
-            return pagination.HandleGetAllRespond(pageNumber, pageSize, categories, categories.Count());
+            return pagination.HandlePagedRespond(pageNumber, pageSize, categories, totalCount);
         }
 
         public async Task<TemplateApi<Categories>> GetCategoryAsync(int id)

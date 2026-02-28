@@ -45,5 +45,17 @@ namespace CSW306.Infrastructure.Repositories
             _dbSet.Update(entity);
             return entity;
         }
+
+        public async Task<int> CountAsync()
+        {
+            return await _dbSet.CountAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetPagedAsync(int pageNumber, int pageSize)
+        {
+            if (pageNumber <= 0) pageNumber = 1;
+            if (pageSize <= 0) return await _dbSet.ToListAsync();
+            return await _dbSet.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+        }
     }
 }
