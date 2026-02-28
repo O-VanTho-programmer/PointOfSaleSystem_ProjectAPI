@@ -1,10 +1,12 @@
 using Azure.Core;
 using CSW306.Application.DTO.Upload;
+using CSW306.Application.Interfaces.IServices;
 using CSW306.Domain.Entities;
-using CSW306.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Text.Json.Serialization;
+using System;
+using System.Collections.Generic;
+using System.Linq; // Added for .Any() in the filter_by_date_range check
+using System.Threading.Tasks;
 
 namespace CSW306_ProjectAPI.Controllers
 {
@@ -12,164 +14,53 @@ namespace CSW306_ProjectAPI.Controllers
     [ApiController]
     public class OrdersController : ControllerBase
     {
-        private readonly CSW306_ProjectAPIContext _context;
+        private readonly IOrderService _orderService;
 
-        public OrdersController(CSW306_ProjectAPIContext context) { 
-            _context = context;
+        public OrdersController(IOrderService orderService) 
+        { 
+            _orderService = orderService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<OrderResponseDTO>>> Get()
+        public async Task<IActionResult> Get([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 100)
         {
-            var orders = await _context.Orders
-                .Include(o => o.OrderItems)
-                    .ThenInclude(oi => oi.Item)
-                .Select(o => new OrderResponseDTO
-                {
-                    OrderId = o.OrderId,
-                    DiscountId = o.DiscountId,
-                    UsserId = o.UserId,
-                    Status = o.Status,
-                    CreatedDate = o.CreatedDate,
-                    OrderItems = o.OrderItems.Select(oi => new OrderItemResponseDTO
-                    {
-                        ItemId = oi.ItemId,
-                        OrderId = oi.OrderId,
-                        Quantity = oi.Quantity,
-                        PriceAtOrder = oi.PriceAtOrder,
-                        Item = new ItemResponseDTO
-                        {
-                            ItemId = oi.Item.ItemId,
-                            Name = oi.Item.Name,
-                            QuantityInStock = oi.Item.QuantityInStock,
-                            Price = oi.Item.Price,
-                            CategoryId = oi.Item.CategoryId
-                        }
-                    }).ToList()
-                })
-                .ToListAsync();
-
+            var orders = await _orderService.GetOrdersAsync(pageNumber, pageSize);
             return Ok(orders);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<OrderResponseDTO>> Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var order = await _context.Orders
-                .Include(o => o.OrderItems)
-                    .ThenInclude(oi => oi.Item)
-                .Where(o => o.OrderId == id)
-                .Select(o => new OrderResponseDTO
-                {
-                    OrderId = o.OrderId,
-                    Status = o.Status,
-                    CreatedDate = o.CreatedDate,
-                    DiscountId = o.DiscountId,
-                    OrderItems = o.OrderItems.Select(oi => new OrderItemResponseDTO
-                    {
-                        ItemId = oi.ItemId,
-                        OrderId = oi.OrderId,
-                        Quantity = oi.Quantity,
-                        PriceAtOrder = oi.PriceAtOrder,
-                        Item = new ItemResponseDTO
-                        {
-                            ItemId = oi.Item.ItemId,
-                            Name = oi.Item.Name,
-                            QuantityInStock = oi.Item.QuantityInStock,
-                            Price = oi.Item.Price,
-                            CategoryId = oi.Item.CategoryId
-                        }
-                    }).ToList()
-                })
-                .FirstOrDefaultAsync();
+            var order = await _orderService.GetOrderAsync(id);
 
-            if (order == null)
+            if (order.Payload == null)
                 return NotFound("Order Id not found");
 
             return Ok(order);
         }
 
-        // Filter {this year} as default
         [HttpGet("filter_by_date_range")]
-        public async Task<ActionResult<OrderResponseDTO>> Get(DateTime? start_date, DateTime? end_date)
+        public async Task<IActionResult> Get([FromQuery] DateTime? start_date, [FromQuery] DateTime? end_date)
         {
-            start_date ??= new DateTime(DateTime.Now.Year, 1, 1);
-            end_date ??= new DateTime(DateTime.Now.Year, 12, 31);
-                
-            var order = await _context.Orders
-                .Include(o => o.OrderItems)
-                    .ThenInclude(oi => oi.Item)
-                .Where(o => o.CreatedDate >= start_date && o.CreatedDate <= end_date)
-                .Select(o => new OrderResponseDTO
-                {
-                    OrderId = o.OrderId,
-                    Status = o.Status,
-                    CreatedDate = o.CreatedDate,
-                    DiscountId = o.DiscountId,
-                    OrderItems = o.OrderItems.Select(oi => new OrderItemResponseDTO
-                    {
-                        ItemId = oi.ItemId,
-                        OrderId = oi.OrderId,
-                        Quantity = oi.Quantity,
-                        PriceAtOrder = oi.PriceAtOrder,
-                        Item = new ItemResponseDTO
-                        {
-                            ItemId = oi.Item.ItemId,
-                            Name = oi.Item.Name,
-                            QuantityInStock = oi.Item.QuantityInStock,
-                            Price = oi.Item.Price,
-                            CategoryId = oi.Item.CategoryId
-                        }
-                    }).ToList()
-                })
-                .FirstOrDefaultAsync();
+            var order = await _orderService.GetOrdersByDateRange(start_date, end_date);
 
-            if (order == null)
+            if (order.Payload == null || !((IEnumerable<object>)order.Payload).Any())
             {
-                return NotFound("Order Id not found");
+                return NotFound("Orders not found for the given date range.");
             }
-                
 
             return Ok(order);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Orders>> AddOrder([FromBody] OrdersUploadDTO dto) {
-            if (dto.Items == null || !dto.Items.Any())
+        public async Task<ActionResult<Orders>> AddOrder([FromBody] OrdersUploadDTO dto) 
+        {
+            var order = await _orderService.CreateOrderAsync(dto);
+
+            if (order == null)
             {
-                return BadRequest("Order must contain at least one item!");
+                return BadRequest("Invalid order items or items not found.");
             }
-
-
-            var itemIds = dto.Items.Select(i => i.ItemId).ToList();
-            var itemsInDb = await _context.Items
-                .Where(item => itemIds.Contains(item.ItemId))
-                .ToDictionaryAsync(i => i.ItemId);  
-
-            var missingIds = itemIds.Except(itemsInDb.Keys).ToList();
-            if (missingIds.Any())
-            {
-                return BadRequest($"ItemId(s) not found: {string.Join(", ", missingIds)}");
-            }
-
-            var orderItems = dto.Items.Select(i => new OrderItems
-            {
-                ItemId = i.ItemId,         
-                Quantity = i.Quantity,
-                PriceAtOrder = itemsInDb[i.ItemId].Price
-            }).ToList();
-
-            var order = new Orders
-            {
-                Status = dto.Status,
-                DiscountId = dto.DiscountId,
-                UserId = dto.UserId,
-                CreatedDate = dto.CreatedDate,
-                OrderItems = orderItems
-            };
-
-            _context.Orders.Add(order);
-            await _context.SaveChangesAsync();
 
             return Ok(order);
         }
@@ -177,12 +68,10 @@ namespace CSW306_ProjectAPI.Controllers
         [HttpPatch("{id}/status")]
         public async Task<ActionResult<Orders>> UpdateStatusOrder(int id, [FromBody] UpdateStatusOrderDTO request)
         {
-            var order = await _context.Orders.FindAsync(id);
+            var order = await _orderService.UpdateOrderStatusAsync(id, request);
 
             if (order == null)
                 return NotFound(new { message = "Order not found" });
-            order.Status = request.Status;
-            await _context.SaveChangesAsync();
 
             return Ok(order);
         }
