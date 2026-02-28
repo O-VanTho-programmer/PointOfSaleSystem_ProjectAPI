@@ -1,9 +1,10 @@
 using CSW306.Application.DTO.Upload;
+using CSW306.Application.Interfaces.IServices;
 using CSW306.Domain.Entities;
-using CSW306.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CSW306_ProjectAPI.Controllers
 {
@@ -12,23 +13,24 @@ namespace CSW306_ProjectAPI.Controllers
     [ApiController]
     public class TableController : ControllerBase
     {
-        private readonly CSW306_ProjectAPIContext _context;
+        private readonly ITableService _tableService;
 
-        public TableController(CSW306_ProjectAPIContext context)
+        public TableController(ITableService tableService)
         {
-            _context = context;
+            _tableService = tableService;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Table>>> Get()
         {
-            return await _context.Tables.ToListAsync();
+            var tables = await _tableService.GetAllTablesAsync();
+            return Ok(tables);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Table>> Get(int id)
         {
-            var table = await _context.Tables.FindAsync(id);
+            var table = await _tableService.GetTableByIdAsync(id);
             if (table == null)
             {
                 return NotFound("table id not found");
@@ -39,32 +41,17 @@ namespace CSW306_ProjectAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Table>> AddTable([FromBody] TableCreateDTO dto)
         {
-            if (dto == null || dto.TableId <= 0 || dto.Capacity <= 0)
+            var table = await _tableService.CreateTableAsync(dto);
+
+            if (table == null)
             {
-                return BadRequest("table data invalid");
+                return BadRequest("table data invalid or invalid status only allowed: available, reserved, occupied");
             }
 
-            var allowedStatuses = new[] { "available", "reserved", "occupied" };
-            if (!allowedStatuses.Contains(dto.Status.ToLower()))
-            {
-                return BadRequest("invalid status only allowed: available, reserved, occupied");
-            }
-
-            var exists = await _context.Tables.AnyAsync(t => t.TableId == dto.TableId);
-            if (exists)
+            if (table.TableId == -1)
             {
                 return Conflict($"a table with ID {dto.TableId} already exists");
             }
-
-            var table = new Table
-            {
-                TableId = dto.TableId,
-                Capacity = dto.Capacity,
-                Status = dto.Status
-            };
-
-            _context.Tables.Add(table);
-            await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(Get), new { id = table.TableId }, table);
         }
@@ -72,41 +59,30 @@ namespace CSW306_ProjectAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTable(int id, [FromBody] TableCreateDTO dto)
         {
-            if (id != dto.TableId)
+            var table = await _tableService.UpdateTableAsync(id, dto);
+
+            if (table == null)
             {
-                return BadRequest("table id mismatch");
+                return BadRequest("table data invalid or invalid status");
             }
 
-            var existingTable = await _context.Tables.FindAsync(id);
-            if (existingTable == null)
+            if (table.TableId == -1)
             {
                 return NotFound("table id not found");
             }
 
-            var allowedStatuses = new[] { "available", "reserved", "occupied" };
-            if (!allowedStatuses.Contains(dto.Status.ToLower()))
-            {
-                return BadRequest("invalid status only allowed: available, reserved, occupied");
-            }
-
-            existingTable.Capacity = dto.Capacity;
-            existingTable.Status = dto.Status;
-
-            await _context.SaveChangesAsync();
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTable(int id)
         {
-            var table = await _context.Tables.FindAsync(id);
-            if (table == null)
+            var success = await _tableService.DeleteTableAsync(id);
+            if (!success)
             {
                 return NotFound("table id not found");
             }
 
-            _context.Tables.Remove(table);
-            await _context.SaveChangesAsync();
             return NoContent();
         }
     }

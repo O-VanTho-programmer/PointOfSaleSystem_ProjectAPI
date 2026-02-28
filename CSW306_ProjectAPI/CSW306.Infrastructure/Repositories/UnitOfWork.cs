@@ -17,7 +17,7 @@ namespace CSW306.Infrastructure.Repositories
         // public IDiscountRepository Discounts { get; private set; } 
         // public IPaymentRepository Payments { get; private set; } 
         // public IReservationRepository Reservations { get; private set; } 
-        // public ITableRepository Tables { get; private set; } 
+        public ITableRepository Tables { get; private set; } 
         public IUserRepository Users { get; private set; } 
 
         public UnitOfWork(CSW306_ProjectAPIContext context  )
@@ -30,7 +30,7 @@ namespace CSW306.Infrastructure.Repositories
             // Discounts = new DiscountRepository(context);
             // Payments = new PaymentRepository(context);
             // Reservations = new ReservationRepository(context);
-            // Tables = new TableRepository(context);
+            Tables = new TableRepository(context);
             Users = new UserRepository(context);
         }       
 
