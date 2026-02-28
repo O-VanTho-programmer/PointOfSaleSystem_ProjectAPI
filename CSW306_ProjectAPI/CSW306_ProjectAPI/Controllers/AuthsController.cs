@@ -1,15 +1,8 @@
 using CSW306.Application.DTO.Upload;
+using CSW306.Application.Interfaces.IServices;
 using CSW306.Domain.Entities;
-using CSW306.Infrastructure.Data;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace CSW306_ProjectAPI.Controllers
 {
@@ -17,81 +10,37 @@ namespace CSW306_ProjectAPI.Controllers
     [ApiController]
     public class AuthsController : ControllerBase
     {
-        private readonly CSW306_ProjectAPIContext _context;
-        private readonly IConfiguration _configuration;
+        private readonly IAuthService _authService;
 
-        public AuthsController(CSW306_ProjectAPIContext context, IConfiguration configuration)
+        public AuthsController(IAuthService authService)
         {
-            _context = context;
-            _configuration = configuration;
+            _authService = authService;
         }
 
         [HttpPost("customer/register")]
         public async Task<ActionResult<Users>> RegisterCustomer([FromForm] RegisterCustomerDTO dto)
         {
-            var newCustomer = new Users
-            {
-                Name = dto.Name,
-                Email = dto.Email,
-                Password = dto.Password,
-                Phone = dto.Phone,
-                Role = "Customer",
-            };
-
-            await _context.Users.AddAsync(newCustomer);
-            _context.SaveChanges();
-
+            var newCustomer = await _authService.RegisterCustomerAsync(dto);
             return Ok(newCustomer);
         }
 
         [HttpPost("employee/register")]
         public async Task<ActionResult<Users>> RegisterEmployee([FromForm] RegisterEmployeeDTO dto)
         {
-            var newEmpoyee = new Users
-            {
-                Name = dto.Name,
-                Email = dto.Email,
-                Password = dto.Password,
-                Phone = dto.Phone,
-                Role = dto.Role,
-            };
-
-            await _context.Users.AddAsync(newEmpoyee);
-            _context.SaveChanges();
-
-            return Ok(newEmpoyee);
+            var newEmployee = await _authService.RegisterEmployeeAsync(dto);
+            return Ok(newEmployee);
         }
 
         [HttpPost("login")]
         public async Task<ActionResult> Login([FromForm] LoginRequestDTO request)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Phone == request.Phone && u.Password == request.Password);
-            if (user == null)
-                return Unauthorized();
-
-            var token = GenerateJwtToken(user);
-            return Ok(new { Token = token });
-        }
-
-        private string GenerateJwtToken(Users user)
-        {
-            var claims = new[]
+            var token = await _authService.LoginAsync(request);
+            if (token == null)
             {
-                new Claim(ClaimTypes.Name, user.Name),
-                new Claim(ClaimTypes.Role, user.Role)
-            };
+                return Unauthorized();
+            }
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:SecretKey"]));
-
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var token = new JwtSecurityToken(
-                issuer: _configuration["JwtSettings:Issuer"],
-                audience: _configuration["JwtSettings:Audience"],
-                claims: claims,
-                expires: DateTime.Now.AddMinutes(60),
-                signingCredentials: creds
-            );
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return Ok(new { Token = token });
         }
     }
 }
