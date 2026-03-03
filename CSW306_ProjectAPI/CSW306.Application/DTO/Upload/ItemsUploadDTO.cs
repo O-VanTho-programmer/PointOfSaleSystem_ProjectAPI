@@ -11,6 +11,7 @@ namespace CSW306.Application.DTO.Upload
         public int QuantityInStock { get; set; }
         [Required]
         public decimal Price { get; set; }
+        public string? ImageUrl { get; set; }
 
         [Required]
         public int CategoryId { get; set; }

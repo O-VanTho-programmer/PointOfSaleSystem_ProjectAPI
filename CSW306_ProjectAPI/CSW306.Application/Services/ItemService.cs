@@ -40,6 +40,7 @@ namespace CSW306.Application.Services
                 Category = category,
                 Price = uploadDTO.Price,
                 QuantityInStock = uploadDTO.QuantityInStock,
+                ImageUrl = uploadDTO.ImageUrl,
             };
 
             await _unitOfWork.Items.AddAsync(newItem);
@@ -80,6 +81,7 @@ namespace CSW306.Application.Services
             item.Category = category;
             item.Price = uploadDTO.Price;
             item.QuantityInStock = uploadDTO.QuantityInStock;
+            item.ImageUrl = uploadDTO.ImageUrl;
 
             await _unitOfWork.Items.UpdateAsync(item);
             await _unitOfWork.SaveChangesAsync();
