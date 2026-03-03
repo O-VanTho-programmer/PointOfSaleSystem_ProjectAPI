@@ -1,25 +1,43 @@
 import { create } from 'zustand';
-import { Order, OrderItem } from '../models/Order';
+import { OrderItem } from '../models/Order';
 import { MenuItemDTO } from '../types/MenuItemDTO';
+import { OrderDTO, OrderType } from '../types/OrderDTO';
+import { OrderStatus } from '../types/OrderStatus';
 
 interface PosState {
-    order: Order;
+    order: OrderDTO;
+    setOrderType: (type: OrderType) => void;
+    setTableNumber: (table: number | undefined) => void;
     addItem: (item: MenuItemDTO) => void;
     removeItem: (itemId: number) => void;
     updateQuantity: (itemId: number, quantity: number) => void;
     clearOrder: () => void;
 }
 
-const createEmptyOrder = (): Order => ({
+const createEmptyOrder = (): OrderDTO => ({
     id: 0,
     userId: 1, // Mock user ID for now
-    status: 0, // Mock status (e.g., 0 = new, 1 = completed)
+    status: OrderStatus.Pending,
+    orderType: 'Dine-In',
+    tableNumber: undefined,
     createdDate: new Date().toISOString(),
     items: [],
 });
 
 export const usePosStore = create<PosState>((set) => ({
     order: createEmptyOrder(),
+
+    setOrderType: (type) =>
+        set((state) => ({
+            order: {
+                ...state.order,
+                orderType: type,
+                tableNumber: type === 'Takeaway' ? undefined : state.order.tableNumber,
+            },
+        })),
+
+    setTableNumber: (table) =>
+        set((state) => ({ order: { ...state.order, tableNumber: table } })),
 
     addItem: (menuItem) =>
         set((state) => {
