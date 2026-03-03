@@ -1,86 +1,74 @@
 import React from 'react';
+import { MenuItemDTO } from '../types/MenuItemDTO';
 
-export interface MenuItemCardProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    name: string;
-    image: string;
-    price: number | string;
-    description?: string;
+interface Props {
+    item: MenuItemDTO;
+    onClick: (item: MenuItemDTO) => void;
 }
 
-export function MenuItemCard({
-    name,
-    image,
-    price,
-    description,
-    className = '',
-    ...props
-}: MenuItemCardProps) {
-    // Use a reliable currency formatter if price is a number
-    const formattedPrice =
-        typeof price === 'number'
-            ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price)
-            : price;
+export const MenuItemCard = React.memo(function MenuItemCard({ item, onClick }: Props) {
+    // Memoized inside component via fast string format (React.memo avoids re-renders on parent state change anyway)
+    const formattedPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(item.price);
 
     return (
         <button
             type="button"
-            className={`
-        group relative w-full max-w-sm overflow-hidden text-left
-        rounded-[2rem] bg-neutral-900 text-neutral-50
-        transition-all duration-500 ease-out hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.6)]
-        focus:outline-none focus-visible:ring-4 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950
+            onClick={() => onClick(item)}
+            aria-label={`${item.name}, Price ${formattedPrice}`}
+            className="
+        cursor-pointer group flex w-full flex-col overflow-hidden text-left 
+        rounded-xl border-2 border-slate-200 bg-white 
+        shadow-[0_2px_4px_rgba(0,0,0,0.02)] transition-colors duration-75 ease-linear
+        hover:border-slate-300
+        active:border-slate-800 active:bg-slate-50
+        focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-500
         touch-manipulation tap-highlight-transparent
-        ${className}
-      `}
-            aria-label={`${name}, ${formattedPrice}`}
-            {...props}
+        select-none
+      "
         >
-            {/* Visual background noise texture for tactile aesthetic */}
-            <div
-                className="pointer-events-none absolute inset-0 z-0 opacity-[0.04] mix-blend-overlay"
-                style={{
-                    backgroundImage:
-                        'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.85\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")',
-                }}
-            />
-
-            <div className="relative aspect-[4/5] w-full overflow-hidden bg-neutral-800">
-                {/* 
-          Using standard img tag to prevent Next.js domain config requirements 
-          for unknown image sources, allowing seamless portability. 
-        */}
+            <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-slate-100">
                 <img
-                    src={image}
-                    alt="" // Decorative, true accessible label is on the button itself
+                    src={item.imageUrl}
+                    alt="" // purely decorative, true info is on the button ARIA label
                     loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] group-hover:scale-110"
+                    className="h-full w-full object-cover transition-opacity duration-150 group-active:opacity-80"
                 />
-                {/* Soft shadow overlay connecting the image seamlessly into the card body */}
-                <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 via-transparent to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-100" />
-            </div>
-
-            {/* Main Content Area overlapping the image */}
-            <div className="relative z-10 -mt-16 flex flex-col gap-2 p-6 sm:p-8">
-                <div className="flex items-start justify-between gap-4 border-b border-white/10 pb-5">
-                    <h3 className="font-serif text-2xl font-medium leading-[1.15] tracking-tight text-white sm:text-3xl">
-                        {name}
-                    </h3>
-                    <div className="shrink-0 rounded-full bg-white px-4 py-2 transition-transform duration-500 group-hover:scale-105 group-hover:bg-emerald-400 group-hover:text-emerald-950">
-                        <span className="font-mono text-base font-bold tracking-tight text-neutral-900 inherit text-inherit">
-                            {formattedPrice}
+                {item.stock <= 5 && item.stock > 0 && (
+                    <span className="absolute bottom-2 left-2 rounded bg-amber-100 px-2 py-1 text-xs font-bold uppercase tracking-wide text-amber-900 shadow-sm">
+                        Only {item.stock} left
+                    </span>
+                )}
+                {item.stock === 0 && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-white/60 backdrop-blur-sm">
+                        <span className="rounded bg-red-600 px-3 py-1 font-sans text-sm font-bold uppercase tracking-widest text-white shadow-sm">
+                            Sold Out
                         </span>
                     </div>
-                </div>
-
-                {description ? (
-                    <p className="mt-3 max-w-[90%] font-sans text-sm leading-relaxed text-neutral-400">
-                        {description}
-                    </p>
-                ) : null}
+                )}
             </div>
 
-            {/* Subtle interaction indicator */}
-            <div className="absolute right-6 top-6 h-2 w-2 rounded-full bg-emerald-400 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+            <div className="flex h-full min-h-[5.5rem] flex-col justify-between p-3 sm:p-4">
+                <div>
+                    <h3 className="font-sans text-base font-bold leading-tight tracking-tight text-slate-900 line-clamp-2">
+                        {item.name}
+                    </h3>
+                    {item.description ? (
+                        <p className="mt-1 font-sans text-xs leading-snug text-slate-500 line-clamp-2">
+                            {item.description}
+                        </p>
+                    ) : null}
+                </div>
+                <div className="mt-3 flex items-center justify-between">
+                    <span className="font-mono text-lg font-bold text-slate-900">
+                        {formattedPrice}
+                    </span>
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-600 transition-colors group-active:bg-slate-800 group-active:text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="h-5 w-5">
+                            <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
         </button>
     );
-}
+});
