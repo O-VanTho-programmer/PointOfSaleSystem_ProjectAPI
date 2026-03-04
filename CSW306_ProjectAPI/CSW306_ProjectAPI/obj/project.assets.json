@@ -1752,6 +1752,7 @@
           "FluentValidation.DependencyInjectionExtensions": "12.1.1",
           "MediatR": "14.0.0",
           "Microsoft.Extensions.Configuration.Abstractions": "10.0.3",
+          "StackExchange.Redis": "2.11.8",
           "System.IdentityModel.Tokens.Jwt": "8.16.0"
         },
         "compile": {
