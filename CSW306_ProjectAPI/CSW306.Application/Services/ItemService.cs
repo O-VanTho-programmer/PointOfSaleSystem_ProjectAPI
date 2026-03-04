@@ -14,10 +14,12 @@ namespace CSW306.Application.Services
     public class ItemService : IItemService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IRedisCacheService _redisCacheService;
          
-        public ItemService(IUnitOfWork unitOfWork)
+        public ItemService(IUnitOfWork unitOfWork, IRedisCacheService redisCacheService)
         {
             this._unitOfWork = unitOfWork;
+            this._redisCacheService = redisCacheService;
         }
 
         public async Task<TemplateApi<Items>> CreateItemAsync(ItemsUploadDTO uploadDTO)
@@ -46,22 +48,44 @@ namespace CSW306.Application.Services
             await _unitOfWork.Items.AddAsync(newItem);
             await _unitOfWork.SaveChangesAsync();
 
+            await _redisCacheService.RemoveAsync("items");
+            await _redisCacheService.SetAsync("item:" + newItem.ItemId, newItem);
+
             return new TemplateApi<Items>(newItem, null, "Item created successfully", true, 0, 0, 0, 0);
         }
 
         public async Task<TemplateApi<Items>> GetItemAsync(int id)
         {
+
+            var cachedItems = await _redisCacheService.GetAsync<Items>("item:" + id);
+            if(cachedItems != null){
+                return new TemplateApi<Items>(cachedItems, null, "Item found in cache", true, 0, 0, 0, 0);
+            }
+
             var item = await _unitOfWork.Items.GetByIdAsync(id);
+
+            if(item != null){   
+                await _redisCacheService.SetAsync("item:" + id, item);
+            }
+
             var pagination = new Pagination();
             return pagination.HandleGetByIdRespond(item);
         }
 
         public async Task<TemplateApi<Items>> GetItemsAsync(int pageNumber, int pageSize)
-        {
-            var totalCount = await _unitOfWork.Items.CountAsync();
-            var items = await _unitOfWork.Items.GetPagedAsync(pageNumber, pageSize);
+        {   
+            var cachedItems = await _redisCacheService.GetAsync<IEnumerable<Items>>("items");
+
+            if(cachedItems == null){
+                cachedItems = await _unitOfWork.Items.GetAllAsync();
+                await _redisCacheService.SetAsync("items", cachedItems);
+            }
+
+            var totalCount = cachedItems.Count();
+            var pagedItems = cachedItems.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+           
             var pagination = new Pagination();
-            return pagination.HandlePagedRespond(pageNumber, pageSize, items, totalCount);
+            return pagination.HandlePagedRespond(pageNumber, pageSize, pagedItems.ToList(), totalCount);
         }
 
         public async Task<TemplateApi<Items>> UpdateItemAsync(int id, ItemsUploadDTO uploadDTO)
@@ -85,7 +109,27 @@ namespace CSW306.Application.Services
 
             await _unitOfWork.Items.UpdateAsync(item);
             await _unitOfWork.SaveChangesAsync();
+
+            await _redisCacheService.RemoveAsync("items");
+            await _redisCacheService.SetAsync("item:" + id, item);
+
             return new TemplateApi<Items>(item, null, "Item updated successfully", true, 0, 0, 0, 0);
         }
-    }
+
+        public async Task<TemplateApi<Items>> DeleteItemAsync(int id)
+        {
+            var item = await _unitOfWork.Items.GetByIdAsync(id);
+            if (item == null) {
+                return new TemplateApi<Items>(null, null, "Item not found", false, 0, 0, 0, 0);
+            }
+
+            await _unitOfWork.Items.DeleteAsync(id);
+            await _unitOfWork.SaveChangesAsync();
+
+            await _redisCacheService.RemoveAsync("items");
+            await _redisCacheService.RemoveAsync("item:" + id);
+
+            return new TemplateApi<Items>(item, null, "Item deleted successfully", true, 0, 0, 0, 0);
+        }
+    }   
 }
