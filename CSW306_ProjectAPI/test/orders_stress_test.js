@@ -2,7 +2,7 @@ import http from 'k6/http';
 import { check, sleep } from 'k6';
 
 // Read baseUrl from environment or default to local API HTTPS port
-const BASE_URL = __ENV.BASE_URL || 'https://localhost:7287/api';
+const BASE_URL = __ENV.BASE_URL || 'https://localhost:44356/api';
 
 export const options = {
     // Defines the stress testing stages
@@ -30,7 +30,7 @@ export default function () {
         UserId: 1, // Mock user ID
         Items: [
             { ItemId: 1, Quantity: 2 },
-            { ItemId: 2, Quantity: 1 }
+            { ItemId: 3, Quantity: 1 }
         ],
         CreatedDate: new Date().toISOString()
     });
@@ -44,7 +44,7 @@ export default function () {
     });
 
     // Extract Order ID to use in subsequent requests (fallback to 1 if parsing fails)
-    let orderId = 1;
+    let orderId = 1;    
     if (postRes.status === 200 || postRes.status === 201) {
         try {
             const order = postRes.json();
