@@ -33,6 +33,7 @@ namespace CSW306.Application.Services
                     DiscountId = order.DiscountId,
                     UsserId = order.UserId,
                     CreatedDate = order.CreatedDate,
+                    TableNumber = order.TableNumber,
                     OrderItems = order.OrderItems?.Select(oi => new OrderItemResponseDTO
                     {
                         ItemId = oi.ItemId,
@@ -67,6 +68,7 @@ namespace CSW306.Application.Services
                 UsserId = o.UserId,
                 Status = o.Status,
                 CreatedDate = o.CreatedDate,
+                TableNumber = o.TableNumber,
                 OrderItems = o.OrderItems?.Select(oi => new OrderItemResponseDTO
                 {
                     ItemId = oi.ItemId,
@@ -99,6 +101,7 @@ namespace CSW306.Application.Services
                 UsserId = o.UserId,
                 Status = o.Status,
                 CreatedDate = o.CreatedDate,
+                TableNumber = o.TableNumber,
                 OrderItems = o.OrderItems?.Select(oi => new OrderItemResponseDTO
                 {
                     ItemId = oi.ItemId,
@@ -149,6 +152,7 @@ namespace CSW306.Application.Services
                 DiscountId = dto.DiscountId,
                 UserId = dto.UserId,
                 CreatedDate = dto.CreatedDate,
+                TableNumber = dto.TableNumber,
                 OrderItems = orderItems
             };
 

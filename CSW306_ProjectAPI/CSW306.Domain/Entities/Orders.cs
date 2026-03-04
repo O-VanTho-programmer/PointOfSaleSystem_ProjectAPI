@@ -14,10 +14,12 @@ namespace CSW306.Domain.Entities
         public int? UserId { get; set; }
 
         [Required]
-        //0: pending, 1: cooking, 2: completed
+        //0: pending, 1:completed, 2: paid, -1: cancelled
         public int Status { get; set; }
         [Required]
         public DateTime CreatedDate { get; set; }
+
+        public string? TableNumber { get; set; }
 
         public ICollection<OrderItems> OrderItems { get; set; }
     }

@@ -17,5 +17,7 @@ namespace CSW306.Application.DTO.Upload
 
         [Required]
         public DateTime CreatedDate { get; set; }
+
+        public string? TableNumber { get; set; }
     }
 }

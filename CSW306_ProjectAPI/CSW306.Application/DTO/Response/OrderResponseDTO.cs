@@ -5,5 +5,6 @@ public class OrderResponseDTO
     public int? DiscountId { get; set; }
     public int? UsserId { get; set; }
     public DateTime CreatedDate { get; set; }
+    public string? TableNumber { get; set; }
     public List<OrderItemResponseDTO> OrderItems { get; set; }
 }
