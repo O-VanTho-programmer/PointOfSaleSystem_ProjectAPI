@@ -148,7 +148,7 @@ namespace CSW306.Application.Services
             {
                 var decrementValue = dto.Items.Find(dto => dto.ItemId == item.ItemId)!.Quantity;
                 await _redisCacheService.DecrementAsync("item:stock:" + item.ItemId, decrementValue);
-                await _redisCacheService.SetAddAsync("PendingStockUpdate", item.ItemId);
+                await _redisCacheService.SetAddAsync("PendingStockUpdate", item.ItemId.ToString());
             }
 
             var orderItems = dto.Items.Select(i => new OrderItems
