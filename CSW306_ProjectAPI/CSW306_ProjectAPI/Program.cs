@@ -1,4 +1,5 @@
 using CSW306.Domain.Entities;
+using CSW306.Infrastructure.BackgroundServices;
 using CSW306.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,7 @@ builder.Services.AddControllers()
         {
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         });
+// Repository
 builder.Services.AddScoped<CSW306.Application.Interfaces.IRepositories.ICategoryRepository, CSW306.Infrastructure.Repositories.CategoryRepository>();
 builder.Services.AddScoped<CSW306.Application.Interfaces.IRepositories.IItemRepository, CSW306.Infrastructure.Repositories.ItemRepository>();
 builder.Services.AddScoped<CSW306.Application.Interfaces.IRepositories.ITableRepository, CSW306.Infrastructure.Repositories.TableRepository>();
@@ -33,7 +35,7 @@ builder.Services.AddScoped<CSW306.Application.Interfaces.IRepositories.IReservat
 builder.Services.AddScoped<CSW306.Application.Interfaces.IRepositories.IPaymentRepository, CSW306.Infrastructure.Repositories.PaymentRepository>();
 builder.Services.AddScoped<CSW306.Application.Interfaces.IRepositories.IDiscountRepository, CSW306.Infrastructure.Repositories.DiscountRepository>();
 
-
+// Services
 builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.ICategoryService, CSW306.Application.Services.CategoryService>();
 builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IItemService, CSW306.Application.Services.ItemService>();
 builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IOrderService, CSW306.Application.Services.OrderService>();
@@ -43,9 +45,10 @@ builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IReservationS
 builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IPaymentService, CSW306.Application.Services.PaymentService>();
 builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IDiscountService, CSW306.Application.Services.DiscountService>();
 
+builder.Services.AddSingleton<CSW306.Application.Interfaces.IServices.IRedisCacheService, CSW306.Application.Services.RedisCacheService>();
 
 // Register Background Services
-builder.Services.AddHostedService<CSW306.Infrastructure.Services.StockWriteBackBackgroundService>();
+builder.Services.AddHostedService<StockWriteBackBackgroundService>();
 
 builder.Services.AddDbContext<CSW306_ProjectAPIContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection")));
