@@ -44,6 +44,9 @@ builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IPaymentServi
 builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IDiscountService, CSW306.Application.Services.DiscountService>();
 
 
+// Register Background Services
+builder.Services.AddHostedService<CSW306.Infrastructure.Services.StockWriteBackBackgroundService>();
+
 builder.Services.AddDbContext<CSW306_ProjectAPIContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection")));
 
