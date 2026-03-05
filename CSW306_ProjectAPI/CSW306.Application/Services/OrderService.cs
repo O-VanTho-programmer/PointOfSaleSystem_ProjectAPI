@@ -13,9 +13,11 @@ namespace CSW306.Application.Services
     public class OrderService : IOrderService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IRedisCacheService _redisCacheService;
 
-        public OrderService(IUnitOfWork unitOfWork) { 
+        public OrderService(IUnitOfWork unitOfWork, IRedisCacheService redisCacheService) { 
             _unitOfWork = unitOfWork;
+            _redisCacheService = redisCacheService;
         }
 
         public async Task<TemplateApi<OrderResponseDTO>> GetOrderAsync(int id)
@@ -131,19 +133,29 @@ namespace CSW306.Application.Services
 
             var itemIds = dto.Items.Select(i => i.ItemId).ToList();
             var itemsList = await _unitOfWork.Items.GetAllAsync();
-            var itemsInDb = itemsList.Where(item => itemIds.Contains(item.ItemId)).ToDictionary(i => i.ItemId);
+            var selectedItems = itemsList
+                .Where(item => itemIds.Contains(item.ItemId))
+                .Where(item => item.QuantityInStock >= dto.Items.Find(dto => dto.ItemId == item.ItemId)!.Quantity)
+                .ToDictionary(i => i.ItemId);
 
-            var missingIds = itemIds.Except(itemsInDb.Keys).ToList();
+            var missingIds = itemIds.Except(selectedItems.Keys).ToList();
             if (missingIds.Any())
             {
                 return null;
+            }
+
+            foreach (var item in selectedItems.Values)
+            {
+                var decrementValue = dto.Items.Find(dto => dto.ItemId == item.ItemId)!.Quantity;
+                await _redisCacheService.DecrementAsync("item:stock:" + item.ItemId, decrementValue);
+                await _redisCacheService.SetAddAsync("PendingStockUpdate", item.ItemId);
             }
 
             var orderItems = dto.Items.Select(i => new OrderItems
             {
                 ItemId = i.ItemId,
                 Quantity = i.Quantity,
-                PriceAtOrder = itemsInDb[i.ItemId].Price
+                PriceAtOrder = selectedItems[i.ItemId].Price
             }).ToList();
 
             var order = new Orders

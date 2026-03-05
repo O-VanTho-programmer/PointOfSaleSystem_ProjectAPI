@@ -50,6 +50,7 @@ namespace CSW306.Application.Services
 
             await _redisCacheService.RemoveAsync("items");
             await _redisCacheService.SetAsync("item:" + newItem.ItemId, newItem);
+            await _redisCacheService.SetAsync("item:stock:" + newItem.ItemId, newItem.QuantityInStock);
 
             return new TemplateApi<Items>(newItem, null, "Item created successfully", true, 0, 0, 0, 0);
         }
@@ -84,6 +85,9 @@ namespace CSW306.Application.Services
             var totalCount = cachedItems.Count();
             var pagedItems = cachedItems.Skip((pageNumber - 1) * pageSize).Take(pageSize);
            
+            foreach (var item in pagedItems){
+                await _redisCacheService.SetAsync("item:stock:" + item.ItemId, item.QuantityInStock);
+            }
             var pagination = new Pagination();
             return pagination.HandlePagedRespond(pageNumber, pageSize, pagedItems.ToList(), totalCount);
         }

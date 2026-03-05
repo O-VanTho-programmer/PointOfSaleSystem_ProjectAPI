@@ -14,5 +14,6 @@ namespace CSW306.Application.Interfaces.IServices
         Task<TemplateApi<Items>> GetItemAsync(int id);
         Task<TemplateApi<Items>> CreateItemAsync(ItemsUploadDTO uploadDTO);
         Task<TemplateApi<Items>> UpdateItemAsync(int id, ItemsUploadDTO uploadDTO);
+        Task<TemplateApi<Items>> DeleteItemAsync(int id);
     }
 }
