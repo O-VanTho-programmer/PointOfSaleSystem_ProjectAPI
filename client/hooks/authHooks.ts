@@ -8,11 +8,17 @@ export const useAuthLogin = () => {
 
     const mutation = useMutation({
         mutationFn: async ({ phone, password }: { phone: string; password: string }) => {
-            const response = await login(phone, password);
-            return response.user;
+            try {
+                const response = await login(phone, password);
+                return response;
+            } catch (error: any) {
+                const backendMessage = error.response?.data?.message;
+                throw new Error(backendMessage || 'Failed to connect to the server.');
+            }
         },
         onSuccess: (data: any) => {
-            setUser(data);
+            setUser(data.user);
+            console.log(data.token);
         },
     });
 
@@ -26,16 +32,13 @@ export const useAuthLogin = () => {
 export const useAuthSignup = () => {
     const mutation = useMutation({
         mutationFn: async ({ phone, name, email, password, role }: { phone: string; name: string; email: string; password: string; role: UserRole }) => {
-            // Uncomment when backend is ready
-            // const response = await signup(phone, name, email, password, role);
-            // return response;
-
-            // Mocking successful signup
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    resolve({ success: true });
-                }, 1200);
-            });
+            try {
+                const response = await signup(phone, name, email, password, role);
+                return response;
+            } catch (error: any) {
+                const backendMessage = error.response?.data?.message;
+                throw new Error(backendMessage || 'Failed to connect to the server.');
+            }
         }
     });
 
