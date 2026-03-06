@@ -144,11 +144,26 @@ namespace CSW306.Application.Services
                 return null;
             }
 
+            bool isRedisDown = false;
             foreach (var item in selectedItems.Values)
             {
                 var decrementValue = dto.Items.Find(dto => dto.ItemId == item.ItemId)!.Quantity;
-                await _redisCacheService.DecrementAsync("item:stock:" + item.ItemId, decrementValue);
-                await _redisCacheService.SetAddAsync("PendingStockUpdate", item.ItemId.ToString());
+                try
+                {
+                    await _redisCacheService.DecrementAsync("item:stock:" + item.ItemId, decrementValue);
+                    await _redisCacheService.SetAddAsync("PendingStockUpdate", item.ItemId.ToString());
+                }
+                catch (StackExchange.Redis.RedisException)
+                {
+                    // Fallback to direct SQL database update if Redis is unreachable
+                    isRedisDown = true;
+                    item.QuantityInStock -= decrementValue;
+                }
+            }
+
+            if (isRedisDown)
+            {
+                await _unitOfWork.Items.UpdateRangeAsync(selectedItems.Values);
             }
 
             var orderItems = dto.Items.Select(i => new OrderItems

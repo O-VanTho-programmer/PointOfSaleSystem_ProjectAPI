@@ -1,7 +1,10 @@
-import type { Metadata } from "next";
+"use client";
+
 import { Geist, Geist_Mono } from "next/font/google";
+import { usePathname } from "next/navigation";
 import "./globals.css";
 import { Sidebar } from "../components/Sidebar";
+import Providers from "./providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,26 +16,30 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Modern POS System",
-  description: "Touch-friendly specialized POS System",
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+  const isAuthRoute = pathname === '/login' || pathname === '/signup';
+
   return (
     <html lang="en">
+      <head>
+        <title>Modern POS System</title>
+        <meta name="description" content="Touch-friendly specialized POS System" />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased flex h-screen w-full overflow-hidden bg-slate-50`}>
-        {/* Global Persistent Sidebar Navigation */}
-        <Sidebar />
+        <Providers>
+          {/* Global Persistent Sidebar Navigation */}
+          {!isAuthRoute && <Sidebar />}
 
-        {/* Main Application Area */}
-        <div className="flex flex-1 flex-col overflow-hidden">
-          {children}
-        </div>
+          {/* Main Application Area */}
+          <div className={`flex flex-col overflow-hidden ${isAuthRoute ? 'w-full flex-none' : 'flex-1'}`}>
+            {children}
+          </div>
+        </Providers>
       </body>
     </html>
   );

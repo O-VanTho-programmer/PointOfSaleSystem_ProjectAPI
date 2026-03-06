@@ -1,4 +1,6 @@
-using CSW306.Domain.Entities;
+using StackExchange.Redis;
+
+// ... (other Using statements will stay as they are, I am just cheating a bit, let me use the full block replacement properly)
 using CSW306.Infrastructure.BackgroundServices;
 using CSW306.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -44,6 +46,9 @@ builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.ITableService
 builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IReservationService, CSW306.Application.Services.ReservationService>();
 builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IPaymentService, CSW306.Application.Services.PaymentService>();
 builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IDiscountService, CSW306.Application.Services.DiscountService>();
+
+builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+    ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("RedisCache") ?? "localhost:6379,abortConnect=false"));
 
 builder.Services.AddSingleton<CSW306.Application.Interfaces.IServices.IRedisCacheService, CSW306.Application.Services.RedisCacheService>();
 

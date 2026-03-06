@@ -14,8 +14,8 @@ import {
     LogOut,
     UserCircle
 } from 'lucide-react';
-
-export type UserRole = 'Manager' | 'Cashier' | 'Chef';
+import { UserRole } from '../models/User';
+import { useAuthStore } from '@/store/authStore';
 
 const NAV_ITEMS = [
     // Cashier Role
@@ -34,9 +34,11 @@ const NAV_ITEMS = [
 ];
 
 export function Sidebar() {
+    const { user, isAuthenticated } = useAuthStore();
+
     const pathname = usePathname();
     // Mock role state toggle for development/testing
-    const [role, setRole] = useState<UserRole>('Cashier');
+    const [role, setRole] = useState<UserRole>(user?.role || 'Cashier');
 
     // Also include Manager routes if role is manager, but for a real app, Managers usually see everything or Cashiers only see Cashier stuff.
     // Here we explicitly filter by the exact role just for this mock toggle feature to be clear.
@@ -93,10 +95,13 @@ export function Sidebar() {
 
             {/* Footer System Actions */}
             <div className="shrink-0 border-t border-slate-800 p-4">
-                <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-400 transition-colors hover:bg-slate-800 hover:text-white">
+                <Link
+                    href="/login"
+                    className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-400 transition-colors hover:bg-slate-800 hover:text-white"
+                >
                     <LogOut className="h-5 w-5" />
                     Logout
-                </button>
+                </Link>
             </div>
         </aside>
     );
