@@ -79,6 +79,21 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
  });
 builder.Services.AddAuthorization();
 
+// Add CORS
+var allowedDomains = new[]{
+    "http://localhost:3000",
+}
+
+builder.Services.AddCors(options =>{
+    options.AddPolicy("AllowDomains", builder =>
+        {
+            builder.WithOrigins(allowedDomains)
+                   .AllowAnyMethod()
+                   .AllowAnyHeader()
+                   .AllowCredentials();
+        });
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -93,6 +108,10 @@ app.UseStaticFiles();
 // Configure the HTTP request pipeline.
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowDomains");
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
