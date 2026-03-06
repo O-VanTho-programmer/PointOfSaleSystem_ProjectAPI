@@ -1,3 +1,4 @@
+using CSW306.Application.DTO.Response;
 using CSW306.Application.DTO.Upload;
 using CSW306.Domain.Entities;
 using System.Threading.Tasks;
@@ -8,6 +9,6 @@ namespace CSW306.Application.Interfaces.IServices
     {
         Task<Users?> RegisterCustomerAsync(RegisterCustomerDTO dto);
         Task<Users?> RegisterEmployeeAsync(RegisterEmployeeDTO dto);
-        Task<string?> LoginAsync(LoginRequestDTO request);
+        Task<LoginResponseDTO?> LoginAsync(LoginRequestDTO request);
     }
 }

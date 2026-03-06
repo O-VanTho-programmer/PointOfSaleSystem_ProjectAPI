@@ -82,7 +82,7 @@ builder.Services.AddAuthorization();
 // Add CORS
 var allowedDomains = new[]{
     "http://localhost:3000",
-}
+};
 
 builder.Services.AddCors(options =>{
     options.AddPolicy("AllowDomains", builder =>

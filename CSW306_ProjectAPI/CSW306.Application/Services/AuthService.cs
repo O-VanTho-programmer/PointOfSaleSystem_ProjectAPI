@@ -1,3 +1,4 @@
+using CSW306.Application.DTO.Response;
 using CSW306.Application.DTO.Upload;
 using CSW306.Application.Interfaces;
 using CSW306.Application.Interfaces.IServices;
@@ -23,7 +24,7 @@ namespace CSW306.Application.Services
             _configuration = configuration;
         }
 
-        public async Task<string?> LoginAsync(LoginRequestDTO request)
+        public async Task<LoginResponseDTO?> LoginAsync(LoginRequestDTO request)
         {
             var user = await _unitOfWork.Users.GetUserByPhoneAndPasswordAsync(request.Phone, request.Password);
             if (user == null)
@@ -31,7 +32,16 @@ namespace CSW306.Application.Services
                 return null;
             }
 
-            return GenerateJwtToken(user);
+            return new LoginResponseDTO{
+                Token = GenerateJwtToken(user),
+                User = new UserSessionDTO{
+                    Id = user.UserId,
+                    Phone = user.Phone,
+                    Email = user.Email,
+                    Name = user.Name,
+                    Role = user.Role.ToString()
+                }
+            };
         }
 
         public async Task<Users?> RegisterCustomerAsync(RegisterCustomerDTO dto)

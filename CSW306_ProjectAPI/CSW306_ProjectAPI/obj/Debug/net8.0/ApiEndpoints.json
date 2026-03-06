@@ -8,24 +8,9 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Name",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Phone",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Email",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Password",
-        "Type": "System.String",
-        "IsRequired": false
+        "Name": "dto",
+        "Type": "CSW306.Application.DTO.Upload.RegisterCustomerDTO",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": [
@@ -49,29 +34,9 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Phone",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Name",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Email",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Password",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Role",
-        "Type": "System.String",
-        "IsRequired": false
+        "Name": "dto",
+        "Type": "CSW306.Application.DTO.Upload.RegisterEmployeeDTO",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": [
@@ -95,14 +60,9 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Phone",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Password",
-        "Type": "System.String",
-        "IsRequired": false
+        "Name": "request",
+        "Type": "CSW306.Application.DTO.Upload.LoginRequestDTO",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
