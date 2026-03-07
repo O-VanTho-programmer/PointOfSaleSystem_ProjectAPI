@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { OrderStatus } from '../../../types/OrderStatus';
 import { OrderDTO } from '../../../types/OrderDTO';
+import { RoleGuard } from '../../../components/RoleGuard';
 
 // Mock active orders matching status 0 (Pending) and 1 (Complete)
 const MOCK_ACTIVE_ORDERS: OrderDTO[] = [
@@ -185,13 +186,15 @@ export default function OrdersPage() {
                                 >
                                     Cancel Order
                                 </button>
-                                <button
-                                    type="button"
-                                    onClick={handleProceedToPayment}
-                                    className="flex-[2] rounded-xl bg-slate-900 px-4 py-4 text-lg font-bold text-white shadow-md transition-transform hover:-translate-y-1 hover:bg-emerald-600 hover:shadow-lg active:translate-y-0 active:bg-emerald-700"
-                                >
-                                    Proceed to Payment
-                                </button>
+                                <RoleGuard allowedRoles={['Manager', 'Cashier']}>
+                                    <button
+                                        type="button"
+                                        onClick={handleProceedToPayment}
+                                        className="flex-[2] rounded-xl bg-slate-900 px-4 py-4 text-lg font-bold text-white shadow-md transition-transform hover:-translate-y-1 hover:bg-emerald-600 hover:shadow-lg active:translate-y-0 active:bg-emerald-700"
+                                    >
+                                        Proceed to Payment
+                                    </button>
+                                </RoleGuard>
                             </div>
                         </div>
                     </div>

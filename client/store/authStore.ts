@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { User } from '../models/User';
+import Cookies from 'js-cookie';
 
 interface AuthState {
     user: User | null;
@@ -9,11 +10,13 @@ interface AuthState {
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
-    user: null, // Initial state, in a real app might hydrate from localStorage
+    user: null,
     isAuthenticated: false,
     setUser: (user) => set({ user, isAuthenticated: !!user }),
     logout: () => {
-        // Clear any auth tokens from localStorage here in real app
+        Cookies.remove('pos_auth_token');
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
         set({ user: null, isAuthenticated: false });
     }
 }));

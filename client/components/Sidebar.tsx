@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
     LayoutDashboard,
     Settings,
@@ -12,37 +12,49 @@ import {
     Coffee,
     UtensilsCrossed,
     LogOut,
-    UserCircle
+    UserCircle,
+    Utensils
 } from 'lucide-react';
 import { UserRole } from '../models/User';
 import { useAuthStore } from '@/store/authStore';
 
-const NAV_ITEMS = [
-    // Cashier Role
-    { role: 'Cashier', label: 'Register', href: '/register', icon: Coffee },
-    { role: 'Cashier', label: 'Orders', href: '/orders', icon: ClipboardList },
+interface NavItem {
+    label: string;
+    href: string;
+    icon: React.ComponentType<{ className?: string }>;
+    allowedRoles: UserRole[];
+}
 
-    // Chef Role
-    { role: 'Chef', label: 'Kitchen Display', href: '/kds', icon: UtensilsCrossed },
+const NAV_ITEMS: NavItem[] = [
+    // Cashier & Waiter workspace
+    { label: 'Register', href: '/register', icon: Coffee, allowedRoles: ['Cashier', 'Waiter', 'Manager'] },
+    { label: 'Orders', href: '/orders', icon: ClipboardList, allowedRoles: ['Cashier', 'Waiter', 'Manager'] },
 
-    // Manager Role 
-    { role: 'Manager', label: 'Activity Logs', href: '/activity', icon: LayoutDashboard },
-    { role: 'Manager', label: 'Sales Reports', href: '/reports', icon: ClipboardList },
-    { role: 'Manager', label: 'Team', href: '/teams', icon: Users },
-    { role: 'Manager', label: 'Inventory', href: '/inventory', icon: Package },
-    { role: 'Manager', label: 'Settings', href: '/settings', icon: Settings },
+    // Chef workspace
+    { label: 'Kitchen Display', href: '/kds', icon: UtensilsCrossed, allowedRoles: ['Chef'] },
+
+    // Manager workspace
+    { label: 'Activity Logs', href: '/activity', icon: LayoutDashboard, allowedRoles: ['Manager'] },
+    { label: 'Sales Reports', href: '/reports', icon: ClipboardList, allowedRoles: ['Manager'] },
+    { label: 'Team', href: '/teams', icon: Users, allowedRoles: ['Manager'] },
+    { label: 'Inventory', href: '/inventory', icon: Package, allowedRoles: ['Manager'] },
+    { label: 'Settings', href: '/settings', icon: Settings, allowedRoles: ['Manager'] },
 ];
 
 export function Sidebar() {
-    const { user, isAuthenticated } = useAuthStore();
-
+    const router = useRouter();
     const pathname = usePathname();
-    // Mock role state toggle for development/testing
-    const [role, setRole] = useState<UserRole>(user?.role || 'Cashier');
+    const user = useAuthStore((state) => state.user);
+    const logout = useAuthStore((state) => state.logout);
 
-    // Also include Manager routes if role is manager, but for a real app, Managers usually see everything or Cashiers only see Cashier stuff.
-    // Here we explicitly filter by the exact role just for this mock toggle feature to be clear.
-    const visibleNavItems = NAV_ITEMS.filter(item => item.role === role || role === 'Manager');
+    const visibleNavItems = NAV_ITEMS.filter(item =>
+        user?.role ? item.allowedRoles.includes(user.role) : false
+    );
+
+    const handleLogout = () => {
+        logout();
+        router.push('/login');
+    };
 
     return (
         <aside className="flex h-screen w-[15%] min-w-[200px] max-w-[280px] flex-col bg-slate-900 text-slate-300 transition-all duration-300">
@@ -51,21 +63,19 @@ export function Sidebar() {
                 <span className="font-serif text-2xl font-bold tracking-wider text-white">POS</span>
             </div>
 
-            {/* Role Toggle (Development Only feature embedded into the UI profile section) */}
-            <div className="flex flex-col gap-2 border-b border-slate-800 p-4">
-                <div className="flex items-center gap-3 text-sm text-slate-400">
-                    <UserCircle className="h-5 w-5 text-emerald-500" />
-                    <span className="font-medium text-slate-200">Current Role</span>
+            {/* User Profile */}
+            <div className="flex items-center gap-3 border-b border-slate-800 p-4">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-500">
+                    <UserCircle className="h-5 w-5" />
                 </div>
-                <select
-                    value={role}
-                    onChange={(e) => setRole(e.target.value as UserRole)}
-                    className="mt-1 w-full rounded-md border-0 bg-slate-800 py-1.5 pl-3 pr-8 text-sm text-white focus:ring-2 focus:ring-emerald-500"
-                >
-                    <option value="Cashier">Cashier</option>
-                    <option value="Chef">Chef</option>
-                    <option value="Manager">Manager</option>
-                </select>
+                <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-semibold text-slate-100">
+                        {user?.name || user?.phone || 'Staff'}
+                    </p>
+                    <p className="text-xs font-medium uppercase tracking-wider text-emerald-500">
+                        {user?.role || '—'}
+                    </p>
+                </div>
             </div>
 
             {/* Navigation Links */}
@@ -79,12 +89,12 @@ export function Sidebar() {
                             key={item.href}
                             href={item.href}
                             className={`
-                group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors
-                ${isActive
+                                group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors
+                                ${isActive
                                     ? 'bg-emerald-500/10 text-emerald-400'
                                     : 'hover:bg-slate-800 hover:text-white'
                                 }
-              `}
+                            `}
                         >
                             <Icon className={`h-5 w-5 shrink-0 ${isActive ? 'text-emerald-500' : 'text-slate-400 group-hover:text-white'}`} />
                             {item.label}
@@ -93,15 +103,15 @@ export function Sidebar() {
                 })}
             </nav>
 
-            {/* Footer System Actions */}
+            {/* Logout */}
             <div className="shrink-0 border-t border-slate-800 p-4">
-                <Link
-                    href="/login"
-                    className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-400 transition-colors hover:bg-slate-800 hover:text-white"
+                <button
+                    onClick={handleLogout}
+                    className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-red-400 transition-colors hover:bg-red-500/10 hover:text-red-300 touch-manipulation"
                 >
                     <LogOut className="h-5 w-5" />
-                    Logout
-                </Link>
+                    End Shift &amp; Log Out
+                </button>
             </div>
         </aside>
     );

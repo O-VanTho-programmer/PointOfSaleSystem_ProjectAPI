@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const apiClient = axios.create({
     baseURL: `${process.env.NEXT_PUBLIC_SERVER_URL}`,
@@ -8,7 +9,7 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use(function (config) {
     if (typeof window !== 'undefined') {
-        const token = localStorage.getItem('token');
+        const token = Cookies.get('pos_auth_token');
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
@@ -28,9 +29,8 @@ apiClient.interceptors.response.use(function onFulfilled(response) {
     // Do something with response error
     if (error.response) {
         if (error.response.status === 401 || error.response.status === 403) {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            // window.location.href = '/login';
+            Cookies.remove('pos_auth_token');
+            window.location.href = '/login';
         }
     }
     return Promise.reject(error);

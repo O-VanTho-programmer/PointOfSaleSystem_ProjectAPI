@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { login, signup } from '../services/auth';
 import { useAuthStore } from '../store/authStore';
 import { UserRole } from '../models/User';
+import Cookies from 'js-cookie';
 
 export const useAuthLogin = () => {
     const { setUser } = useAuthStore();
@@ -18,7 +19,7 @@ export const useAuthLogin = () => {
         },
         onSuccess: (data: any) => {
             setUser(data.user);
-            console.log(data.token);
+            Cookies.set('pos_auth_token', data.token, { expires: 1, secure: true, sameSite: 'strict' });
         },
     });
 
