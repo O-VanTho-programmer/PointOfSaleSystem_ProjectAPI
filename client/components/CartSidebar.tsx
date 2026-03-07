@@ -2,6 +2,7 @@
 
 import React, { useMemo } from 'react';
 import { usePosStore } from '../store/posStore';
+import { RoleGuard } from './RoleGuard';
 
 export function CartSidebar() {
     const { order, updateQuantity, clearOrder } = usePosStore();
@@ -106,16 +107,29 @@ export function CartSidebar() {
                     </div>
                 </div>
 
-                <button
-                    type="button"
-                    disabled={order.items.length === 0}
-                    className="group flex w-full cursor-pointer items-center justify-between rounded-xl bg-slate-900 p-4 font-bold text-white shadow-md transition-all ease-out hover:-translate-y-1 hover:bg-emerald-600 hover:shadow-lg active:translate-y-0 active:bg-emerald-700 disabled:pointer-events-none disabled:opacity-50 touch-manipulation tap-highlight-transparent"
+                <RoleGuard
+                    allowedRoles={['Manager', 'Cashier']}
+                    fallback={
+                        <button
+                            type="button"
+                            disabled={order.items.length === 0}
+                            className="flex w-full items-center justify-center rounded-xl bg-blue-600 p-4 font-bold text-white shadow-md transition-all hover:bg-blue-500 disabled:pointer-events-none disabled:opacity-50 touch-manipulation"
+                        >
+                            <span className="text-lg tracking-wide">SUBMIT ORDER</span>
+                        </button>
+                    }
                 >
-                    <span className="text-lg tracking-wide">PAY NOW</span>
-                    <span className="rounded-md bg-white/20 px-3 py-1 cursor-pointer font-mono text-lg transition-colors group-hover:bg-white/30">
-                        {formatCurrency(grandTotal)}
-                    </span>
-                </button>
+                    <button
+                        type="button"
+                        disabled={order.items.length === 0}
+                        className="group flex w-full cursor-pointer items-center justify-between rounded-xl bg-slate-900 p-4 font-bold text-white shadow-md transition-all ease-out hover:-translate-y-1 hover:bg-emerald-600 hover:shadow-lg active:translate-y-0 active:bg-emerald-700 disabled:pointer-events-none disabled:opacity-50 touch-manipulation tap-highlight-transparent"
+                    >
+                        <span className="text-lg tracking-wide">PAY NOW</span>
+                        <span className="rounded-md bg-white/20 px-3 py-1 cursor-pointer font-mono text-lg transition-colors group-hover:bg-white/30">
+                            {formatCurrency(grandTotal)}
+                        </span>
+                    </button>
+                </RoleGuard>
             </div>
         </aside>
     );

@@ -3,6 +3,7 @@
 import React, { useState, useMemo } from 'react';
 import { OrderStatus } from '../../../types/OrderStatus';
 import { OrderDTO } from '../../../types/OrderDTO';
+import { RoleGuard } from '../../../components/RoleGuard';
 
 // Mock active orders matching status 0 (Pending) and 1 (Complete)
 const MOCK_KITCHEN_ORDERS: OrderDTO[] = [
@@ -82,111 +83,113 @@ export default function KitchenDisplaySystemPage() {
     }, [orders, filterMode]);
 
     return (
-        <div className="flex h-full flex-col bg-slate-900 p-4 sm:p-6 text-slate-200">
+        <RoleGuard allowedRoles={['Chef']}>
+            <div className="flex h-full flex-col bg-slate-900 p-4 sm:p-6 text-slate-200">
 
-            {/* Header and Filter Tabs */}
-            <header className="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight text-white">Kitchen Display</h1>
-                    <p className="mt-1 text-slate-400">Manage active tickets and prep times.</p>
-                </div>
+                {/* Header and Filter Tabs */}
+                <header className="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                    <div>
+                        <h1 className="text-3xl font-bold tracking-tight text-white">Kitchen Display</h1>
+                        <p className="mt-1 text-slate-400">Manage active tickets and prep times.</p>
+                    </div>
 
-                <div className="flex shrink-0 items-center justify-center rounded-xl bg-slate-800 p-1 border border-slate-700">
-                    {(['Pending', 'Completed', 'Both'] as const).map((mode) => (
-                        <button
-                            key={mode}
-                            onClick={() => setFilterMode(mode)}
-                            className={`
+                    <div className="flex shrink-0 items-center justify-center rounded-xl bg-slate-800 p-1 border border-slate-700">
+                        {(['Pending', 'Completed', 'Both'] as const).map((mode) => (
+                            <button
+                                key={mode}
+                                onClick={() => setFilterMode(mode)}
+                                className={`
                 rounded-lg px-6 py-2.5 text-sm font-bold transition-all duration-200 touch-manipulation tap-highlight-transparent select-none whitespace-nowrap
                 ${filterMode === mode
-                                    ? 'bg-slate-700 text-white shadow-sm ring-1 ring-slate-600'
-                                    : 'text-slate-400 hover:text-slate-300 hover:bg-slate-800/50'
-                                }
+                                        ? 'bg-slate-700 text-white shadow-sm ring-1 ring-slate-600'
+                                        : 'text-slate-400 hover:text-slate-300 hover:bg-slate-800/50'
+                                    }
               `}
-                        >
-                            {mode}
-                        </button>
-                    ))}
-                </div>
-            </header>
+                            >
+                                {mode}
+                            </button>
+                        ))}
+                    </div>
+                </header>
 
-            {/* Ticket Kanban Grid */}
-            <div className="flex-1 overflow-y-auto pb-8 scrollbar-hide">
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-start">
-                    {visibleOrders.map(order => (
-                        <article
-                            key={order.id}
-                            className={`
+                {/* Ticket Kanban Grid */}
+                <div className="flex-1 overflow-y-auto pb-8 scrollbar-hide">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-start">
+                        {visibleOrders.map(order => (
+                            <article
+                                key={order.id}
+                                className={`
                 flex flex-col overflow-hidden rounded-2xl border-2 bg-slate-800 shadow-md
                 ${order.status === OrderStatus.Pending ? 'border-amber-500/50' : 'border-emerald-500/50 opacity-80'}
               `}
-                        >
-                            {/* Ticket Header */}
-                            <div className={`flex items-center justify-between border-b p-4 ${order.status === OrderStatus.Pending ? 'border-amber-500/20 bg-amber-500/10' : 'border-emerald-500/20 bg-emerald-500/10'}`}>
-                                <div className="flex items-center gap-3">
-                                    <span className="font-mono text-2xl font-black text-white">#{order.id}</span>
-                                    <span className={`rounded px-2 py-0.5 text-xs font-bold uppercase tracking-wide ${order.status === OrderStatus.Pending ? 'bg-amber-500/20 text-amber-400' : 'bg-emerald-500/20 text-emerald-400'}`}>
-                                        {order.status === OrderStatus.Pending ? 'COOKING' : 'READY'}
+                            >
+                                {/* Ticket Header */}
+                                <div className={`flex items-center justify-between border-b p-4 ${order.status === OrderStatus.Pending ? 'border-amber-500/20 bg-amber-500/10' : 'border-emerald-500/20 bg-emerald-500/10'}`}>
+                                    <div className="flex items-center gap-3">
+                                        <span className="font-mono text-2xl font-black text-white">#{order.id}</span>
+                                        <span className={`rounded px-2 py-0.5 text-xs font-bold uppercase tracking-wide ${order.status === OrderStatus.Pending ? 'bg-amber-500/20 text-amber-400' : 'bg-emerald-500/20 text-emerald-400'}`}>
+                                            {order.status === OrderStatus.Pending ? 'COOKING' : 'READY'}
+                                        </span>
+                                    </div>
+                                    <span className="font-mono text-sm font-medium text-slate-400">
+                                        {formatTimeAgo(order.createdDate)}
                                     </span>
                                 </div>
-                                <span className="font-mono text-sm font-medium text-slate-400">
-                                    {formatTimeAgo(order.createdDate)}
-                                </span>
-                            </div>
 
-                            {/* Ticket Metadata */}
-                            <div className="flex justify-between bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-300">
-                                <span className="uppercase tracking-wider text-slate-400">{order.orderType}</span>
-                                {order.tableNumber && (
-                                    <span className="text-white">Table {order.tableNumber}</span>
-                                )}
-                            </div>
-
-                            {/* Items List */}
-                            <div className="flex-1 p-4">
-                                <ul className="space-y-3">
-                                    {order.items.map((orderItem, idx) => (
-                                        <li key={idx} className="flex items-start gap-3">
-                                            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded bg-slate-700 font-mono text-sm font-bold text-white">
-                                                {orderItem.quantity}x
-                                            </span>
-                                            <span className="mt-0.5 font-medium leading-snug text-slate-200">
-                                                {orderItem.item.name}
-                                            </span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-
-                            {/* Action Button */}
-                            {order.status === OrderStatus.Pending ? (
-                                <div className="p-4 pt-0 mt-2">
-                                    <button
-                                        onClick={() => handleMarkComplete(order.id)}
-                                        className="w-full rounded-xl bg-amber-500 px-4 py-4 text-lg font-black tracking-wide text-amber-950 shadow-sm transition-transform hover:-translate-y-1 hover:bg-amber-400 hover:shadow-md active:translate-y-0 active:bg-amber-600 touch-manipulation tap-highlight-transparent"
-                                    >
-                                        MARK COMPLETE
-                                    </button>
+                                {/* Ticket Metadata */}
+                                <div className="flex justify-between bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-300">
+                                    <span className="uppercase tracking-wider text-slate-400">{order.orderType}</span>
+                                    {order.tableNumber && (
+                                        <span className="text-white">Table {order.tableNumber}</span>
+                                    )}
                                 </div>
-                            ) : (
-                                <div className="p-4 pt-0 mt-2">
-                                    <div className="flex w-full items-center justify-center rounded-xl bg-emerald-500/20 px-4 py-4 text-lg font-black tracking-wide text-emerald-400 border border-emerald-500/30">
-                                        COMPLETED
+
+                                {/* Items List */}
+                                <div className="flex-1 p-4">
+                                    <ul className="space-y-3">
+                                        {order.items.map((orderItem, idx) => (
+                                            <li key={idx} className="flex items-start gap-3">
+                                                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded bg-slate-700 font-mono text-sm font-bold text-white">
+                                                    {orderItem.quantity}x
+                                                </span>
+                                                <span className="mt-0.5 font-medium leading-snug text-slate-200">
+                                                    {orderItem.item.name}
+                                                </span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+
+                                {/* Action Button */}
+                                {order.status === OrderStatus.Pending ? (
+                                    <div className="p-4 pt-0 mt-2">
+                                        <button
+                                            onClick={() => handleMarkComplete(order.id)}
+                                            className="w-full rounded-xl bg-amber-500 px-4 py-4 text-lg font-black tracking-wide text-amber-950 shadow-sm transition-transform hover:-translate-y-1 hover:bg-amber-400 hover:shadow-md active:translate-y-0 active:bg-amber-600 touch-manipulation tap-highlight-transparent"
+                                        >
+                                            MARK COMPLETE
+                                        </button>
                                     </div>
-                                </div>
-                            )}
-                        </article>
-                    ))}
+                                ) : (
+                                    <div className="p-4 pt-0 mt-2">
+                                        <div className="flex w-full items-center justify-center rounded-xl bg-emerald-500/20 px-4 py-4 text-lg font-black tracking-wide text-emerald-400 border border-emerald-500/30">
+                                            COMPLETED
+                                        </div>
+                                    </div>
+                                )}
+                            </article>
+                        ))}
 
-                    {visibleOrders.length === 0 && (
-                        <div className="col-span-full flex h-64 flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-700 bg-slate-800/50">
-                            <UtensilsCrossedIcon className="mb-4 h-12 w-12 text-slate-600" />
-                            <span className="text-lg font-medium text-slate-400">No tickets in this view</span>
-                        </div>
-                    )}
+                        {visibleOrders.length === 0 && (
+                            <div className="col-span-full flex h-64 flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-700 bg-slate-800/50">
+                                <UtensilsCrossedIcon className="mb-4 h-12 w-12 text-slate-600" />
+                                <span className="text-lg font-medium text-slate-400">No tickets in this view</span>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
-        </div>
+        </RoleGuard>
     );
 }
 

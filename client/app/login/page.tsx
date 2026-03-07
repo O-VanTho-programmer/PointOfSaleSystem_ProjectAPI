@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Coffee, Fingerprint, KeyRound, Loader2, ArrowRight } from 'lucide-react';
 import { useAuthLogin } from '../../hooks/authHooks';
+import { useAuthStore } from '../../store/authStore';
+import { ROLE_REDIRECT_MAP, UserRole } from '../../models/User';
 
 export default function LoginPage() {
     const router = useRouter();
@@ -28,8 +30,10 @@ export default function LoginPage() {
         }
 
         try {
-            await mutateLogin({ phone, password });
-            router.push('/register');
+            const data = await mutateLogin({ phone, password });
+            const role = useAuthStore.getState().user?.role;
+            const destination = ROLE_REDIRECT_MAP[role as UserRole] || '/register';
+            router.push(destination);
         } catch (err) {
 
         }
