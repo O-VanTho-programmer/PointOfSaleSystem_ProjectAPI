@@ -18,8 +18,9 @@ namespace CSW306.Domain.Entities
         public int Status { get; set; }
         [Required]
         public DateTime CreatedDate { get; set; }
-
         public string? TableNumber { get; set; }
+        //0: dine in, 1: take away, 2: delivery
+        public int? OrderType { get; set; }
 
         public ICollection<OrderItems> OrderItems { get; set; }
     }

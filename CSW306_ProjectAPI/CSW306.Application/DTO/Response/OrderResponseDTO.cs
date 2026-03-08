@@ -6,5 +6,7 @@ public class OrderResponseDTO
     public int? UsserId { get; set; }
     public DateTime CreatedDate { get; set; }
     public string? TableNumber { get; set; }
+    //0: dine in, 1: take away, 2: delivery
+    public int? OrderType { get; set; }
     public List<OrderItemResponseDTO> OrderItems { get; set; }
 }

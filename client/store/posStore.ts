@@ -1,13 +1,12 @@
 import { create } from 'zustand';
-import { OrderItem } from '../models/Order';
 import { MenuItemDTO } from '../types/MenuItemDTO';
-import { OrderDTO, OrderType } from '../types/OrderDTO';
-import { OrderStatus } from '../types/OrderStatus';
+import { OrderDTO, OrderType, OrderItemDTO } from '../types/OrderDTO';
+import { OrderStatus } from '../types/OrderDTO';
 
 interface PosState {
     order: OrderDTO;
     setOrderType: (type: OrderType) => void;
-    setTableNumber: (table: number | undefined) => void;
+    setTableNumber: (table: string | undefined) => void;
     addItem: (item: MenuItemDTO) => void;
     removeItem: (itemId: number) => void;
     updateQuantity: (itemId: number, quantity: number) => void;
@@ -15,13 +14,13 @@ interface PosState {
 }
 
 const createEmptyOrder = (): OrderDTO => ({
-    id: 0,
-    userId: 1, // Mock user ID for now
+    orderId: 0,
+    userId: 1,
     status: OrderStatus.Pending,
-    orderType: 'Dine-In',
+    orderType: OrderType.DineIn,
     tableNumber: undefined,
     createdDate: new Date().toISOString(),
-    items: [],
+    orderItems: [],
 });
 
 export const usePosStore = create<PosState>((set) => ({
@@ -32,7 +31,7 @@ export const usePosStore = create<PosState>((set) => ({
             order: {
                 ...state.order,
                 orderType: type,
-                tableNumber: type === 'Takeaway' ? undefined : state.order.tableNumber,
+                tableNumber: type === OrderType.TakeAway ? undefined : state.order.tableNumber,
             },
         })),
 
@@ -41,26 +40,24 @@ export const usePosStore = create<PosState>((set) => ({
 
     addItem: (menuItem) =>
         set((state) => {
-            const existingItemIndex = state.order.items.findIndex(
-                (orderItem) => orderItem.item.id === menuItem.id
+            const existingIndex = state.order.orderItems.findIndex(
+                (oi) => oi.itemId === menuItem.id
             );
 
-            if (existingItemIndex >= 0) {
-                // Increment quantity
-                const updatedItems = [...state.order.items];
-                updatedItems[existingItemIndex] = {
-                    ...updatedItems[existingItemIndex],
-                    quantity: updatedItems[existingItemIndex].quantity + 1,
+            if (existingIndex >= 0) {
+                const updated = [...state.order.orderItems];
+                updated[existingIndex] = {
+                    ...updated[existingIndex],
+                    quantity: updated[existingIndex].quantity + 1,
                 };
-                return { order: { ...state.order, items: updatedItems } };
+                return { order: { ...state.order, orderItems: updated } };
             } else {
-                // Add new item
-                const newItem: OrderItem = {
+                const newItem: OrderItemDTO = {
+                    itemId: menuItem.id,
                     quantity: 1,
                     priceAtOrder: menuItem.price,
-                    item: menuItem,
                 };
-                return { order: { ...state.order, items: [...state.order.items, newItem] } };
+                return { order: { ...state.order, orderItems: [...state.order.orderItems, newItem] } };
             }
         }),
 
@@ -68,7 +65,7 @@ export const usePosStore = create<PosState>((set) => ({
         set((state) => ({
             order: {
                 ...state.order,
-                items: state.order.items.filter((orderItem) => orderItem.item.id !== itemId),
+                orderItems: state.order.orderItems.filter((oi) => oi.itemId !== itemId),
             },
         })),
 
@@ -78,15 +75,15 @@ export const usePosStore = create<PosState>((set) => ({
                 return {
                     order: {
                         ...state.order,
-                        items: state.order.items.filter((orderItem) => orderItem.item.id !== itemId),
+                        orderItems: state.order.orderItems.filter((oi) => oi.itemId !== itemId),
                     },
                 };
             }
             return {
                 order: {
                     ...state.order,
-                    items: state.order.items.map((orderItem) =>
-                        orderItem.item.id === itemId ? { ...orderItem, quantity } : orderItem
+                    orderItems: state.order.orderItems.map((oi) =>
+                        oi.itemId === itemId ? { ...oi, quantity } : oi
                     ),
                 },
             };
