@@ -31,11 +31,14 @@ export default function LoginPage() {
 
         try {
             const data = await mutateLogin({ phone, password });
-            const role = useAuthStore.getState().user?.role;
-            const destination = ROLE_REDIRECT_MAP[role as UserRole] || '/register';
-            router.push(destination);
-        } catch (err) {
 
+            if (data) {
+                const role = useAuthStore.getState().user?.role;
+                const destination = ROLE_REDIRECT_MAP[role as UserRole] || '/register';
+                router.push(destination);
+            }
+        } catch (error) {
+            console.error("Login failed:", error);
         }
     };
 

@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import { User } from '../models/User';
 import Cookies from 'js-cookie';
 
@@ -9,14 +10,23 @@ interface AuthState {
     logout: () => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
-    user: null,
-    isAuthenticated: false,
-    setUser: (user) => set({ user, isAuthenticated: !!user }),
-    logout: () => {
-        Cookies.remove('pos_auth_token');
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        set({ user: null, isAuthenticated: false });
-    }
-}));
+export const useAuthStore = create<AuthState>()(
+    persist(
+        (set) => ({
+            user: null,
+            isAuthenticated: false,
+            setUser: (user) => set({ user, isAuthenticated: !!user }),
+            logout: () => {
+                Cookies.remove('pos_auth_token');
+                set({ user: null, isAuthenticated: false });
+            },
+        }),
+        {
+            name: 'pos-auth-storage', // localStorage key
+            partialize: (state) => ({
+                user: state.user,
+                isAuthenticated: state.isAuthenticated,
+            }),
+        }
+    )
+);
