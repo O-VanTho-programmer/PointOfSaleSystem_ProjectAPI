@@ -55,6 +55,7 @@ export function middleware(request: NextRequest) {
 
     // Read the auth cookie
     const token = request.cookies.get('pos_auth_token')?.value;
+    console.log(token);
 
     if (!token) {
         const loginUrl = request.nextUrl.clone();

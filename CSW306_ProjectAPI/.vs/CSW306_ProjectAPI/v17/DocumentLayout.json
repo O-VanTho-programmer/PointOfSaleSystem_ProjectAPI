@@ -84,8 +84,7 @@
               "RelativeToolTip": "CSW306.Application\\Interfaces\\IServices\\IAuthService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-06T06:45:07.451Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-06T06:45:07.451Z"
             },
             {
               "$type": "Document",
@@ -97,8 +96,7 @@
               "RelativeToolTip": "CSW306.Application\\Services\\AuthService.cs",
               "ViewState": "AgIAACAAAAAAAAAAAAASwCsAAAAOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-06T06:45:28.009Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-06T06:45:28.009Z"
             },
             {
               "$type": "Document",
@@ -123,8 +121,7 @@
               "RelativeToolTip": "CSW306.Application\\DTO\\Upload\\LoginRequestDTO.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-06T05:03:02.258Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-06T05:03:02.258Z"
             },
             {
               "$type": "Document",
@@ -136,8 +133,7 @@
               "RelativeToolTip": "CSW306_ProjectAPI\\Program.cs",
               "ViewState": "AgIAAG8AAAAAAAAAAAAgwFUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-06T05:00:40.44Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-06T05:00:40.44Z"
             },
             {
               "$type": "Document",
@@ -149,8 +145,7 @@
               "RelativeToolTip": "CSW306.Application\\DTO\\Upload\\RegisterEmployeeDTO.cs",
               "ViewState": "AgIAAAEAAAAAAAAAAAAQwAgAAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-06T04:26:16.429Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-06T04:26:16.429Z"
             },
             {
               "$type": "Document",
@@ -162,8 +157,7 @@
               "RelativeToolTip": "CSW306.Application\\DTO\\Upload\\ItemsUploadDTO.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAuwAgAAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-05T03:18:59.957Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-05T03:18:59.957Z"
             },
             {
               "$type": "Document",
@@ -187,8 +181,7 @@
               "RelativeToolTip": "CSW306.Infrastructure\\BackgroundServices\\StockWriteBackBackgroundService.cs",
               "ViewState": "AgIAACcAAAAAAAAAAAAYwDcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-05T02:53:10.739Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-05T02:53:10.739Z"
             },
             {
               "$type": "Document",

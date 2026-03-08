@@ -112,7 +112,7 @@ export function CartSidebar() {
                     fallback={
                         <button
                             type="button"
-                            disabled={order.items.length === 0}
+                            disabled={order.items.length === 0 || (order.tableNumber === undefined && order.orderType === 'Dine-In')}
                             className="flex w-full items-center justify-center rounded-xl bg-blue-600 p-4 font-bold text-white shadow-md transition-all hover:bg-blue-500 disabled:pointer-events-none disabled:opacity-50 touch-manipulation"
                         >
                             <span className="text-lg tracking-wide">SUBMIT ORDER</span>
@@ -121,7 +121,7 @@ export function CartSidebar() {
                 >
                     <button
                         type="button"
-                        disabled={order.items.length === 0}
+                        disabled={order.items.length === 0 || (order.tableNumber === undefined && order.orderType === 'Dine-In')}
                         className="group flex w-full cursor-pointer items-center justify-between rounded-xl bg-slate-900 p-4 font-bold text-white shadow-md transition-all ease-out hover:-translate-y-1 hover:bg-emerald-600 hover:shadow-lg active:translate-y-0 active:bg-emerald-700 disabled:pointer-events-none disabled:opacity-50 touch-manipulation tap-highlight-transparent"
                     >
                         <span className="text-lg tracking-wide">PAY NOW</span>

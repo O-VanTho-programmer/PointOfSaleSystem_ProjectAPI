@@ -1,10 +1,9 @@
 export interface User {
-    id?: string;
+    id: number;
+    name: string;
     phone: string;
-    name?: string;
-    email?: string;
+    email: string;
     role: UserRole;
-    token?: string;
 }
 
 export type UserRole = 'Manager' | 'Cashier' | 'Chef' | 'Waiter';

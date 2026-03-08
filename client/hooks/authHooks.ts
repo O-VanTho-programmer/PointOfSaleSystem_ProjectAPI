@@ -22,9 +22,18 @@ export const useAuthLogin = () => {
             Cookies.set('pos_auth_token', data.token, { expires: 1, secure: true, sameSite: 'strict' });
         },
     });
+    
+    const mutateLogin = async (variables: { phone: string; password: string }) => {
+        try {
+            const data = await mutation.mutateAsync(variables);
+            return data;
+        } catch {
+            return null;
+        }
+    };
 
     return {
-        mutateLogin: mutation.mutateAsync,
+        mutateLogin,
         isLoading: mutation.isPending,
         error: mutation.error ? (mutation.error as Error).message || 'Invalid credentials. Please contact your manager.' : ''
     };
