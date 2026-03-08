@@ -6,6 +6,7 @@ import { MenuItemDTO } from "../../../types/MenuItemDTO";
 import { OrderType } from "../../../types/OrderDTO";
 import { CartSidebar } from "../../../components/CartSidebar";
 import { usePosStore } from "../../../store/posStore";
+import { useTables } from "@/hooks/useTables";
 
 const MOCK_MENU_ITEMS: MenuItemDTO[] = [
     {
@@ -82,6 +83,11 @@ const MOCK_MENU_ITEMS: MenuItemDTO[] = [
     }
 ];
 
+const ORDER_TYPE_OPTIONS: { value: OrderType; label: string }[] = [
+    { value: OrderType.DineIn, label: 'Dine-In' },
+    { value: OrderType.TakeAway, label: 'Takeaway' },
+];
+
 export default function RegisterScreen() {
     const [selectedCategory, setSelectedCategory] = useState<string>("All");
 
@@ -101,8 +107,7 @@ export default function RegisterScreen() {
         addItem(item);
     }, [addItem]);
 
-    // Generate Mock Tables 1-10
-    const TABLES = useMemo(() => Array.from({ length: 10 }, (_, i) => i + 1), []);
+    const { data: tables } = useTables();
 
     return (
         <div className="flex h-screen w-full bg-slate-50 font-sans text-slate-900 overflow-hidden">
@@ -134,19 +139,19 @@ export default function RegisterScreen() {
 
                         {/* Order Type Toggle */}
                         <div className="flex shrink-0 items-center justify-center rounded-lg bg-slate-100 p-1 ml-4 border border-slate-200">
-                            {(['Dine-In', 'Takeaway'] as OrderType[]).map((type) => (
+                            {ORDER_TYPE_OPTIONS.map(({ value, label }) => (
                                 <button
-                                    key={type}
-                                    onClick={() => setOrderType(type)}
+                                    key={value}
+                                    onClick={() => setOrderType(value)}
                                     className={`
                                         rounded-md px-4 py-2 text-sm font-bold transition-all duration-200 touch-manipulation tap-highlight-transparent select-none whitespace-nowrap
-                                        ${order.orderType === type
+                                        ${order.orderType === value
                                             ? 'bg-white text-emerald-600 shadow-sm ring-1 ring-slate-200/50'
                                             : 'text-slate-500 hover:text-slate-700'
                                         }
                                     `}
                                 >
-                                    {type}
+                                    {label}
                                 </button>
                             ))}
                         </div>
@@ -155,23 +160,24 @@ export default function RegisterScreen() {
                     {/* Table Selection Grid (renders only if Dine-In) */}
                     <div className={`
                         overflow-hidden transition-all duration-300 ease-in-out bg-slate-50/50 border-t border-slate-100 px-4 sm:px-6
-                        ${order.orderType === 'Dine-In' ? 'max-h-32 py-3 opacity-100' : 'max-h-0 py-0 opacity-0'}
+                        ${order.orderType === OrderType.DineIn ? 'max-h-32 py-3 opacity-100' : 'max-h-0 py-0 opacity-0'}
                     `}>
                         <div className="flex items-center gap-3 overflow-x-auto pb-1 scrollbar-hide">
                             <span className="shrink-0 text-xs font-bold uppercase text-slate-400 tracking-wider">Select Table:</span>
-                            {TABLES.map(table => (
+                            {tables?.map(table => (
                                 <button
-                                    key={table}
-                                    onClick={() => setTableNumber(table)}
+                                    key={table.tableId}
+                                    onClick={() => setTableNumber(String(table.tableId))}
+                                    disabled={table.status === 'occupied'}
                                     className={`
                                         flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold transition-all border
-                                        ${order.tableNumber === table
+                                        ${order.tableNumber === String(table.tableId)
                                             ? 'bg-emerald-500 text-white border-emerald-600 shadow-md scale-110'
                                             : 'bg-white text-slate-600 border-slate-200 hover:border-emerald-300 hover:text-emerald-500'
                                         }
                                     `}
                                 >
-                                    {table}
+                                    {table.tableId}
                                 </button>
                             ))}
                         </div>

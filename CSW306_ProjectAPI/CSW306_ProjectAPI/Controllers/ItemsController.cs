@@ -38,7 +38,7 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateItem([FromForm] ItemsUploadDTO dto)
+        public async Task<ActionResult> CreateItem([FromBody] ItemsUploadDTO dto)
         {
             var item = await _itemService.CreateItemAsync(dto);
             
@@ -50,7 +50,7 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateItem(int id, [FromForm] ItemsUploadDTO uploadDTO)
+        public async Task<ActionResult> UpdateItem(int id, [FromBody] ItemsUploadDTO uploadDTO)
         {
             var item = await _itemService.UpdateItemAsync(id, uploadDTO);
             
