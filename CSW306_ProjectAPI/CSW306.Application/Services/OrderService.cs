@@ -14,10 +14,12 @@ namespace CSW306.Application.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRedisCacheService _redisCacheService;
+        private readonly IAuditLogService _auditLogService;
 
-        public OrderService(IUnitOfWork unitOfWork, IRedisCacheService redisCacheService) { 
+        public OrderService(IUnitOfWork unitOfWork, IRedisCacheService redisCacheService, IAuditLogService auditLogService) { 
             _unitOfWork = unitOfWork;
             _redisCacheService = redisCacheService;
+            _auditLogService = auditLogService;
         }
 
         public async Task<TemplateApi<OrderResponseDTO>> GetOrderAsync(int id)
@@ -47,7 +49,7 @@ namespace CSW306.Application.Services
                         {
                             ItemId = oi.Item.ItemId,
                             Name = oi.Item.Name,
-                            QuantityInStock = oi.Item.QuantityInStock,
+                            IsSoldOut = oi.Item.IsSoldOut,
                             Price = oi.Item.Price,
                             CategoryId = oi.Item.CategoryId
                         }
@@ -83,7 +85,7 @@ namespace CSW306.Application.Services
                     {
                         ItemId = oi.Item.ItemId,
                         Name = oi.Item.Name,
-                        QuantityInStock = oi.Item.QuantityInStock,
+                        IsSoldOut = oi.Item.IsSoldOut,
                         Price = oi.Item.Price,
                         CategoryId = oi.Item.CategoryId
                     }
@@ -117,7 +119,7 @@ namespace CSW306.Application.Services
                     {
                         ItemId = oi.Item.ItemId,
                         Name = oi.Item.Name,
-                        QuantityInStock = oi.Item.QuantityInStock,
+                        IsSoldOut = oi.Item.IsSoldOut,
                         Price = oi.Item.Price,
                         CategoryId = oi.Item.CategoryId
                     }
@@ -138,7 +140,7 @@ namespace CSW306.Application.Services
             var itemsList = await _unitOfWork.Items.GetAllAsync();
             var selectedItems = itemsList
                 .Where(item => itemIds.Contains(item.ItemId))
-                .Where(item => item.QuantityInStock >= dto.Items.Find(dto => dto.ItemId == item.ItemId)!.Quantity)
+                .Where(item => item.IsSoldOut == 0)
                 .ToDictionary(i => i.ItemId);
 
             var missingIds = itemIds.Except(selectedItems.Keys).ToList();
@@ -147,27 +149,6 @@ namespace CSW306.Application.Services
                 return null;
             }
 
-            bool isRedisDown = false;
-            foreach (var item in selectedItems.Values)
-            {
-                var decrementValue = dto.Items.Find(dto => dto.ItemId == item.ItemId)!.Quantity;
-                try
-                {
-                    await _redisCacheService.DecrementAsync("item:stock:" + item.ItemId, decrementValue);
-                    await _redisCacheService.SetAddAsync("PendingStockUpdate", item.ItemId.ToString());
-                }
-                catch (StackExchange.Redis.RedisException)
-                {
-                    // Fallback to direct SQL database update if Redis is unreachable
-                    isRedisDown = true;
-                    item.QuantityInStock -= decrementValue;
-                }
-            }
-
-            if (isRedisDown)
-            {
-                await _unitOfWork.Items.UpdateRangeAsync(selectedItems.Values);
-            }
 
             var orderItems = dto.Items.Select(i => new OrderItems
             {
@@ -189,6 +170,9 @@ namespace CSW306.Application.Services
 
             await _unitOfWork.Orders.AddAsync(order);
             await _unitOfWork.SaveChangesAsync();
+
+            _auditLogService.EnqueueLog("CreateOrder", "Orders", order.OrderId, dto.UserId, $"Status: {dto.Status}, Items: {dto.Items.Count}");
+
             return order;
         }
 
@@ -200,6 +184,8 @@ namespace CSW306.Application.Services
             order.Status = request.Status;
             await _unitOfWork.Orders.UpdateAsync(order);
             await _unitOfWork.SaveChangesAsync();
+
+            _auditLogService.EnqueueLog("UpdateOrderStatus", "Orders", order.OrderId, null, $"New status: {request.Status}");
 
             return order;
         }

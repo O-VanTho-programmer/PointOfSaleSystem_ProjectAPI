@@ -15,6 +15,7 @@ namespace CSW306.Infrastructure.Data
         public DbSet<Payments> Payments { get; set; }
         public DbSet<Table> Tables { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
+        public DbSet<AuditLog> AuditLogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

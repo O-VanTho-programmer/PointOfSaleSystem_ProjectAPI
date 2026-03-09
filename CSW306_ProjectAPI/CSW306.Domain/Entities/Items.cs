@@ -13,7 +13,7 @@ namespace CSW306.Domain.Entities
         [Required]
         public string Name { get; set; }
         [Required]
-        public int QuantityInStock { get; set; }
+        public int IsSoldOut { get; set; }
         [Required]
         public decimal Price { get; set; }
         

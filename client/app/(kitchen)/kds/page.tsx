@@ -1,76 +1,78 @@
 "use client";
 
 import React, { useState, useMemo } from 'react';
-import { OrderStatus } from '../../../types/OrderStatus';
-import { OrderDTO } from '../../../types/OrderDTO';
+import { OrderStatus, OrderType, OrderDTO, OrderItemDTO } from '../../../types/OrderDTO';
 import { RoleGuard } from '../../../components/RoleGuard';
 
-// Mock active orders matching status 0 (Pending) and 1 (Complete)
 const MOCK_KITCHEN_ORDERS: OrderDTO[] = [
     {
-        id: 1001,
+        orderId: 1001,
         userId: 1,
         status: OrderStatus.Pending,
-        orderType: 'Dine-In',
-        tableNumber: 4,
+        orderType: OrderType.DineIn,
+        tableNumber: '4',
         createdDate: new Date(Date.now() - 1000 * 60 * 15).toISOString(),
-        items: [
-            { quantity: 2, priceAtOrder: 12.99, item: { id: 2, name: 'Double Smash Burger', price: 12.99, stock: 30, imageUrl: '' } },
-            { quantity: 1, priceAtOrder: 5.99, item: { id: 5, name: 'Truffle Parm Fries', price: 5.99, stock: 4, imageUrl: '' } },
+        orderItems: [
+            { itemId: 2, quantity: 2, priceAtOrder: 12.99 },
+            { itemId: 5, quantity: 1, priceAtOrder: 5.99 },
         ]
     },
     {
-        id: 1002,
+        orderId: 1002,
         userId: 1,
         status: OrderStatus.Complete,
-        orderType: 'Takeaway',
+        orderType: OrderType.TakeAway,
         createdDate: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
-        items: [
-            { quantity: 1, priceAtOrder: 10.99, item: { id: 3, name: 'Crispy Chicken Sandwich', price: 10.99, stock: 20, imageUrl: '' } },
-            { quantity: 1, priceAtOrder: 5.49, item: { id: 6, name: 'Vanilla Bean Shake', price: 5.49, stock: 15, imageUrl: '' } },
+        orderItems: [
+            { itemId: 3, quantity: 1, priceAtOrder: 10.99 },
+            { itemId: 6, quantity: 1, priceAtOrder: 5.49 },
         ]
     },
     {
-        id: 1003,
+        orderId: 1003,
         userId: 1,
         status: OrderStatus.Pending,
-        orderType: 'Dine-In',
-        tableNumber: 1,
+        orderType: OrderType.DineIn,
+        tableNumber: '1',
         createdDate: new Date(Date.now() - 1000 * 60 * 2).toISOString(),
-        items: [
-            { quantity: 3, priceAtOrder: 8.99, item: { id: 1, name: 'Classic Cheeseburger', price: 8.99, stock: 50, imageUrl: '' } },
+        orderItems: [
+            { itemId: 1, quantity: 3, priceAtOrder: 8.99 },
         ]
     },
     {
-        id: 1004,
+        orderId: 1004,
         userId: 1,
         status: OrderStatus.Pending,
-        orderType: 'Takeaway',
+        orderType: OrderType.TakeAway,
         tableNumber: undefined,
         createdDate: new Date(Date.now() - 1000 * 60 * 1).toISOString(),
-        items: [
-            { quantity: 1, priceAtOrder: 10.99, item: { id: 3, name: 'Crispy Chicken Sandwich', price: 10.99, stock: 20, imageUrl: '' } },
-            { quantity: 1, priceAtOrder: 3.99, item: { id: 4, name: 'Shoestring Fries', price: 3.99, stock: 100, imageUrl: '' } },
+        orderItems: [
+            { itemId: 3, quantity: 1, priceAtOrder: 10.99 },
+            { itemId: 4, quantity: 1, priceAtOrder: 3.99 },
         ]
     }
 ];
 
+const ORDER_TYPE_LABELS: Record<number, string> = {
+    [OrderType.DineIn]: 'DINE-IN',
+    [OrderType.TakeAway]: 'TAKEAWAY',
+    [OrderType.Delivery]: 'DELIVERY',
+};
+
 export default function KitchenDisplaySystemPage() {
     const [orders, setOrders] = useState<OrderDTO[]>(MOCK_KITCHEN_ORDERS);
 
-    // Set default active tab strictly to Pending (0) per instructions
     const [filterMode, setFilterMode] = useState<'Pending' | 'Completed' | 'Both'>('Pending');
 
     const formatTimeAgo = (isoString: string) => {
-        const diff = Math.floor((Date.now() - new Date(isoString).getTime()) / 60000); // in minutes
+        const diff = Math.floor((Date.now() - new Date(isoString).getTime()) / 60000);
         if (diff < 1) return 'Just now';
         return `${diff}m ago`;
     };
 
     const handleMarkComplete = (orderId: number) => {
-        // Visually update the order status to Complete (1)
         setOrders(prev => prev.map(o =>
-            o.id === orderId ? { ...o, status: OrderStatus.Complete } : o
+            o.orderId === orderId ? { ...o, status: OrderStatus.Complete } : o
         ));
     };
 
@@ -117,7 +119,7 @@ export default function KitchenDisplaySystemPage() {
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-start">
                         {visibleOrders.map(order => (
                             <article
-                                key={order.id}
+                                key={order.orderId}
                                 className={`
                 flex flex-col overflow-hidden rounded-2xl border-2 bg-slate-800 shadow-md
                 ${order.status === OrderStatus.Pending ? 'border-amber-500/50' : 'border-emerald-500/50 opacity-80'}
@@ -126,7 +128,7 @@ export default function KitchenDisplaySystemPage() {
                                 {/* Ticket Header */}
                                 <div className={`flex items-center justify-between border-b p-4 ${order.status === OrderStatus.Pending ? 'border-amber-500/20 bg-amber-500/10' : 'border-emerald-500/20 bg-emerald-500/10'}`}>
                                     <div className="flex items-center gap-3">
-                                        <span className="font-mono text-2xl font-black text-white">#{order.id}</span>
+                                        <span className="font-mono text-2xl font-black text-white">#{order.orderId}</span>
                                         <span className={`rounded px-2 py-0.5 text-xs font-bold uppercase tracking-wide ${order.status === OrderStatus.Pending ? 'bg-amber-500/20 text-amber-400' : 'bg-emerald-500/20 text-emerald-400'}`}>
                                             {order.status === OrderStatus.Pending ? 'COOKING' : 'READY'}
                                         </span>
@@ -138,7 +140,9 @@ export default function KitchenDisplaySystemPage() {
 
                                 {/* Ticket Metadata */}
                                 <div className="flex justify-between bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-300">
-                                    <span className="uppercase tracking-wider text-slate-400">{order.orderType}</span>
+                                    <span className="uppercase tracking-wider text-slate-400">
+                                        {order.orderType !== undefined ? ORDER_TYPE_LABELS[order.orderType] : '—'}
+                                    </span>
                                     {order.tableNumber && (
                                         <span className="text-white">Table {order.tableNumber}</span>
                                     )}
@@ -147,13 +151,13 @@ export default function KitchenDisplaySystemPage() {
                                 {/* Items List */}
                                 <div className="flex-1 p-4">
                                     <ul className="space-y-3">
-                                        {order.items.map((orderItem, idx) => (
+                                        {order.orderItems.map((oi, idx) => (
                                             <li key={idx} className="flex items-start gap-3">
                                                 <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded bg-slate-700 font-mono text-sm font-bold text-white">
-                                                    {orderItem.quantity}x
+                                                    {oi.quantity}x
                                                 </span>
                                                 <span className="mt-0.5 font-medium leading-snug text-slate-200">
-                                                    {orderItem.item.name}
+                                                    Item #{oi.itemId}
                                                 </span>
                                             </li>
                                         ))}
@@ -164,7 +168,7 @@ export default function KitchenDisplaySystemPage() {
                                 {order.status === OrderStatus.Pending ? (
                                     <div className="p-4 pt-0 mt-2">
                                         <button
-                                            onClick={() => handleMarkComplete(order.id)}
+                                            onClick={() => handleMarkComplete(order.orderId)}
                                             className="w-full rounded-xl bg-amber-500 px-4 py-4 text-lg font-black tracking-wide text-amber-950 shadow-sm transition-transform hover:-translate-y-1 hover:bg-amber-400 hover:shadow-md active:translate-y-0 active:bg-amber-600 touch-manipulation tap-highlight-transparent"
                                         >
                                             MARK COMPLETE
@@ -193,7 +197,6 @@ export default function KitchenDisplaySystemPage() {
     );
 }
 
-// Inline UtensilsCrossedIcon mock for empty state
 function UtensilsCrossedIcon(props: React.SVGProps<SVGSVGElement>) {
     return (
         <svg
