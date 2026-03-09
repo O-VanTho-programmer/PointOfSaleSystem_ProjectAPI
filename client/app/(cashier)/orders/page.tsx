@@ -1,44 +1,48 @@
 "use client";
 
 import React, { useState } from 'react';
-import { OrderStatus } from '../../../types/OrderStatus';
-import { OrderDTO } from '../../../types/OrderDTO';
+import { OrderStatus, OrderType, OrderDTO } from '../../../types/OrderDTO';
 import { RoleGuard } from '../../../components/RoleGuard';
 
-// Mock active orders matching status 0 (Pending) and 1 (Complete)
+const ORDER_TYPE_LABELS: Record<number, string> = {
+    [OrderType.DineIn]: 'Dine-In',
+    [OrderType.TakeAway]: 'Takeaway',
+    [OrderType.Delivery]: 'Delivery',
+};
+
 const MOCK_ACTIVE_ORDERS: OrderDTO[] = [
     {
-        id: 1001,
+        orderId: 1001,
         userId: 1,
         status: OrderStatus.Pending,
-        orderType: 'Dine-In',
-        tableNumber: 4,
-        createdDate: new Date(Date.now() - 1000 * 60 * 15).toISOString(), // 15 mins ago
-        items: [
-            { quantity: 2, priceAtOrder: 12.99, item: { id: 2, name: 'Double Smash Burger', price: 12.99, stock: 30, imageUrl: '' } },
-            { quantity: 1, priceAtOrder: 5.99, item: { id: 5, name: 'Truffle Parm Fries', price: 5.99, stock: 4, imageUrl: '' } },
+        orderType: OrderType.DineIn,
+        tableNumber: '4',
+        createdDate: new Date(Date.now() - 1000 * 60 * 15).toISOString(),
+        orderItems: [
+            { itemId: 2, quantity: 2, priceAtOrder: 12.99 },
+            { itemId: 5, quantity: 1, priceAtOrder: 5.99 },
         ]
     },
     {
-        id: 1002,
+        orderId: 1002,
         userId: 1,
         status: OrderStatus.Complete,
-        orderType: 'Takeaway',
-        createdDate: new Date(Date.now() - 1000 * 60 * 5).toISOString(), // 5 mins ago
-        items: [
-            { quantity: 1, priceAtOrder: 10.99, item: { id: 3, name: 'Crispy Chicken Sandwich', price: 10.99, stock: 20, imageUrl: '' } },
-            { quantity: 1, priceAtOrder: 5.49, item: { id: 6, name: 'Vanilla Bean Shake', price: 5.49, stock: 15, imageUrl: '' } },
+        orderType: OrderType.TakeAway,
+        createdDate: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
+        orderItems: [
+            { itemId: 3, quantity: 1, priceAtOrder: 10.99 },
+            { itemId: 6, quantity: 1, priceAtOrder: 5.49 },
         ]
     },
     {
-        id: 1003,
+        orderId: 1003,
         userId: 1,
         status: OrderStatus.Pending,
-        orderType: 'Dine-In',
-        tableNumber: 1,
-        createdDate: new Date(Date.now() - 1000 * 60 * 2).toISOString(), // 2 mins ago
-        items: [
-            { quantity: 3, priceAtOrder: 8.99, item: { id: 1, name: 'Classic Cheeseburger', price: 8.99, stock: 50, imageUrl: '' } },
+        orderType: OrderType.DineIn,
+        tableNumber: '1',
+        createdDate: new Date(Date.now() - 1000 * 60 * 2).toISOString(),
+        orderItems: [
+            { itemId: 1, quantity: 3, priceAtOrder: 8.99 },
         ]
     },
 ];
@@ -48,8 +52,8 @@ export default function OrdersPage() {
     const [selectedOrder, setSelectedOrder] = useState<OrderDTO | null>(null);
 
     const calculateTotal = (order: OrderDTO) => {
-        const subtotal = order.items.reduce((sum, i) => sum + (i.priceAtOrder * i.quantity), 0);
-        return subtotal * 1.10; // including 10% mock tax
+        const subtotal = order.orderItems.reduce((sum, oi) => sum + (oi.priceAtOrder * oi.quantity), 0);
+        return subtotal * 1.10;
     };
 
     const formatCurrency = (val: number) =>
@@ -61,24 +65,18 @@ export default function OrdersPage() {
 
     const handleProceedToPayment = () => {
         if (!selectedOrder) return;
-
-        // Visually update the order status to Paid (2) specifically per instructions
         setOrders(prev => prev.map(o =>
-            o.id === selectedOrder.id ? { ...o, status: OrderStatus.Paid } : o
+            o.orderId === selectedOrder.orderId ? { ...o, status: OrderStatus.Paid } : o
         ));
-
-        // Close modal
         setSelectedOrder(null);
     };
 
     const handleCancelOrder = () => {
         if (!selectedOrder) return;
-        // In a real app this would call an API to delete or mark cancelled
-        setOrders(prev => prev.filter(o => o.id !== selectedOrder.id));
+        setOrders(prev => prev.filter(o => o.orderId !== selectedOrder.orderId));
         setSelectedOrder(null);
     };
 
-    // Only show Pending(0) and Complete(1) orders on this active list per requirements
     const visibleOrders = orders.filter(o => o.status === OrderStatus.Pending || o.status === OrderStatus.Complete);
 
     return (
@@ -104,7 +102,7 @@ export default function OrdersPage() {
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {visibleOrders.map(order => (
                     <button
-                        key={order.id}
+                        key={order.orderId}
                         onClick={() => setSelectedOrder(order)}
                         className={`
               relative flex flex-col items-start overflow-hidden rounded-2xl border-2 bg-white p-5 text-left shadow-sm transition-all duration-200 
@@ -116,13 +114,13 @@ export default function OrdersPage() {
                         <div className={`absolute left-0 top-0 h-full w-1.5 ${order.status === OrderStatus.Complete ? 'bg-emerald-400' : 'bg-amber-400'}`} />
 
                         <div className="flex w-full items-start justify-between">
-                            <span className="font-mono text-lg font-bold text-slate-900">#{order.id}</span>
+                            <span className="font-mono text-lg font-bold text-slate-900">#{order.orderId}</span>
                             <span className="font-mono text-sm font-medium text-slate-500">{formatTime(order.createdDate)}</span>
                         </div>
 
                         <div className="mt-3 flex gap-2">
                             <span className="inline-flex items-center rounded-md bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-700">
-                                {order.orderType}
+                                {order.orderType !== undefined ? ORDER_TYPE_LABELS[order.orderType] : '—'}
                             </span>
                             {order.tableNumber && (
                                 <span className="inline-flex items-center rounded-md bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700 ring-1 ring-inset ring-blue-700/10">
@@ -132,7 +130,7 @@ export default function OrdersPage() {
                         </div>
 
                         <div className="mt-6 flex w-full items-end justify-between border-t border-slate-100 pt-4">
-                            <span className="text-sm text-slate-500">{order.items.length} items</span>
+                            <span className="text-sm text-slate-500">{order.orderItems.length} items</span>
                             <span className="font-mono text-xl font-bold text-emerald-600">{formatCurrency(calculateTotal(order))}</span>
                         </div>
                     </button>
@@ -152,7 +150,7 @@ export default function OrdersPage() {
                         <div className={`h-2 w-full ${selectedOrder.status === OrderStatus.Complete ? 'bg-emerald-500' : 'bg-amber-500'}`}></div>
                         <div className="p-6 sm:p-8">
                             <div className="flex items-center justify-between">
-                                <h2 className="font-serif text-3xl font-bold text-slate-900">Order #{selectedOrder.id}</h2>
+                                <h2 className="font-serif text-3xl font-bold text-slate-900">Order #{selectedOrder.orderId}</h2>
                                 <button
                                     onClick={() => setSelectedOrder(null)}
                                     className="rounded-full p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
@@ -164,7 +162,10 @@ export default function OrdersPage() {
                             <div className="mt-6 divide-y divide-slate-100 rounded-xl border border-slate-100 bg-slate-50">
                                 <div className="flex justify-between p-4">
                                     <span className="text-sm font-medium text-slate-500">Order Type</span>
-                                    <span className="font-semibold text-slate-900">{selectedOrder.orderType} {selectedOrder.tableNumber ? `(Table ${selectedOrder.tableNumber})` : ''}</span>
+                                    <span className="font-semibold text-slate-900">
+                                        {selectedOrder.orderType !== undefined ? ORDER_TYPE_LABELS[selectedOrder.orderType] : '—'}
+                                        {selectedOrder.tableNumber ? ` (Table ${selectedOrder.tableNumber})` : ''}
+                                    </span>
                                 </div>
                                 <div className="flex justify-between p-4">
                                     <span className="text-sm font-medium text-slate-500">Status</span>

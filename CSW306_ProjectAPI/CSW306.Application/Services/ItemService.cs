@@ -15,11 +15,13 @@ namespace CSW306.Application.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRedisCacheService _redisCacheService;
-         
-        public ItemService(IUnitOfWork unitOfWork, IRedisCacheService redisCacheService)
+        private readonly IAuditLogService _auditLogService;
+
+        public ItemService(IUnitOfWork unitOfWork, IRedisCacheService redisCacheService, IAuditLogService auditLogService)
         {
             this._unitOfWork = unitOfWork;
             this._redisCacheService = redisCacheService;
+            this._auditLogService = auditLogService;
         }
 
         public async Task<TemplateApi<Items>> CreateItemAsync(ItemsUploadDTO uploadDTO)
@@ -41,7 +43,7 @@ namespace CSW306.Application.Services
                 CategoryId = uploadDTO.CategoryId,
                 Category = category,
                 Price = uploadDTO.Price,
-                QuantityInStock = uploadDTO.QuantityInStock,
+                IsSoldOut = uploadDTO.IsSoldOut,
                 ImageUrl = uploadDTO.ImageUrl,
             };
 
@@ -50,7 +52,8 @@ namespace CSW306.Application.Services
 
             await _redisCacheService.RemoveAsync("items");
             await _redisCacheService.SetAsync("item:" + newItem.ItemId, newItem);
-            await _redisCacheService.SetAsync("item:stock:" + newItem.ItemId, newItem.QuantityInStock);
+
+            _auditLogService.EnqueueLog("CreateItem", "Items", newItem.ItemId, null, $"Name: {newItem.Name}, Price: {newItem.Price}");
 
             return new TemplateApi<Items>(newItem, null, "Item created successfully", true, 0, 0, 0, 0);
         }
@@ -85,9 +88,7 @@ namespace CSW306.Application.Services
             var totalCount = cachedItems.Count();
             var pagedItems = cachedItems.Skip((pageNumber - 1) * pageSize).Take(pageSize);
            
-            foreach (var item in pagedItems){
-                await _redisCacheService.SetAsync("item:stock:" + item.ItemId, item.QuantityInStock);
-            }
+
             var pagination = new Pagination();
             return pagination.HandlePagedRespond(pageNumber, pageSize, pagedItems.ToList(), totalCount);
         }
@@ -108,7 +109,7 @@ namespace CSW306.Application.Services
             item.CategoryId = uploadDTO.CategoryId;
             item.Category = category;
             item.Price = uploadDTO.Price;
-            item.QuantityInStock = uploadDTO.QuantityInStock;
+            item.IsSoldOut = uploadDTO.IsSoldOut;
             item.ImageUrl = uploadDTO.ImageUrl;
 
             await _unitOfWork.Items.UpdateAsync(item);
@@ -116,6 +117,8 @@ namespace CSW306.Application.Services
 
             await _redisCacheService.RemoveAsync("items");
             await _redisCacheService.SetAsync("item:" + id, item);
+
+            _auditLogService.EnqueueLog("UpdateItem", "Items", id, null, $"Name: {item.Name}, IsSoldOut: {item.IsSoldOut}");
 
             return new TemplateApi<Items>(item, null, "Item updated successfully", true, 0, 0, 0, 0);
         }
@@ -132,6 +135,8 @@ namespace CSW306.Application.Services
 
             await _redisCacheService.RemoveAsync("items");
             await _redisCacheService.RemoveAsync("item:" + id);
+
+            _auditLogService.EnqueueLog("DeleteItem", "Items", id, null, $"Deleted: {item.Name}");
 
             return new TemplateApi<Items>(item, null, "Item deleted successfully", true, 0, 0, 0, 0);
         }

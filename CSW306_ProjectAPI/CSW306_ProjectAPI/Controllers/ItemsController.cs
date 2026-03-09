@@ -1,6 +1,7 @@
 using CSW306.Application.DTO.Upload;
 using CSW306.Domain.Entities;
 using CSW306.Infrastructure.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using CSW306.Application.Services;
@@ -38,6 +39,7 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Manager")]
         public async Task<ActionResult> CreateItem([FromBody] ItemsUploadDTO dto)
         {
             var item = await _itemService.CreateItemAsync(dto);
@@ -50,6 +52,7 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Manager,Chef")]
         public async Task<ActionResult> UpdateItem(int id, [FromBody] ItemsUploadDTO uploadDTO)
         {
             var item = await _itemService.UpdateItemAsync(id, uploadDTO);

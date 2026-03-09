@@ -1,7 +1,4 @@
 using StackExchange.Redis;
-
-// ... (other Using statements will stay as they are, I am just cheating a bit, let me use the full block replacement properly)
-using CSW306.Infrastructure.BackgroundServices;
 using CSW306.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -53,7 +50,10 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
 builder.Services.AddSingleton<CSW306.Application.Interfaces.IServices.IRedisCacheService, CSW306.Application.Services.RedisCacheService>();
 
 // Register Background Services
-builder.Services.AddHostedService<StockWriteBackBackgroundService>();
+builder.Services.AddSingleton<CSW306.Application.Services.AuditLogService>();
+builder.Services.AddSingleton<CSW306.Application.Interfaces.IServices.IAuditLogService>(sp =>
+    sp.GetRequiredService<CSW306.Application.Services.AuditLogService>());
+builder.Services.AddHostedService<CSW306.Infrastructure.BackgroundServices.AuditLogBackgroundService>();
 
 builder.Services.AddDbContext<CSW306_ProjectAPIContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection")));
