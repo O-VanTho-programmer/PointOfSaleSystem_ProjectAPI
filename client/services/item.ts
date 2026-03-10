@@ -2,8 +2,8 @@ import apiClient from '../lib/apiClient';
 import { Item, ItemUploadDTO, TemplateApi } from '../types/Item';
 
 export const getItems = async (
-    pageNumber: number = 1,
-    pageSize: number = 10
+    pageNumber?: number,
+    pageSize?: number
 ): Promise<TemplateApi<Item>> => {
     const response = await apiClient.get<TemplateApi<Item>>('/Items', {
         params: { pageNumber, pageSize },
@@ -11,9 +11,9 @@ export const getItems = async (
     return response.data;
 };
 
-export const getItemById = async (id: number): Promise<TemplateApi<Item>> => {
+export const getItemById = async (id: number): Promise<Item | null> => {
     const response = await apiClient.get<TemplateApi<Item>>(`/Items/${id}`);
-    return response.data;
+    return response.data.payload || null;
 };
 
 export const createItem = async (dto: ItemUploadDTO): Promise<TemplateApi<Item>> => {

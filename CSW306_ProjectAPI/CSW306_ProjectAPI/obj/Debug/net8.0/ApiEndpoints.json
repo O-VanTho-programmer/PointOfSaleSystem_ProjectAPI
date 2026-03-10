@@ -107,14 +107,9 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Name",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Description",
-        "Type": "System.String",
-        "IsRequired": false
+        "Name": "dto",
+        "Type": "CSW306.Application.DTO.Upload.CategoryUploadDTO",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": [
@@ -166,7 +161,7 @@
       {
         "Name": "ItemId",
         "Type": "System.Int32",
-        "IsRequired": false
+        "IsRequired": true
       },
       {
         "Name": "CategoryId",

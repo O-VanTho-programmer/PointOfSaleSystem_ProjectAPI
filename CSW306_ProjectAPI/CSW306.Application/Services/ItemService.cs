@@ -76,7 +76,12 @@ namespace CSW306.Application.Services
             return pagination.HandleGetByIdRespond(item);
         }
 
-        public async Task<TemplateApi<Items>> GetItemsAsync(int pageNumber, int pageSize)
+        //public async Task<TemplateApi<Items>> GetItemsByFilter()
+        //{
+
+        //}
+
+        public async Task<TemplateApi<Items>> GetItemsAsync(int? pageNumber, int? pageSize)
         {   
             var cachedItems = await _redisCacheService.GetAsync<IEnumerable<Items>>("items");
 
@@ -86,11 +91,9 @@ namespace CSW306.Application.Services
             }
 
             var totalCount = cachedItems.Count();
-            var pagedItems = cachedItems.Skip((pageNumber - 1) * pageSize).Take(pageSize);
            
-
             var pagination = new Pagination();
-            return pagination.HandlePagedRespond(pageNumber, pageSize, pagedItems.ToList(), totalCount);
+            return pagination.HandleGetAllRespond(pageNumber ?? 1, pageSize ?? totalCount, cachedItems.ToList(), totalCount);
         }
 
         public async Task<TemplateApi<Items>> UpdateItemAsync(int id, ItemsUploadDTO uploadDTO)

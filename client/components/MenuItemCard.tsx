@@ -1,9 +1,9 @@
 import React from 'react';
-import { MenuItemDTO } from '../types/MenuItemDTO';
+import { Item } from '../types/Item';
 
 interface Props {
-    item: MenuItemDTO;
-    onClick: (item: MenuItemDTO) => void;
+    item: Item;
+    onClick: (item: Item) => void;
 }
 
 export const MenuItemCard = React.memo(function MenuItemCard({ item, onClick }: Props) {
@@ -33,31 +33,13 @@ export const MenuItemCard = React.memo(function MenuItemCard({ item, onClick }: 
                     loading="lazy"
                     className="h-full w-full object-cover transition-opacity duration-150 group-active:opacity-80"
                 />
-                {item.stock <= 5 && item.stock > 0 && (
-                    <span className="absolute bottom-2 left-2 rounded bg-amber-100 px-2 py-1 text-xs font-bold uppercase tracking-wide text-amber-900 shadow-sm">
-                        Only {item.stock} left
-                    </span>
-                )}
-                {item.stock === 0 && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-white/60 backdrop-blur-sm">
-                        <span className="rounded bg-red-600 px-3 py-1 font-sans text-sm font-bold uppercase tracking-widest text-white shadow-sm">
-                            Sold Out
-                        </span>
-                    </div>
-                )}
+
             </div>
 
             <div className="flex h-full min-h-[5.5rem] flex-col justify-between p-3 sm:p-4">
-                <div>
-                    <h3 className="font-sans text-base font-bold leading-tight tracking-tight text-slate-900 line-clamp-2">
-                        {item.name}
-                    </h3>
-                    {item.description ? (
-                        <p className="mt-1 font-sans text-xs leading-snug text-slate-500 line-clamp-2">
-                            {item.description}
-                        </p>
-                    ) : null}
-                </div>
+                <h3 className="font-sans text-base font-bold leading-tight tracking-tight text-slate-900 line-clamp-2">
+                    {item.name}
+                </h3>
                 <div className="mt-3 flex items-center justify-between">
                     <span className="font-mono text-lg font-bold text-slate-900">
                         {formattedPrice}

@@ -1,13 +1,13 @@
 import { create } from 'zustand';
-import { MenuItemDTO } from '../types/MenuItemDTO';
 import { OrderDTO, OrderType, OrderItemDTO } from '../types/OrderDTO';
 import { OrderStatus } from '../types/OrderDTO';
+import { Item } from '@/types/Item';
 
 interface PosState {
     order: OrderDTO;
     setOrderType: (type: OrderType) => void;
     setTableNumber: (table: string | undefined) => void;
-    addItem: (item: MenuItemDTO) => void;
+    addItem: (item: Item) => void;
     removeItem: (itemId: number) => void;
     updateQuantity: (itemId: number, quantity: number) => void;
     clearOrder: () => void;
@@ -41,7 +41,7 @@ export const usePosStore = create<PosState>((set) => ({
     addItem: (menuItem) =>
         set((state) => {
             const existingIndex = state.order.orderItems.findIndex(
-                (oi) => oi.itemId === menuItem.id
+                (oi) => oi.itemId === menuItem.itemId
             );
 
             if (existingIndex >= 0) {
@@ -53,7 +53,7 @@ export const usePosStore = create<PosState>((set) => ({
                 return { order: { ...state.order, orderItems: updated } };
             } else {
                 const newItem: OrderItemDTO = {
-                    itemId: menuItem.id,
+                    itemId: menuItem.itemId,
                     quantity: 1,
                     priceAtOrder: menuItem.price,
                 };

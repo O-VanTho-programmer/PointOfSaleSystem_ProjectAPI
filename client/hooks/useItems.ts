@@ -12,9 +12,9 @@ export const itemKeys = {
     detail: (id: number) => [...itemKeys.details(), id] as const,
 };
 
-export const useItems = (pageNumber: number = 1, pageSize: number = 10) => {
+export const useItems = (pageNumber?: number, pageSize?: number) => {
     return useQuery({
-        queryKey: itemKeys.list(pageNumber, pageSize),
+        queryKey: itemKeys.list(pageNumber || 0, pageSize || 0),
         queryFn: () => getItems(pageNumber, pageSize),
     });
 };
