@@ -49,7 +49,9 @@ export const useCreateOrder = () => {
         mutationFn: (dto: OrdersUploadDTO) => createOrder(dto),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: orderKeys.lists() });
-        },
+        },onError: (error) => {
+            console.log(error);
+        }
     });
 };
 

@@ -1,10 +1,10 @@
 import { create } from 'zustand';
-import { OrderDTO, OrderType, OrderItemDTO } from '../types/OrderDTO';
+import { OrderType, OrderItemDTO, OrdersUploadDTO } from '../types/OrderDTO';
 import { OrderStatus } from '../types/OrderDTO';
 import { Item } from '@/types/Item';
 
 interface PosState {
-    order: OrderDTO;
+    order: OrdersUploadDTO;
     setOrderType: (type: OrderType) => void;
     setTableNumber: (table: string | undefined) => void;
     addItem: (item: Item) => void;
@@ -13,12 +13,12 @@ interface PosState {
     clearOrder: () => void;
 }
 
-const createEmptyOrder = (): OrderDTO => ({
-    orderId: 0,
-    userId: 1,
+const createEmptyOrder = (): OrdersUploadDTO => ({
+    userId: -1,
     status: OrderStatus.Pending,
     orderType: OrderType.DineIn,
     tableNumber: undefined,
+    discountId: undefined,
     createdDate: new Date().toISOString(),
     orderItems: [],
 });

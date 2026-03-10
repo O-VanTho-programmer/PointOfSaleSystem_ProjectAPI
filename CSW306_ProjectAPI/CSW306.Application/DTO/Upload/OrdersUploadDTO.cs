@@ -7,13 +7,13 @@ namespace CSW306.Application.DTO.Upload
         [Required]
         public int Status { get; set; }
 
-        public int DiscountId { get; set; }
+        public int? DiscountId { get; set; }
 
         [Required]
         public int UserId { get; set; }
 
         [Required]
-        public List<OrderItemUploadDTO> Items { get; set; }
+        public List<OrderItemUploadDTO> OrderItems { get; set; }
 
         [Required]
         public DateTime CreatedDate { get; set; }

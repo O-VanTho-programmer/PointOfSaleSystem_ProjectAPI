@@ -29,18 +29,19 @@ export interface OrderItemDTO {
 }
 
 export interface OrdersUploadDTO {
-    status: number;
-    discountId: number;
     userId: number;
-    items: OrderItemUploadDTO[];
-    createdDate: string;
+    status: number;
+    orderItems: OrderItemUploadDTO[];
     tableNumber?: string;
     orderType?: number;
+    discountId?: number;
+    createdDate: string;
 }
 
 export interface OrderItemUploadDTO {
     itemId: number;
     quantity: number;
+    priceAtOrder: number;
 }
 export interface UpdateStatusOrderDTO {
     status: number;
