@@ -54,7 +54,7 @@ namespace CSW306.Application.Services
             return result;
         }
 
-        public async Task<TemplateApi<Categories>> GetCategoriesAsync(int pageNumber, int pageSize)
+        public async Task<TemplateApi<Categories>> GetCategoriesAsync(int? pageNumber, int? pageSize)
         {
             var cachedCategories = await _redisCacheService.GetAsync<IEnumerable<Categories>>("categories");
 
@@ -64,10 +64,9 @@ namespace CSW306.Application.Services
             }
 
             var totalCount = cachedCategories.Count();
-            var pagedCategories = cachedCategories.Skip((pageNumber - 1) * pageSize).Take(pageSize);
             
             var pagination = new Pagination();
-            return pagination.HandlePagedRespond(pageNumber, pageSize, pagedCategories.ToList(), totalCount);
+            return pagination.HandleGetAllRespond(pageNumber ?? 1, pageSize ?? totalCount, cachedCategories.ToList(), totalCount);
         }
 
         public async Task<TemplateApi<Categories>> GetCategoryAsync(int id)
