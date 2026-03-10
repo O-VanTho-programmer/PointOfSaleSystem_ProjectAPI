@@ -19,7 +19,7 @@ namespace CSW306_ProjectAPI.Controllers
         {
             _tableService = tableService;
         }
-
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Table>>> Get()
         {

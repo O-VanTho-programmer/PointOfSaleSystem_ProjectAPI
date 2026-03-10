@@ -12,7 +12,7 @@ namespace CSW306.Application.Interfaces.IServices
         Task<TemplateApi<OrderResponseDTO>> GetOrdersAsync(int pageNumber, int pageSize);
         Task<TemplateApi<OrderResponseDTO>> GetOrderAsync(int id);
         Task<TemplateApi<OrderResponseDTO>> GetOrdersByDateRange(DateTime? start_date, DateTime? end_date);
-        Task<Orders?> CreateOrderAsync(OrdersUploadDTO dto);
+        Task<TemplateApi<OrderResponseDTO>> CreateOrderAsync(OrdersUploadDTO dto);
         Task<Orders?> UpdateOrderStatusAsync(int id, UpdateStatusOrderDTO request);
     }
 }

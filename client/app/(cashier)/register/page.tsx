@@ -2,6 +2,7 @@
 
 import React, { useState, useCallback, useMemo } from "react";
 import { MenuItemCard } from "../../../components/MenuItemCard";
+import { SearchBar } from "../../../components/SearchBar";
 import { OrderType } from "../../../types/OrderDTO";
 import { CartSidebar } from "../../../components/CartSidebar";
 import { usePosStore } from "../../../store/posStore";
@@ -17,18 +18,30 @@ const ORDER_TYPE_OPTIONS: { value: OrderType; label: string }[] = [
 
 export default function RegisterScreen() {
     const [selectedCategory, setSelectedCategory] = useState<string>("All");
+    const [searchQuery, setSearchQuery] = useState("");
 
     const { data: itemsResult } = useItems();
     const menuItems = itemsResult?.listPayload || [];
 
-    const {data: categoryResult} = useCategories();
+    const { data: categoryResult } = useCategories();
     const categories = categoryResult?.listPayload || [];
 
     const filteredItems = useMemo(() => {
-        return selectedCategory === "All"
-            ? menuItems
-            : menuItems?.filter(item => item.categoryId === Number(selectedCategory));
-    }, [selectedCategory]);
+        let items = menuItems || [];
+
+        if (selectedCategory !== "All") {
+            items = items.filter(item => item.categoryId === Number(selectedCategory));
+        }
+
+        if (searchQuery.trim()) {
+            const query = searchQuery.toLowerCase().trim();
+            items = items.filter(item =>
+                item.name.toLowerCase().includes(query)
+            );
+        }
+
+        return items;
+    }, [selectedCategory, searchQuery, menuItems]);
 
     const { addItem, order, setOrderType, setTableNumber } = usePosStore();
 
@@ -46,7 +59,7 @@ export default function RegisterScreen() {
                     {/* Categories and Order Type Toggle */}
                     <div className="flex items-center justify-between px-4 py-3 sm:px-6">
                         <div className="flex gap-2 overflow-x-auto scrollbar-hide">
-                            
+
                             <button
                                 onClick={() => setSelectedCategory("All")}
                                 className={`
@@ -59,7 +72,7 @@ export default function RegisterScreen() {
                             >
                                 All
                             </button>
-                            
+
                             {categories.map(category => {
                                 const isSelected = selectedCategory === category.categoryId.toString();
                                 return (
@@ -97,6 +110,17 @@ export default function RegisterScreen() {
                                     {label}
                                 </button>
                             ))}
+                        </div>
+                    </div>
+
+                    {/* Search Bar Row */}
+                    <div className="flex items-center px-4 pb-3 sm:px-6">
+                        <div className="w-full max-w-md">
+                            <SearchBar
+                                value={searchQuery}
+                                onChange={setSearchQuery}
+                                placeholder="Search menu items or SKU..."
+                            />
                         </div>
                     </div>
 

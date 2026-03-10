@@ -2,11 +2,15 @@
 
 import React, { useMemo } from 'react';
 import { usePosStore } from '../store/posStore';
-import { OrderType } from '../types/OrderDTO';
+import { OrderStatus, OrderType } from '../types/OrderDTO';
 import { RoleGuard } from './RoleGuard';
+import { useCreateOrder } from '@/hooks/useOrders';
+import { useAuthStore } from '@/store/authStore';
+import toast from 'react-hot-toast';
 
 export function CartSidebar() {
     const { order, updateQuantity, clearOrder } = usePosStore();
+    const { user } = useAuthStore();
 
     const subtotal = useMemo(() => {
         return order.orderItems.reduce((sum: number, oi) => sum + oi.priceAtOrder * oi.quantity, 0);
@@ -19,6 +23,33 @@ export function CartSidebar() {
     const formatCurrency = (value: number) => {
         return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
     };
+
+    const createOrder = useCreateOrder();
+
+    const handleSubmitOrder = () => {
+        createOrder.mutateAsync({
+            status: OrderStatus.Pending,
+            discountId: order.discountId,
+            userId: user?.id || -1,
+            orderItems: order.orderItems.map((oi) => ({
+                itemId: oi.itemId,
+                quantity: oi.quantity,
+                priceAtOrder: oi.priceAtOrder,
+            })),
+            createdDate: new Date().toISOString(),
+            tableNumber: order.tableNumber,
+            orderType: order.orderType,
+        }, {
+            onSuccess: () => {
+                clearOrder();
+                toast.success("Order created successfully");
+            },
+            onError: (error) => {
+                console.log(error);
+                toast.error("Failed to create order");
+            }
+        });
+    }
 
     return (
         <aside className="flex h-full w-full flex-col bg-white">
@@ -113,6 +144,7 @@ export function CartSidebar() {
                     fallback={
                         <button
                             type="button"
+                            onClick={handleSubmitOrder}
                             disabled={order.orderItems.length === 0 || (order.tableNumber === undefined && order.orderType === OrderType.DineIn)}
                             className="flex w-full items-center justify-center rounded-xl bg-blue-600 p-4 font-bold text-white shadow-md transition-all hover:bg-blue-500 disabled:pointer-events-none disabled:opacity-50 touch-manipulation"
                         >

@@ -422,7 +422,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CSW306.Domain.Entities.Orders",
+        "Type": "CSW306.Application.Utils.TemplateApi\u00601[[OrderResponseDTO, CSW306.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",

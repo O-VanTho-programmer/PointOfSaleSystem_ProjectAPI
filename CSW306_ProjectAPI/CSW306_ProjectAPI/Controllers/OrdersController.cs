@@ -1,6 +1,7 @@
 using Azure.Core;
 using CSW306.Application.DTO.Upload;
 using CSW306.Application.Interfaces.IServices;
+using CSW306.Application.Utils;
 using CSW306.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -53,13 +54,13 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Orders>> AddOrder([FromBody] OrdersUploadDTO dto) 
+        public async Task<ActionResult<TemplateApi<OrderResponseDTO>>> AddOrder([FromBody] OrdersUploadDTO dto) 
         {
             var order = await _orderService.CreateOrderAsync(dto);
 
-            if (order == null)
+            if (!order.Success)
             {
-                return BadRequest("Invalid order items or items not found.");
+                return BadRequest(order.Message);
             }
 
             return Ok(order);

@@ -27,8 +27,8 @@ export const getOrdersByDateRange = async (
     return response.data;
 };
 
-export const createOrder = async (dto: OrdersUploadDTO): Promise<OrderDTO> => {
-    const response = await apiClient.post<OrderDTO>('/Orders', dto);
+export const createOrder = async (dto: OrdersUploadDTO): Promise<TemplateApi<OrderDTO>> => {
+    const response = await apiClient.post<TemplateApi<OrderDTO>>('/Orders', dto);
     return response.data;
 };
 

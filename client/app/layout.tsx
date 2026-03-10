@@ -2,6 +2,7 @@
 
 import { Geist, Geist_Mono } from "next/font/google";
 import { usePathname } from "next/navigation";
+import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import { Sidebar } from "../components/Sidebar";
 import Providers from "./providers";
@@ -35,10 +36,16 @@ export default function RootLayout({
           {/* Global Persistent Sidebar Navigation */}
           {!isAuthRoute && <Sidebar />}
 
-          {/* Main Application Area */}
           <div className={`flex flex-col overflow-hidden ${isAuthRoute ? 'w-full flex-none' : 'flex-1'}`}>
             {children}
           </div>
+          <Toaster
+            position="top-center"
+            toastOptions={{
+              className: 'text-sm font-semibold text-slate-800',
+              duration: 3000,
+            }}
+          />
         </Providers>
       </body>
     </html>
