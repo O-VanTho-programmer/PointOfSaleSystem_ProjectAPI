@@ -13,6 +13,6 @@ namespace CSW306.Application.Interfaces.IServices
         Task<TemplateApi<OrderResponseDTO>> GetOrderAsync(int id);
         Task<TemplateApi<OrderResponseDTO>> GetOrdersByDateRange(DateTime? start_date, DateTime? end_date);
         Task<TemplateApi<OrderResponseDTO>> CreateOrderAsync(OrdersUploadDTO dto);
-        Task<Orders?> UpdateOrderStatusAsync(int id, UpdateStatusOrderDTO request);
+        Task<TemplateApi<OrderResponseDTO>> UpdateOrderStatusAsync(int id, UpdateStatusOrderDTO request);
     }
 }
