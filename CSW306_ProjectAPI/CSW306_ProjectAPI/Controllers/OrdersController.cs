@@ -34,8 +34,8 @@ namespace CSW306_ProjectAPI.Controllers
         {
             var order = await _orderService.GetOrderAsync(id);
 
-            if (order.Payload == null)
-                return NotFound("Order Id not found");
+            if (!order.Success)
+                return NotFound(order.Message);
 
             return Ok(order);
         }
@@ -45,9 +45,9 @@ namespace CSW306_ProjectAPI.Controllers
         {
             var order = await _orderService.GetOrdersByDateRange(start_date, end_date);
 
-            if (order.Payload == null || !((IEnumerable<object>)order.Payload).Any())
+            if (!order.Success)
             {
-                return NotFound("Orders not found for the given date range.");
+                return NotFound(order.Message);
             }
 
             return Ok(order);
@@ -67,12 +67,12 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpPatch("{id}/status")]
-        public async Task<ActionResult<Orders>> UpdateStatusOrder(int id, [FromBody] UpdateStatusOrderDTO request)
+        public async Task<ActionResult<TemplateApi<OrderResponseDTO>>> UpdateStatusOrder(int id, [FromBody] UpdateStatusOrderDTO request)
         {
             var order = await _orderService.UpdateOrderStatusAsync(id, request);
 
-            if (order == null)
-                return NotFound(new { message = "Order not found" });
+            if (!order.Success)
+                return NotFound(order.Message);
 
             return Ok(order);
         }

@@ -24,13 +24,17 @@ namespace CSW306.Application.Services
 
         public async Task<TemplateApi<OrderResponseDTO>> GetOrderAsync(int id)
         {
-            var order = await _unitOfWork.Orders.GetOrderByIdWithDetailsAsync(id);
-
-            OrderResponseDTO? res = null;
-
-            if (order != null)
+            var pagination = new Pagination();
+            try
             {
-                res = new OrderResponseDTO
+                var order = await _unitOfWork.Orders.GetOrderByIdWithDetailsAsync(id);
+
+                if (order == null)
+                {
+                    return new TemplateApi<OrderResponseDTO>(null, null, "Order not found.", false, 0, 0, 0, 0);
+                }
+
+                var res = new OrderResponseDTO
                 {
                     OrderId = order.OrderId,
                     Status = order.Status,
@@ -55,78 +59,101 @@ namespace CSW306.Application.Services
                         }
                     }).ToList() ?? new List<OrderItemResponseDTO>()
                 };
-            }
 
-            var pagination = new Pagination();
-            return pagination.HandleGetByIdRespond(res);
+                return pagination.HandleGetByIdRespond(res);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                _auditLogService.EnqueueLog("GetOrderError", "Orders", id, null, $"Exception: {ex.Message}");
+                return new TemplateApi<OrderResponseDTO>(null, null, "An unexpected error occurred while fetching the order.", false, 0, 0, 0, 0);
+            }
         }
 
         public async Task<TemplateApi<OrderResponseDTO>> GetOrdersAsync(int pageNumber, int pageSize)
         {
-            var orders = await _unitOfWork.Orders.GetAllOrdersWithDetailsAsync(pageNumber, pageSize);
-            var countRecord = await _unitOfWork.Orders.GetTotalOrdersCountAsync();
-
-            var res = orders.Select(o => new OrderResponseDTO
+            try
             {
-                OrderId = o.OrderId,
-                DiscountId = o.DiscountId,
-                UsserId = o.UserId,
-                Status = o.Status,
-                CreatedDate = o.CreatedDate,
-                TableNumber = o.TableNumber,
-                OrderType = o.OrderType,
-                OrderItems = o.OrderItems?.Select(oi => new OrderItemResponseDTO
-                {
-                    ItemId = oi.ItemId,
-                    OrderId = oi.OrderId,
-                    Quantity = oi.Quantity,
-                    PriceAtOrder = oi.PriceAtOrder,
-                    Item = oi.Item == null ? null : new ItemResponseDTO
-                    {
-                        ItemId = oi.Item.ItemId,
-                        Name = oi.Item.Name,
-                        IsSoldOut = oi.Item.IsSoldOut,
-                        Price = oi.Item.Price,
-                        CategoryId = oi.Item.CategoryId
-                    }
-                }).ToList() ?? new List<OrderItemResponseDTO>()
-            });
+                var orders = await _unitOfWork.Orders.GetAllOrdersWithDetailsAsync(pageNumber, pageSize);
+                var countRecord = await _unitOfWork.Orders.GetTotalOrdersCountAsync();
 
-            return new Pagination().HandlePagedRespond(pageNumber, pageSize, res, countRecord);
+                var res = orders.Select(o => new OrderResponseDTO
+                {
+                    OrderId = o.OrderId,
+                    DiscountId = o.DiscountId,
+                    UsserId = o.UserId,
+                    Status = o.Status,
+                    CreatedDate = o.CreatedDate,
+                    TableNumber = o.TableNumber,
+                    OrderType = o.OrderType,
+                    OrderItems = o.OrderItems?.Select(oi => new OrderItemResponseDTO
+                    {
+                        ItemId = oi.ItemId,
+                        OrderId = oi.OrderId,
+                        Quantity = oi.Quantity,
+                        PriceAtOrder = oi.PriceAtOrder,
+                        Item = oi.Item == null ? null : new ItemResponseDTO
+                        {
+                            ItemId = oi.Item.ItemId,
+                            Name = oi.Item.Name,
+                            IsSoldOut = oi.Item.IsSoldOut,
+                            Price = oi.Item.Price,
+                            CategoryId = oi.Item.CategoryId
+                        }
+                    }).ToList() ?? new List<OrderItemResponseDTO>()
+                });
+
+                return new Pagination().HandlePagedRespond(pageNumber, pageSize, res, countRecord);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                _auditLogService.EnqueueLog("GetOrdersError", "Orders", null, null, $"Exception: {ex.Message}");
+                return new TemplateApi<OrderResponseDTO>(null, null, "An unexpected error occurred while fetching orders.", false, 0, 0, 0, 0);
+            }
         }
 
         public async Task<TemplateApi<OrderResponseDTO>> GetOrdersByDateRange(DateTime? start_date, DateTime? end_date)
         {
-            var orders = await _unitOfWork.Orders.GetByDateRange(start_date, end_date);
-            var countRecord = orders.Count();
-
-            var res = orders.Select(o => new OrderResponseDTO
+            try
             {
-                OrderId = o.OrderId,
-                DiscountId = o.DiscountId,
-                UsserId = o.UserId,
-                Status = o.Status,
-                CreatedDate = o.CreatedDate,
-                TableNumber = o.TableNumber,
-                OrderType = o.OrderType,
-                OrderItems = o.OrderItems?.Select(oi => new OrderItemResponseDTO
-                {
-                    ItemId = oi.ItemId,
-                    OrderId = oi.OrderId,
-                    Quantity = oi.Quantity,
-                    PriceAtOrder = oi.PriceAtOrder,
-                    Item = oi.Item == null ? null : new ItemResponseDTO
-                    {
-                        ItemId = oi.Item.ItemId,
-                        Name = oi.Item.Name,
-                        IsSoldOut = oi.Item.IsSoldOut,
-                        Price = oi.Item.Price,
-                        CategoryId = oi.Item.CategoryId
-                    }
-                }).ToList() ?? new List<OrderItemResponseDTO>()
-            });
+                var orders = await _unitOfWork.Orders.GetByDateRange(start_date, end_date);
+                var countRecord = orders.Count();
 
-            return new Pagination().HandleGetAllRespond(1, countRecord, res, countRecord);
+                var res = orders.Select(o => new OrderResponseDTO
+                {
+                    OrderId = o.OrderId,
+                    DiscountId = o.DiscountId,
+                    UsserId = o.UserId,
+                    Status = o.Status,
+                    CreatedDate = o.CreatedDate,
+                    TableNumber = o.TableNumber,
+                    OrderType = o.OrderType,
+                    OrderItems = o.OrderItems?.Select(oi => new OrderItemResponseDTO
+                    {
+                        ItemId = oi.ItemId,
+                        OrderId = oi.OrderId,
+                        Quantity = oi.Quantity,
+                        PriceAtOrder = oi.PriceAtOrder,
+                        Item = oi.Item == null ? null : new ItemResponseDTO
+                        {
+                            ItemId = oi.Item.ItemId,
+                            Name = oi.Item.Name,
+                            IsSoldOut = oi.Item.IsSoldOut,
+                            Price = oi.Item.Price,
+                            CategoryId = oi.Item.CategoryId
+                        }
+                    }).ToList() ?? new List<OrderItemResponseDTO>()
+                });
+
+                return new Pagination().HandleGetAllRespond(1, countRecord, res, countRecord);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                _auditLogService.EnqueueLog("GetOrdersByDateRangeError", "Orders", null, null, $"Exception: {ex.Message}");
+                return new TemplateApi<OrderResponseDTO>(null, null, "An unexpected error occurred while fetching orders by date range.", false, 0, 0, 0, 0);
+            }
         }
 
         public async Task<TemplateApi<OrderResponseDTO>> CreateOrderAsync(OrdersUploadDTO dto)
@@ -219,18 +246,57 @@ namespace CSW306.Application.Services
             }
         }
 
-        public async Task<Orders?> UpdateOrderStatusAsync(int id, UpdateStatusOrderDTO request)
+        public async Task<TemplateApi<OrderResponseDTO>> UpdateOrderStatusAsync(int id, UpdateStatusOrderDTO request)
         {
-            var order = await _unitOfWork.Orders.GetByIdAsync(id);
-            if (order == null) return null;
+            var pagination = new Pagination();
+            try
+            {
+                var order = await _unitOfWork.Orders.GetOrderByIdWithDetailsAsync(id);
+                if (order == null)
+                {
+                    return new TemplateApi<OrderResponseDTO>(null, null, "Order not found", false, 0, 0, 0, 0);
+                }
 
-            order.Status = request.Status;
-            await _unitOfWork.Orders.UpdateAsync(order);
-            await _unitOfWork.SaveChangesAsync();
+                order.Status = request.Status;
+                await _unitOfWork.Orders.UpdateAsync(order);
+                await _unitOfWork.SaveChangesAsync();
 
-            _auditLogService.EnqueueLog("UpdateOrderStatus", "Orders", order.OrderId, null, $"New status: {request.Status}");
+                _auditLogService.EnqueueLog("UpdateOrderStatus", "Orders", order.OrderId, null, $"New status: {request.Status}");
 
-            return order;
+                var resDto = new OrderResponseDTO
+                {
+                    OrderId = order.OrderId,
+                    Status = order.Status,
+                    DiscountId = order.DiscountId,
+                    UsserId = order.UserId,
+                    CreatedDate = order.CreatedDate,
+                    TableNumber = order.TableNumber,
+                    OrderType = order.OrderType,
+                    OrderItems = order.OrderItems?.Select(oi => new OrderItemResponseDTO
+                    {
+                        ItemId = oi.ItemId,
+                        OrderId = oi.OrderId,
+                        Quantity = oi.Quantity,
+                        PriceAtOrder = oi.PriceAtOrder,
+                        Item = oi.Item == null ? null : new ItemResponseDTO
+                        {
+                            ItemId = oi.Item.ItemId,
+                            Name = oi.Item.Name,
+                            IsSoldOut = oi.Item.IsSoldOut,
+                            Price = oi.Item.Price,
+                            CategoryId = oi.Item.CategoryId
+                        }
+                    }).ToList() ?? new List<OrderItemResponseDTO>()
+                };
+
+                return pagination.HandleGetByIdRespond(resDto);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                _auditLogService.EnqueueLog("UpdateOrderStatusError", "Orders", id, null, $"Exception: {ex.Message}");
+                return new TemplateApi<OrderResponseDTO>(null, null, "An unexpected error occurred while updating the order status.", false, 0, 0, 0, 0);
+            }
         }
     }
 }
