@@ -1,5 +1,6 @@
 using CSW306.Application.DTO.Upload;
 using CSW306.Application.Interfaces.IServices;
+using CSW306.Application.Utils;
 using CSW306.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,61 +22,61 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Reservation>>> Get()
+        public async Task<ActionResult<TemplateApi<Reservation>>> Get()
         {
             var reservations = await _reservationService.GetAllReservationsAsync();
             return Ok(reservations);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Reservation>> Get(int id)
+        public async Task<ActionResult<TemplateApi<Reservation>>> Get(int id)
         {
             var reservation = await _reservationService.GetReservationByIdAsync(id);
-            if (reservation == null)
+            if (!reservation.Success)
             {
-                return NotFound("reservation id invalid");
+                return NotFound(reservation);
             }
             return Ok(reservation);
         }
 
         [HttpPost(Name = "BookTable")]
-        public async Task<ActionResult<Reservation>> AddReservation([FromBody] ReservationCreateDTO dto)
+        public async Task<ActionResult<TemplateApi<Reservation>>> AddReservation([FromBody] ReservationCreateDTO dto)
         {
-            var (reservation, errorMessage) = await _reservationService.CreateReservationAsync(dto);
+            var reservation = await _reservationService.CreateReservationAsync(dto);
 
-            if (errorMessage != null)
+            if (!reservation.Success)
             {
-                if (errorMessage == "table dont exist") return NotFound(errorMessage);
-                return BadRequest(errorMessage);
+                if (reservation.Message == "table dont exist") return NotFound(reservation);
+                return BadRequest(reservation);
             }
 
-            return CreatedAtAction(nameof(Get), new { id = reservation.ReservationId }, reservation);
+            return CreatedAtAction(nameof(Get), new { id = reservation.Payload!.ReservationId }, reservation);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateReservation(int id, [FromBody] ReservationCreateDTO dto)
         {
-            var (reservation, errorMessage) = await _reservationService.UpdateReservationAsync(id, dto);
+            var reservation = await _reservationService.UpdateReservationAsync(id, dto);
 
-            if (errorMessage != null)
+            if (!reservation.Success)
             {
-                if (errorMessage == "reservation id not found" || errorMessage == "table dont exist") return NotFound(errorMessage);
-                return BadRequest(errorMessage);
+                if (reservation.Message == "reservation id not found" || reservation.Message == "table dont exist") return NotFound(reservation);
+                return BadRequest(reservation);
             }
 
-            return NoContent();
+            return Ok(reservation);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteReservation(int id)
         {
-            var success = await _reservationService.DeleteReservationAsync(id);
-            if (!success)
+            var result = await _reservationService.DeleteReservationAsync(id);
+            if (!result.Success)
             {
-                return NotFound("reservation id invalid");
+                return NotFound(result);
             }
 
-            return NoContent();
+            return Ok(result);
         }
     }
 }

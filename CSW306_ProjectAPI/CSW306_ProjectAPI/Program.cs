@@ -43,6 +43,7 @@ builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.ITableService
 builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IReservationService, CSW306.Application.Services.ReservationService>();
 builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IPaymentService, CSW306.Application.Services.PaymentService>();
 builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IDiscountService, CSW306.Application.Services.DiscountService>();
+builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IUserService, CSW306.Application.Services.UserService>();
 
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
     ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("RedisCache") ?? "localhost:6379,abortConnect=false"));

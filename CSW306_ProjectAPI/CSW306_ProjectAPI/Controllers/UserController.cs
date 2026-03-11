@@ -1,7 +1,8 @@
+using CSW306.Application.Interfaces.IServices;
+using CSW306.Application.Utils;
 using CSW306.Domain.Entities;
-using CSW306.Infrastructure.Data;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace CSW306_ProjectAPI.Controllers
 {
@@ -9,25 +10,36 @@ namespace CSW306_ProjectAPI.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly CSW306_ProjectAPIContext _context;
+        private readonly IUserService _userService;
 
-        public UserController(CSW306_ProjectAPIContext context)
+        public UserController(IUserService userService)
         {
-            _context = context;
+            _userService = userService;
         }
 
         [HttpGet]
-        public IEnumerable<Users> GetUsers()
+        public async Task<ActionResult<TemplateApi<Users>>> GetUsers()
         {
-            var users = _context.Users.ToList();
-            return (users);
+            var users = await _userService.GetAllUsersAsync();
+            return Ok(users);
         }
 
         [HttpPost]
-        public ActionResult<Users> CreateUser(Users user) { 
-            _context.Users.Add(user);
-            _context.SaveChanges();
-            return Ok(user);
+        public async Task<ActionResult<TemplateApi<Users>>> CreateUser([FromBody] Users user) 
+        { 
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var createdUser = await _userService.CreateUserAsync(user);
+
+            if (!createdUser.Success)
+            {
+                return BadRequest(createdUser);
+            }
+
+            return Ok(createdUser);
         }
     }
 }
