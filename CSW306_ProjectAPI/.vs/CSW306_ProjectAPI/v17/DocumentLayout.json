@@ -68,8 +68,7 @@
               "RelativeToolTip": "CSW306_ProjectAPI\\Controllers\\TableController.cs",
               "ViewState": "AgIAADQAAAAAAAAAAAAUwBkAAABBAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-10T11:22:41.254Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-10T11:22:41.254Z"
             },
             {
               "$type": "Document",
@@ -79,10 +78,9 @@
               "RelativeDocumentMoniker": "CSW306.Application\\Services\\OrderService.cs",
               "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Services\\OrderService.cs",
               "RelativeToolTip": "CSW306.Application\\Services\\OrderService.cs",
-              "ViewState": "AgIAAIIAAAAAAAAAAAD4v4MAAAA5AAAAAAAAAA==",
+              "ViewState": "AgIAAJ0AAAAAAAAAAAD4v54AAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-10T09:28:09.386Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-10T09:28:09.386Z"
             },
             {
               "$type": "Document",
@@ -94,8 +92,7 @@
               "RelativeToolTip": "CSW306.Application\\DTO\\Upload\\OrdersUploadDTO.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-10T09:26:27.718Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-10T09:26:27.718Z"
             },
             {
               "$type": "Document",
@@ -103,9 +100,9 @@
               "Title": "OrdersController.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\OrdersController.cs",
               "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Controllers\\OrdersController.cs",
-              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\OrdersController.cs*",
-              "RelativeToolTip": "CSW306_ProjectAPI\\Controllers\\OrdersController.cs*",
-              "ViewState": "AgIAACsAAAAAAAAAAIAwwDQAAAAdAAAAAAAAAA==",
+              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\OrdersController.cs",
+              "RelativeToolTip": "CSW306_ProjectAPI\\Controllers\\OrdersController.cs",
+              "ViewState": "AgIAACsAAAAAAAAAAIAwwDcAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-10T09:26:10.327Z",
               "EditorCaption": ""
@@ -120,8 +117,7 @@
               "RelativeToolTip": "CSW306.Application\\Services\\CategoryService.cs",
               "ViewState": "AgIAADIAAAAAAAAAAAAgwBUAAAA+AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-10T06:47:24.719Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-10T06:47:24.719Z"
             },
             {
               "$type": "Document",
@@ -133,8 +129,7 @@
               "RelativeToolTip": "CSW306_ProjectAPI\\Controllers\\ItemsController.cs",
               "ViewState": "AgIAAA0AAAAAAAAAAAAtwDsAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-08T04:02:37.567Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-08T04:02:37.567Z"
             },
             {
               "$type": "Document",
@@ -146,8 +141,7 @@
               "RelativeToolTip": "CSW306.Application\\Services\\ItemService.cs",
               "ViewState": "AgIAABcAAAAAAAAAAAAtwFQAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-05T01:49:48.772Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-05T01:49:48.772Z"
             }
           ]
         }
