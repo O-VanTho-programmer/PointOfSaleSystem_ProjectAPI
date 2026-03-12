@@ -1,6 +1,7 @@
 using CSW306.Application.Interfaces.IServices;
 using CSW306.Application.Utils;
 using CSW306.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -18,6 +19,7 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Manager")]
         public async Task<ActionResult<TemplateApi<Users>>> GetUsers()
         {
             var users = await _userService.GetAllUsersAsync();
@@ -25,6 +27,7 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Manager")]
         public async Task<ActionResult<TemplateApi<Users>>> CreateUser([FromBody] Users user) 
         { 
             if (!ModelState.IsValid)

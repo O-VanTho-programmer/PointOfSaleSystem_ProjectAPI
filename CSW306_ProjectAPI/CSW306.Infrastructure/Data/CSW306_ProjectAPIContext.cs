@@ -21,6 +21,11 @@ namespace CSW306.Infrastructure.Data
         {
             modelBuilder.Entity<OrderItems>()
                 .HasKey(oi => new { oi.OrderId, oi.ItemId });
+
+            modelBuilder.Entity<AuditLog>()
+                .Property(a => a.Timestamp)
+                .HasDefaultValueSql("GETUTCDATE()")
+                .ValueGeneratedOnAdd();
         }
     }
 }

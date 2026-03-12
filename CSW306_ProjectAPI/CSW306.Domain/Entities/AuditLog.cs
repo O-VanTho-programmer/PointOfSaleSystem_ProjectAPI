@@ -23,8 +23,6 @@ namespace CSW306.Domain.Entities
 
         [StringLength(500)]
         public string? Details { get; set; }       // Extra context (JSON or text)
-
-        [Required]
         public DateTime Timestamp { get; set; }
     }
 }

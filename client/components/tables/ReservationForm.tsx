@@ -27,14 +27,25 @@ export function ReservationForm() {
         if (isNaN(tId) || tId <= 0) return toast.error("Invalid Table ID.");
         if (isNaN(guestsNum) || guestsNum <= 0) return toast.error("Invalid number of guests.");
 
-        const isoDate = new Date(resDate).toISOString();
+        // C# expects full DateTime objects for both Date and Time fields.
+        // We construct a valid date for the Date field.
+        const dateObj = new Date(resDate);
+        const isoDate = dateObj.toISOString();
+        
+        // For the Time field, we construct a dummy date but with the correct time to get a valid ISO string.
+        const [hours, minutes] = resTime.split(':');
+        dateObj.setHours(parseInt(hours, 10));
+        dateObj.setMinutes(parseInt(minutes, 10));
+        dateObj.setSeconds(0);
+        dateObj.setMilliseconds(0);
+        const isoTime = dateObj.toISOString();
         
         const promise = createReservation.mutateAsync({
             tableId: tId,
             customerName: resName,
             numberOfPeople: guestsNum,
             date: isoDate,
-            time: resTime,
+            time: isoTime,
             note: resNote || "No note",
         });
 
