@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CSW306_ProjectAPI.Controllers
 {
-    [Authorize(Roles = "Manager,Employee")]
+    [Authorize(Roles = "Manager,Waiter,Cashier")]
     [Route("api/[controller]")]
     [ApiController]
     public class ReservationController : ControllerBase
