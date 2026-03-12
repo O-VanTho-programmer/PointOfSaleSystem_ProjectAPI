@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CSW306_ProjectAPI.Controllers
 {
-    [Authorize(Roles = "Cashier,Manager")]
+    [Authorize(Roles = "Waiter,Cashier,Manager")]
     [Route("api/[controller]")]
     [ApiController]
     public class TableController : ControllerBase
@@ -53,7 +53,7 @@ namespace CSW306_ProjectAPI.Controllers
 
             return CreatedAtAction(nameof(Get), new { id = table.Payload!.TableId }, table);
         }
-
+        
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTable(int id, [FromBody] TableCreateDTO dto)
         {

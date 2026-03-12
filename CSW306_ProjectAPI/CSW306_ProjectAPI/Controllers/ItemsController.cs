@@ -52,7 +52,7 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Manager,Chef")]
+        [Authorize(Roles = "Manager,Chef,Cashier")]
         public async Task<ActionResult> UpdateItem(int id, [FromBody] ItemsUploadDTO uploadDTO)
         {
             var item = await _itemService.UpdateItemAsync(id, uploadDTO);
