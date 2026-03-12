@@ -39,6 +39,7 @@ namespace CSW306_ProjectAPI.Controllers
             return Ok(reservation);
         }
 
+        [AllowAnonymous]
         [HttpPost(Name = "BookTable")]
         public async Task<ActionResult<TemplateApi<Reservation>>> AddReservation([FromBody] ReservationCreateDTO dto)
         {

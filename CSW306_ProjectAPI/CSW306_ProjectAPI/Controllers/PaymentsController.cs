@@ -21,6 +21,7 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Manager,Cashier")]
         public async Task<ActionResult<TemplateApi<Payments>>> GetPayments()
         {
             var payments = await _paymentService.GetAllPaymentsAsync();
@@ -28,6 +29,7 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Manager,Cashier")]
         public async Task<ActionResult<TemplateApi<Payments>>> GetPayment(int id)
         {
             var payment = await _paymentService.GetPaymentByIdAsync(id);
@@ -86,6 +88,7 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpPost("pay/{id}")]
+        [Authorize]
         public async Task<IActionResult> ProcessPayment(int id)
         {
             var result = await _paymentService.ProcessPaymentAsync(id);

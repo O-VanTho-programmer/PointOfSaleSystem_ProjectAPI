@@ -13,8 +13,48 @@ const STATUS_CONFIG: Record<TableStatus, { label: string; dot: string; bg: strin
     occupied: { label: 'Occupied', dot: 'bg-red-400', bg: 'bg-red-50', text: 'text-red-700', ring: 'ring-red-200' },
 };
 
+import { useUpdateTable } from '../../../hooks/useTables';
+import toast from 'react-hot-toast';
+import { Power, Check, X as CloseIcon } from 'lucide-react';
+
 function TableCard({ table }: { table: Table }) {
     const config = STATUS_CONFIG[table.status] ?? STATUS_CONFIG.available;
+    const updateTable = useUpdateTable();
+
+    const handleToggleStatus = (e: React.MouseEvent) => {
+        e.stopPropagation(); // prevent card clicks if we add them later
+        
+        // Determine next status
+        let nextStatus: TableStatus = 'available';
+        let actionName = '';
+        
+        switch (table.status) {
+            case 'available':
+                nextStatus = 'occupied';
+                actionName = 'Occupied';
+                break;
+            case 'occupied':
+            case 'reserved':
+                nextStatus = 'available';
+                actionName = 'Available';
+                break;
+        }
+
+        const promise = updateTable.mutateAsync({
+            id: table.tableId,
+            dto: {
+                tableId: table.tableId,
+                capacity: table.capacity,
+                status: nextStatus
+            }
+        });
+
+        toast.promise(promise, {
+            loading: `Updating table to ${actionName}...`,
+            success: `Table ${table.tableId} is now ${actionName}`,
+            error: `Failed to update table status`
+        });
+    };
 
     return (
         <div className={`group relative flex flex-col items-center gap-4 rounded-2xl border bg-white p-6 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5 ${table.status === 'occupied' ? 'border-red-200' : table.status === 'reserved' ? 'border-amber-200' : 'border-slate-200'
@@ -34,11 +74,39 @@ function TableCard({ table }: { table: Table }) {
                 <span className="font-medium">{table.capacity} seats</span>
             </div>
 
-            {/* Status badge */}
-            <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ${config.bg} ${config.text}`}>
-                <span className={`h-2 w-2 rounded-full ${config.dot}`} />
-                {config.label}
-            </span>
+            {/* Status badge & Quick Action */}
+            <div className="flex w-full items-center justify-between mt-2">
+                <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[10px] font-bold uppercase tracking-wide ${config.bg} ${config.text}`}>
+                    <span className={`h-1.5 w-1.5 rounded-full ${config.dot}`} />
+                    {config.label}
+                </span>
+                
+                <button
+                    onClick={handleToggleStatus}
+                    disabled={updateTable.isPending}
+                    className={`flex h-8 w-8 items-center justify-center rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:pointer-events-none ${
+                        table.status === 'available'
+                            ? 'bg-emerald-100 text-emerald-600 hover:bg-emerald-200 focus:ring-emerald-400'
+                            : table.status === 'occupied'
+                            ? 'bg-red-100 text-red-600 hover:bg-red-200 focus:ring-red-400'
+                            : 'bg-amber-100 text-amber-600 hover:bg-amber-200 focus:ring-amber-400'
+                    }`}
+                    title={table.status === 'available' ? 'Mark Occupied' : table.status === 'occupied' ? 'Mark Available' : 'Cancel Reservation'}
+                >
+                    {updateTable.isPending ? (
+                        <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    ) : table.status === 'available' ? (
+                        <Power className="h-4 w-4" strokeWidth={2.5} />
+                    ) : table.status === 'occupied' ? (
+                        <Check className="h-4 w-4" strokeWidth={2.5} />
+                    ) : (
+                        <CloseIcon className="h-4 w-4" strokeWidth={2.5} />
+                    )}
+                </button>
+            </div>
         </div>
     );
 }

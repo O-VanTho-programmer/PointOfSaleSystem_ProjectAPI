@@ -13,6 +13,8 @@ export const getReservationById = async (id: number): Promise<TemplateApi<Reserv
 };
 
 export const createReservation = async (dto: ReservationCreateDTO): Promise<TemplateApi<Reservation>> => {
+    console.log(dto)
+
     const response = await apiClient.post<TemplateApi<Reservation>>('/Reservation', dto);
     return response.data;
 };

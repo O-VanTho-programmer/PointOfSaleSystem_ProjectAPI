@@ -29,8 +29,9 @@ apiClient.interceptors.response.use(function onFulfilled(response) {
     // Do something with response error
     if (error.response) {
         if (error.response.status === 401 || error.response.status === 403) {
-            Cookies.remove('pos_auth_token');
+            // Cookies.remove('pos_auth_token');
             // window.location.href = '/login';
+            
         }
     }
     return Promise.reject(error);

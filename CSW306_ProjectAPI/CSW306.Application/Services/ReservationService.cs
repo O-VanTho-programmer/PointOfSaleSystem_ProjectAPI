@@ -91,7 +91,6 @@ namespace CSW306.Application.Services
 
                 var reservation = new Reservation
                 {
-                    ReservationId = dto.ReservationId,
                     TableId = dto.TableId,
                     NumberOfPeople = dto.NumberOfPeople,
                     Note = dto.Note,

@@ -41,7 +41,7 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpPost("add")]
-        [Authorize]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> AddDiscount([FromBody] Discounts discount)
         {
             if (!ModelState.IsValid)
@@ -85,6 +85,7 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpPost("apply/{id}")]
+        [Authorize]
         public async Task<IActionResult> isValid(int id, int OrderId)
         {
             var result = await _discountService.IsDiscountValidAsync(id, OrderId);
