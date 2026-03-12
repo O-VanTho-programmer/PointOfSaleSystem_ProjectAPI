@@ -35,7 +35,7 @@ export const createOrder = async (dto: OrdersUploadDTO): Promise<TemplateApi<Ord
 export const updateOrderStatus = async (
     id: number,
     dto: UpdateStatusOrderDTO
-): Promise<OrderDTO> => {
-    const response = await apiClient.patch<OrderDTO>(`/Orders/${id}/status`, dto);
+): Promise<TemplateApi<OrderDTO>> => {
+    const response = await apiClient.patch<TemplateApi<OrderDTO>>(`/Orders/${id}/status`, dto);
     return response.data;
 };
