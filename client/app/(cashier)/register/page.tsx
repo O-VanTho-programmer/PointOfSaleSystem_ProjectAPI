@@ -49,7 +49,8 @@ export default function RegisterScreen() {
         addItem(item);
     }, [addItem]);
 
-    const { data: tables } = useTables();
+    const { data: tablesResult } = useTables();
+    const tables = tablesResult?.listPayload || [];
 
     return (
         <div className="flex h-screen w-full bg-slate-50 font-sans text-slate-900 overflow-hidden">

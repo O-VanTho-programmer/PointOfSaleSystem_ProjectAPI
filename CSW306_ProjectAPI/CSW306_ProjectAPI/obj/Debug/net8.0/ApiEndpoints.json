@@ -181,7 +181,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[CSW306.Domain.Entities.Discounts, CSW306.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "CSW306.Application.Utils.TemplateApi\u00601[[CSW306.Domain.Entities.Discounts, CSW306.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -207,7 +207,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CSW306.Domain.Entities.Discounts",
+        "Type": "CSW306.Application.Utils.TemplateApi\u00601[[CSW306.Domain.Entities.Discounts, CSW306.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -510,7 +510,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[CSW306.Domain.Entities.Payments, CSW306.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "CSW306.Application.Utils.TemplateApi\u00601[[CSW306.Domain.Entities.Payments, CSW306.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -536,7 +536,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CSW306.Domain.Entities.Payments",
+        "Type": "CSW306.Application.Utils.TemplateApi\u00601[[CSW306.Domain.Entities.Payments, CSW306.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -625,7 +625,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[CSW306.Domain.Entities.Reservation, CSW306.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "CSW306.Application.Utils.TemplateApi\u00601[[CSW306.Domain.Entities.Reservation, CSW306.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -651,7 +651,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CSW306.Domain.Entities.Reservation",
+        "Type": "CSW306.Application.Utils.TemplateApi\u00601[[CSW306.Domain.Entities.Reservation, CSW306.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -678,7 +678,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CSW306.Domain.Entities.Reservation",
+        "Type": "CSW306.Application.Utils.TemplateApi\u00601[[CSW306.Domain.Entities.Reservation, CSW306.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -735,7 +735,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[CSW306.Domain.Entities.Table, CSW306.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "CSW306.Application.Utils.TemplateApi\u00601[[CSW306.Domain.Entities.Table, CSW306.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -761,7 +761,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CSW306.Domain.Entities.Table",
+        "Type": "CSW306.Application.Utils.TemplateApi\u00601[[CSW306.Domain.Entities.Table, CSW306.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -787,7 +787,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CSW306.Domain.Entities.Table",
+        "Type": "CSW306.Application.Utils.TemplateApi\u00601[[CSW306.Domain.Entities.Table, CSW306.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -844,7 +844,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[CSW306.Domain.Entities.Users, CSW306.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "CSW306.Application.Utils.TemplateApi\u00601[[CSW306.Domain.Entities.Users, CSW306.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -870,7 +870,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CSW306.Domain.Entities.Users",
+        "Type": "CSW306.Application.Utils.TemplateApi\u00601[[CSW306.Domain.Entities.Users, CSW306.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
