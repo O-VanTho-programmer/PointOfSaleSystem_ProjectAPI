@@ -17,7 +17,7 @@ export interface OrderDTO {
     discountId?: number;
     status: OrderStatus;
     createdDate: string;
-    tableNumber?: string;
+    tableNumber?: number;
     orderType?: OrderType;
     orderItems: OrderItemDTO[];
 }
@@ -32,7 +32,7 @@ export interface OrdersUploadDTO {
     userId: number;
     status: number;
     orderItems: OrderItemUploadDTO[];
-    tableNumber?: string;
+    tableNumber?: number;
     orderType?: number;
     discountId?: number;
     createdDate: string;

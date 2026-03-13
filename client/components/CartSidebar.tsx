@@ -7,10 +7,13 @@ import { RoleGuard } from './RoleGuard';
 import { useCreateOrder } from '@/hooks/useOrders';
 import { useAuthStore } from '@/store/authStore';
 import toast from 'react-hot-toast';
+import { UserRole } from '@/models/User';
+import { useRouter } from 'next/navigation';
 
 export function CartSidebar() {
     const { order, updateQuantity, clearOrder } = usePosStore();
     const { user } = useAuthStore();
+    const router = useRouter();
 
     const subtotal = useMemo(() => {
         return order.orderItems.reduce((sum: number, oi) => sum + oi.priceAtOrder * oi.quantity, 0);
@@ -26,7 +29,7 @@ export function CartSidebar() {
 
     const createOrder = useCreateOrder();
 
-    const handleSubmitOrder = () => {
+    const handleSubmitOrder = (role: UserRole) => {
         createOrder.mutateAsync({
             status: OrderStatus.Pending,
             discountId: order.discountId,
@@ -43,6 +46,10 @@ export function CartSidebar() {
             onSuccess: () => {
                 clearOrder();
                 toast.success("Order created successfully");
+
+                if (role === "Cashier" || role === "Manager") {
+                    // router.push("/");
+                }
             },
             onError: (error) => {
                 console.log(error);
@@ -144,7 +151,7 @@ export function CartSidebar() {
                     fallback={
                         <button
                             type="button"
-                            onClick={handleSubmitOrder}
+                            onClick={() => handleSubmitOrder(user?.role || "Waiter")}
                             disabled={order.orderItems.length === 0 || (order.tableNumber === undefined && order.orderType === OrderType.DineIn)}
                             className="flex w-full items-center justify-center rounded-xl bg-blue-600 p-4 font-bold text-white shadow-md transition-all hover:bg-blue-500 disabled:pointer-events-none disabled:opacity-50 touch-manipulation"
                         >
@@ -154,6 +161,7 @@ export function CartSidebar() {
                 >
                     <button
                         type="button"
+                        onClick={() => handleSubmitOrder(user?.role || "Cashier")}
                         disabled={order.orderItems.length === 0 || (order.tableNumber === undefined && order.orderType === OrderType.DineIn)}
                         className="group flex w-full cursor-pointer items-center justify-between rounded-xl bg-slate-900 p-4 font-bold text-white shadow-md transition-all ease-out hover:-translate-y-1 hover:bg-emerald-600 hover:shadow-lg active:translate-y-0 active:bg-emerald-700 disabled:pointer-events-none disabled:opacity-50 touch-manipulation tap-highlight-transparent"
                     >

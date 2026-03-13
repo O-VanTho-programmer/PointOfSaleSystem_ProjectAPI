@@ -16,7 +16,7 @@ const MOCK_ACTIVE_ORDERS: OrderDTO[] = [
         userId: 1,
         status: OrderStatus.Pending,
         orderType: OrderType.DineIn,
-        tableNumber: '4',
+        tableNumber: 4,
         createdDate: new Date(Date.now() - 1000 * 60 * 15).toISOString(),
         orderItems: [
             { itemId: 2, quantity: 2, priceAtOrder: 12.99 },
@@ -39,7 +39,7 @@ const MOCK_ACTIVE_ORDERS: OrderDTO[] = [
         userId: 1,
         status: OrderStatus.Pending,
         orderType: OrderType.DineIn,
-        tableNumber: '1',
+        tableNumber: 1,
         createdDate: new Date(Date.now() - 1000 * 60 * 2).toISOString(),
         orderItems: [
             { itemId: 1, quantity: 3, priceAtOrder: 8.99 },

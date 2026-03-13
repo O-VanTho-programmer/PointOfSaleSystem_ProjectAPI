@@ -6,7 +6,7 @@ import { Item } from '@/types/Item';
 interface PosState {
     order: OrdersUploadDTO;
     setOrderType: (type: OrderType) => void;
-    setTableNumber: (table: string | undefined) => void;
+    setTableNumber: (table: number | undefined) => void;
     addItem: (item: Item) => void;
     removeItem: (itemId: number) => void;
     updateQuantity: (itemId: number, quantity: number) => void;
