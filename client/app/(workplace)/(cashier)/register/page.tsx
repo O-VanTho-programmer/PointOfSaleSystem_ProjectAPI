@@ -135,11 +135,11 @@ export default function RegisterScreen() {
                             {tables?.map(table => (
                                 <button
                                     key={table.tableId}
-                                    onClick={() => setTableNumber(String(table.tableId))}
+                                    onClick={() => setTableNumber(table.tableId)}
                                     disabled={table.status === 'occupied'}
                                     className={`
                                         flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold transition-all border
-                                        ${order.tableNumber === String(table.tableId)
+                                        ${order.tableNumber === table.tableId
                                             ? 'bg-emerald-500 text-white border-emerald-600 shadow-md scale-110'
                                             : 'bg-white text-slate-600 border-slate-200 hover:border-emerald-300 hover:text-emerald-500'
                                         }

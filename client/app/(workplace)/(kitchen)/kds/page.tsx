@@ -3,55 +3,7 @@
 import React, { useState, useMemo } from 'react';
 import { OrderStatus, OrderType, OrderDTO, OrderItemDTO } from '@/types/OrderDTO';
 import { RoleGuard } from '@/components/RoleGuard';
-
-const MOCK_KITCHEN_ORDERS: OrderDTO[] = [
-    {
-        orderId: 1001,
-        userId: 1,
-        status: OrderStatus.Pending,
-        orderType: OrderType.DineIn,
-        tableNumber: '4',
-        createdDate: new Date(Date.now() - 1000 * 60 * 15).toISOString(),
-        orderItems: [
-            { itemId: 2, quantity: 2, priceAtOrder: 12.99 },
-            { itemId: 5, quantity: 1, priceAtOrder: 5.99 },
-        ]
-    },
-    {
-        orderId: 1002,
-        userId: 1,
-        status: OrderStatus.Complete,
-        orderType: OrderType.TakeAway,
-        createdDate: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
-        orderItems: [
-            { itemId: 3, quantity: 1, priceAtOrder: 10.99 },
-            { itemId: 6, quantity: 1, priceAtOrder: 5.49 },
-        ]
-    },
-    {
-        orderId: 1003,
-        userId: 1,
-        status: OrderStatus.Pending,
-        orderType: OrderType.DineIn,
-        tableNumber: '1',
-        createdDate: new Date(Date.now() - 1000 * 60 * 2).toISOString(),
-        orderItems: [
-            { itemId: 1, quantity: 3, priceAtOrder: 8.99 },
-        ]
-    },
-    {
-        orderId: 1004,
-        userId: 1,
-        status: OrderStatus.Pending,
-        orderType: OrderType.TakeAway,
-        tableNumber: undefined,
-        createdDate: new Date(Date.now() - 1000 * 60 * 1).toISOString(),
-        orderItems: [
-            { itemId: 3, quantity: 1, priceAtOrder: 10.99 },
-            { itemId: 4, quantity: 1, priceAtOrder: 3.99 },
-        ]
-    }
-];
+import { useOrders, useUpdateOrderStatus } from '@/hooks/useOrders';
 
 const ORDER_TYPE_LABELS: Record<number, string> = {
     [OrderType.DineIn]: 'DINE-IN',
@@ -60,7 +12,11 @@ const ORDER_TYPE_LABELS: Record<number, string> = {
 };
 
 export default function KitchenDisplaySystemPage() {
-    const [orders, setOrders] = useState<OrderDTO[]>(MOCK_KITCHEN_ORDERS);
+    const {data: ordersResult, isLoading, error} = useOrders();
+    const orders = ordersResult?.listPayload || [];
+
+    console.log(orders);
+    const updateOrders = useUpdateOrderStatus();
 
     const [filterMode, setFilterMode] = useState<'Pending' | 'Completed' | 'Both'>('Pending');
 
@@ -71,9 +27,7 @@ export default function KitchenDisplaySystemPage() {
     };
 
     const handleMarkComplete = (orderId: number) => {
-        setOrders(prev => prev.map(o =>
-            o.orderId === orderId ? { ...o, status: OrderStatus.Complete } : o
-        ));
+        updateOrders.mutate({id: orderId, dto: {status: OrderStatus.Complete}});
     };
 
     const visibleOrders = useMemo(() => {
