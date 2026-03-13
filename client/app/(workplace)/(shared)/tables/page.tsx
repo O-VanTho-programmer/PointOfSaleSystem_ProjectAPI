@@ -1,22 +1,21 @@
 "use client";
 
 import React, { useState } from 'react';
-import { useTables } from '../../../hooks/useTables';
-import { RoleGuard } from '../../../components/RoleGuard';
-import { TableManagementOverlay } from '../../../components/tables/TableManagementOverlay';
-import { BookingList } from '../../../components/tables/BookingList';
-import { useTableManagementStore } from '../../../store/tableManagementStore';
-import { Table, TableStatus } from '../../../types/Table';
+import { useTables } from '@/hooks/useTables';
+import { RoleGuard } from '@/components/RoleGuard';
+import { TableManagementOverlay } from '@/components/tables/TableManagementOverlay';
+import { BookingList } from '@/components/tables/BookingList';
+import { useTableManagementStore } from '@/store/tableManagementStore';
+import { Table, TableStatus } from '@/types/Table';
+import { useUpdateTable } from '@/hooks/useTables';
+import toast from 'react-hot-toast';
+import { Power, Check, X as CloseIcon } from 'lucide-react';
 
 const STATUS_CONFIG: Record<TableStatus, { label: string; dot: string; bg: string; text: string; ring: string }> = {
     available: { label: 'Available', dot: 'bg-emerald-400', bg: 'bg-emerald-50', text: 'text-emerald-700', ring: 'ring-emerald-200' },
     reserved: { label: 'Reserved', dot: 'bg-amber-400', bg: 'bg-amber-50', text: 'text-amber-700', ring: 'ring-amber-200' },
     occupied: { label: 'Occupied', dot: 'bg-red-400', bg: 'bg-red-50', text: 'text-red-700', ring: 'ring-red-200' },
 };
-
-import { useUpdateTable } from '../../../hooks/useTables';
-import toast from 'react-hot-toast';
-import { Power, Check, X as CloseIcon } from 'lucide-react';
 
 function TableCard({ table }: { table: Table }) {
     const config = STATUS_CONFIG[table.status] ?? STATUS_CONFIG.available;

@@ -1,10 +1,6 @@
-"use client";
-
 import { Geist, Geist_Mono } from "next/font/google";
-import { usePathname } from "next/navigation";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
-import { Sidebar } from "../components/Sidebar";
 import Providers from "./providers";
 
 const geistSans = Geist({
@@ -17,28 +13,21 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const metadata = {
+  title: "Modern POS System",
+  description: "Touch-friendly specialized POS System",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const pathname = usePathname();
-  const isAuthRoute = pathname === '/login' || pathname === '/signup';
-
   return (
     <html lang="en">
-      <head>
-        <title>Modern POS System</title>
-        <meta name="description" content="Touch-friendly specialized POS System" />
-      </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased flex h-screen w-full overflow-hidden bg-slate-50`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-50`}>
         <Providers>
-          {/* Global Persistent Sidebar Navigation */}
-          {!isAuthRoute && <Sidebar />}
-
-          <div className={`flex flex-col overflow-hidden ${isAuthRoute ? 'w-full flex-none' : 'flex-1'}`}>
-            {children}
-          </div>
+          {children}
           <Toaster
             position="top-center"
             toastOptions={{

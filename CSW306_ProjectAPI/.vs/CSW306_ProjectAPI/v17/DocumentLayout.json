@@ -72,8 +72,7 @@
               "RelativeToolTip": "CSW306.Infrastructure\\Data\\CSW306_ProjectAPIContext.cs",
               "ViewState": "AgIAABMAAAAAAAAAAAAkwBsAAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-12T09:57:25.606Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-12T09:57:25.606Z"
             },
             {
               "$type": "Document",
@@ -85,8 +84,7 @@
               "RelativeToolTip": "CSW306.Domain\\Entities\\AuditLog.cs",
               "ViewState": "AgIAAA0AAAAAAAAAAAAAABsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-12T10:04:36.343Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-12T10:04:36.343Z"
             },
             {
               "$type": "Document",
@@ -98,8 +96,7 @@
               "RelativeToolTip": "CSW306.Infrastructure\\BackgroundServices\\AuditLogBackgroundService.cs",
               "ViewState": "AgIAABgAAAAAAAAAAAA7wCMAAABnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-12T09:55:52.996Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-12T09:55:52.996Z"
             },
             {
               "$type": "Document",
@@ -111,8 +108,7 @@
               "RelativeToolTip": "CSW306.Application\\Services\\ReservationService.cs",
               "ViewState": "AgIAAFgAAAAAAAAAAAAIwG4AAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-12T09:34:42.209Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-12T09:34:42.209Z"
             },
             {
               "$type": "Document",
@@ -122,7 +118,7 @@
               "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Controllers\\TableController.cs",
               "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\TableController.cs",
               "RelativeToolTip": "CSW306_ProjectAPI\\Controllers\\TableController.cs",
-              "ViewState": "AgIAACkAAAAAAAAAAAAIwDcAAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAACkAAAAAAAAAAAAIwDUAAABcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-10T11:22:41.254Z",
               "EditorCaption": ""
@@ -137,8 +133,7 @@
               "RelativeToolTip": "CSW306_ProjectAPI\\Controllers\\ReservationController.cs",
               "ViewState": "AgIAACQAAAAAAAAAAAAkwCcAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-12T08:11:08.881Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-12T08:11:08.881Z"
             },
             {
               "$type": "Document",
@@ -150,8 +145,7 @@
               "RelativeToolTip": "CSW306.Application\\Services\\OrderService.cs",
               "ViewState": "AgIAAM0AAAAAAAAAAAAjwMsAAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-10T09:28:09.386Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-10T09:28:09.386Z"
             },
             {
               "$type": "Document",
@@ -163,8 +157,7 @@
               "RelativeToolTip": "CSW306.Application\\DTO\\Upload\\OrdersUploadDTO.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-10T09:26:27.718Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-10T09:26:27.718Z"
             }
           ]
         }

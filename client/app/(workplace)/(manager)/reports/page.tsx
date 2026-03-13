@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from 'react';
-import { RoleGuard } from '../../../components/RoleGuard';
+import { RoleGuard } from '@/components/RoleGuard';
 
 interface SalesMetric {
     label: string;

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { RoleGuard } from '../../../components/RoleGuard';
+import { RoleGuard } from '@/components/RoleGuard';
 
 type Role = 'Manager' | 'Cashier' | 'Chef' | 'Waiter';
 
