@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState, useCallback, useMemo } from "react";
-import { MenuItemCard } from "../../../components/MenuItemCard";
-import { SearchBar } from "../../../components/SearchBar";
-import { OrderType } from "../../../types/OrderDTO";
-import { CartSidebar } from "../../../components/CartSidebar";
-import { usePosStore } from "../../../store/posStore";
+import { MenuItemCard } from "@/components/MenuItemCard";
+import { SearchBar } from "@/components/SearchBar";
+import { OrderType } from "@/types/OrderDTO";
+import { CartSidebar } from "@/components/CartSidebar";
+import { usePosStore } from "@/store/posStore";
 import { useTables } from "@/hooks/useTables";
 import { useItems } from "@/hooks/useItems";
 import { Item } from "@/types/Item";

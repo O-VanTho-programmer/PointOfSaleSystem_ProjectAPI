@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useMemo } from 'react';
-import { OrderStatus, OrderType, OrderDTO, OrderItemDTO } from '../../../types/OrderDTO';
-import { RoleGuard } from '../../../components/RoleGuard';
+import { OrderStatus, OrderType, OrderDTO, OrderItemDTO } from '@/types/OrderDTO';
+import { RoleGuard } from '@/components/RoleGuard';
 
 const MOCK_KITCHEN_ORDERS: OrderDTO[] = [
     {

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const PUBLIC_PATHS = ['/login', '/signup'];
+const PUBLIC_PATHS = ['/login', '/'];
 
 /** Routes and which roles are allowed */
 const ROUTE_ROLE_MAP: Record<string, string[]> = {
@@ -9,6 +9,7 @@ const ROUTE_ROLE_MAP: Record<string, string[]> = {
     '/teams': ['Manager'],
     '/inventory': ['Manager'],
     '/settings': ['Manager'],
+    '/signup': ['Manager'],
     '/kds': ['Chef'],
     '/register': ['Cashier', 'Waiter', 'Manager'],
     '/orders': ['Cashier', 'Waiter', 'Manager'],

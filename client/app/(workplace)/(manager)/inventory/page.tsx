@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from 'react';
-import { RoleGuard } from '../../../components/RoleGuard';
-import { useItems } from '../../../hooks/useItems';
-import { SkeletonRow } from '../../../components/inventory/SkeletonRow';
-import { ItemRow } from '../../../components/inventory/ItemRow';
-import { Pagination } from '../../../components/inventory/Pagination';
+import { RoleGuard } from '@/components/RoleGuard';
+import { useItems } from '@/hooks/useItems';
+import { SkeletonRow } from '@/components/inventory/SkeletonRow';
+import { ItemRow } from '@/components/inventory/ItemRow';
+import { Pagination } from '@/components/inventory/Pagination';
 
 const PAGE_SIZE = 8;
 

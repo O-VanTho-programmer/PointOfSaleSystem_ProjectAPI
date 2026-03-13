@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from 'react';
-import { OrderStatus, OrderType, OrderDTO } from '../../../types/OrderDTO';
-import { RoleGuard } from '../../../components/RoleGuard';
+import { OrderStatus, OrderType, OrderDTO } from '@/types/OrderDTO';
+import { RoleGuard } from '@/components/RoleGuard';
 
 const ORDER_TYPE_LABELS: Record<number, string> = {
     [OrderType.DineIn]: 'Dine-In',
