@@ -3,8 +3,10 @@ using CSW306.Application.DTO.Upload;
 using CSW306.Application.Interfaces.IServices;
 using CSW306.Application.Utils;
 using CSW306.Domain.Entities;
+using CSW306.Presentation.Hubs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,10 +19,12 @@ namespace CSW306_ProjectAPI.Controllers
     public class OrdersController : ControllerBase
     {
         private readonly IOrderService _orderService;
+        private readonly IHubContext<PosHub> _hubContext;
 
-        public OrdersController(IOrderService orderService) 
+        public OrdersController(IOrderService orderService, IHubContext<PosHub> hubContext) 
         { 
             _orderService = orderService;
+            _hubContext = hubContext;
         }
 
         [HttpGet]
@@ -44,14 +48,15 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpGet("filter_by_date_range")]
-        [Authorize(Roles = "Manager,Cashier")]
+        [Authorize(Roles = "Manager,Cashier,Chef")]
         public async Task<IActionResult> Get([FromQuery] DateTime? start_date, [FromQuery] DateTime? end_date)
         {
             var order = await _orderService.GetOrdersByDateRange(start_date, end_date);
 
-            if (!order.Success)
+            // Empty lists from Pagination still return Success = false, but should be a HTTP 200 with an empty array.
+            if (!order.Success && order.Message != "Không tìm thấy dữ liệu !")
             {
-                return NotFound(order.Message);
+                return BadRequest(order.Message);
             }
 
             return Ok(order);
@@ -68,6 +73,7 @@ namespace CSW306_ProjectAPI.Controllers
                 return BadRequest(order.Message);
             }
 
+            await _hubContext.Clients.All.SendAsync("OrderListUpdated");
             return Ok(order);
         }
 

@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { RoleGuard } from '@/components/RoleGuard';
+import { formatTimeAgo } from '@/utils/formatTimeAgo';
 
 type LogType = 'login' | 'order' | 'inventory' | 'settings' | 'team';
 
@@ -32,14 +33,6 @@ const MOCK_LOGS: ActivityLog[] = [
     { id: 7, user: 'Tran Thi B', role: 'Cashier', action: 'Voided Order #1038', type: 'order', timestamp: new Date(Date.now() - 1000 * 60 * 90).toISOString() },
     { id: 8, user: 'Ho E', role: 'Waiter', action: 'Logged in from Tablet POS', type: 'login', timestamp: new Date(Date.now() - 1000 * 60 * 120).toISOString() },
 ];
-
-function formatTimeAgo(isoString: string): string {
-    const mins = Math.floor((Date.now() - new Date(isoString).getTime()) / 60000);
-    if (mins < 1) return 'Just now';
-    if (mins < 60) return `${mins}m ago`;
-    const hrs = Math.floor(mins / 60);
-    return `${hrs}h ago`;
-}
 
 const FILTER_OPTIONS: { value: LogType | 'all'; label: string }[] = [
     { value: 'all', label: 'All Activity' },

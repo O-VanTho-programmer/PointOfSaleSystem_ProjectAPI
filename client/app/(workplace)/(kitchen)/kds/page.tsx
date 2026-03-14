@@ -1,9 +1,12 @@
 "use client";
 
 import React, { useState, useMemo } from 'react';
-import { OrderStatus, OrderType, OrderDTO, OrderItemDTO } from '@/types/OrderDTO';
+import { OrderStatus, OrderType } from '@/types/OrderDTO';
 import { RoleGuard } from '@/components/RoleGuard';
-import { useOrders, useUpdateOrderStatus } from '@/hooks/useOrders';
+import { useOrdersByDateRange, useUpdateOrderStatus } from '@/hooks/useOrders';
+import { formatTimeAgo } from '@/utils/formatTimeAgo';
+import { getTodayDateRange } from '@/utils/dateHelper';
+import { usePosSignalR } from '@/hooks/usePosSignalR';
 
 const ORDER_TYPE_LABELS: Record<number, string> = {
     [OrderType.DineIn]: 'DINE-IN',
@@ -12,22 +15,19 @@ const ORDER_TYPE_LABELS: Record<number, string> = {
 };
 
 export default function KitchenDisplaySystemPage() {
-    const {data: ordersResult, isLoading, error} = useOrders();
+    const { startDate, endDate } = getTodayDateRange();
+    const { data: ordersResult, isLoading, error } = useOrdersByDateRange(startDate, endDate);
+    console.log(ordersResult?.listPayload);
     const orders = ordersResult?.listPayload || [];
 
-    console.log(orders);
+    usePosSignalR();
+
     const updateOrders = useUpdateOrderStatus();
 
     const [filterMode, setFilterMode] = useState<'Pending' | 'Completed' | 'Both'>('Pending');
 
-    const formatTimeAgo = (isoString: string) => {
-        const diff = Math.floor((Date.now() - new Date(isoString).getTime()) / 60000);
-        if (diff < 1) return 'Just now';
-        return `${diff}m ago`;
-    };
-
     const handleMarkComplete = (orderId: number) => {
-        updateOrders.mutate({id: orderId, dto: {status: OrderStatus.Complete}});
+        updateOrders.mutate({ id: orderId, dto: { status: OrderStatus.Complete } });
     };
 
     const visibleOrders = useMemo(() => {
@@ -111,6 +111,9 @@ export default function KitchenDisplaySystemPage() {
                                                     {oi.quantity}x
                                                 </span>
                                                 <span className="mt-0.5 font-medium leading-snug text-slate-200">
+                                                    {oi.itemName}
+                                                </span>
+                                                <span className="mt-0.5 font-medium leading-snug text-slate-500">
                                                     Item #{oi.itemId}
                                                 </span>
                                             </li>

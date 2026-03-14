@@ -3,6 +3,7 @@ import { useReservations, useUpdateReservation, useDeleteReservation } from '@/h
 import { useTables } from '@/hooks/useTables';
 import { Calendar, Clock, Users, Square, User, XCircle, CheckCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { parseServerDate, formatServerTimeOnly } from '@/utils/dateHelper';
 
 export function BookingList() {
     const { data: reservationsResult, isLoading: resLoading, isError: resError } = useReservations();
@@ -16,8 +17,8 @@ export function BookingList() {
     
     // Sort reservations by Date then Time (closest first)
     const sortedReservations = [...reservations].sort((a, b) => {
-        const dateA = new Date(a.date).getTime();
-        const dateB = new Date(b.date).getTime();
+        const dateA = parseServerDate(a.date).getTime();
+        const dateB = parseServerDate(b.date).getTime();
         if (dateA !== dateB) return dateA - dateB;
         
         // If same date, sort by time string
@@ -83,16 +84,13 @@ export function BookingList() {
                     </thead>
                     <tbody className="divide-y divide-slate-100">
                         {sortedReservations.map((res) => {
-                            const dateObj = new Date(res.date);
+                            const dateObj = parseServerDate(res.date);
                             const formattedDate = dateObj.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
                             
                             // Try to format time from ISO if possible, or leave as string
                             let formattedTime = res.time;
                             try {
-                                const t = new Date(res.time);
-                                if (!isNaN(t.getTime())) {
-                                    formattedTime = t.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
-                                }
+                                formattedTime = formatServerTimeOnly(res.time);
                             } catch { /* ignore */ }
 
                             const capacity = tableCapacityMap.get(res.tableId) || "?";

@@ -24,6 +24,7 @@ export interface OrderDTO {
 
 export interface OrderItemDTO {
     itemId: number;
+    itemName?: string;
     quantity: number;
     priceAtOrder: number;
 }

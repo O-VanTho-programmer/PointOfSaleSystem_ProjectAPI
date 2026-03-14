@@ -1,4 +1,4 @@
-﻿using CSW306.Application.DTO.Upload;
+using CSW306.Application.DTO.Upload;
 using CSW306.Application.Interfaces;
 using CSW306.Application.Interfaces.IServices;
 using CSW306.Application.Utils;
@@ -47,6 +47,7 @@ namespace CSW306.Application.Services
                     {
                         ItemId = oi.ItemId,
                         OrderId = oi.OrderId,
+                        ItemName = oi.Item.Name,
                         Quantity = oi.Quantity,
                         PriceAtOrder = oi.PriceAtOrder,
                         Item = oi.Item == null ? null : new ItemResponseDTO
@@ -90,6 +91,7 @@ namespace CSW306.Application.Services
                     {
                         ItemId = oi.ItemId,
                         OrderId = oi.OrderId,
+                        ItemName= oi.Item.Name,
                         Quantity = oi.Quantity,
                         PriceAtOrder = oi.PriceAtOrder,
                         Item = oi.Item == null ? null : new ItemResponseDTO
@@ -133,6 +135,7 @@ namespace CSW306.Application.Services
                     {
                         ItemId = oi.ItemId,
                         OrderId = oi.OrderId,
+                        ItemName = oi.Item.Name,
                         Quantity = oi.Quantity,
                         PriceAtOrder = oi.PriceAtOrder,
                         Item = oi.Item == null ? null : new ItemResponseDTO
@@ -206,7 +209,7 @@ namespace CSW306.Application.Services
                     Status = dto.Status,
                     DiscountId = dto.DiscountId,
                     UserId = dto.UserId,
-                    CreatedDate = dto.CreatedDate,
+                    CreatedDate = DateTime.Now,
                     TableNumber = dto.TableNumber,
                     OrderType = dto.OrderType,
                     OrderItems = orderItems
