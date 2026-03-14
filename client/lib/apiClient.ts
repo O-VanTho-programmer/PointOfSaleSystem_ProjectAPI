@@ -34,9 +34,8 @@ apiClient.interceptors.response.use(function onFulfilled(response) {
         }
 
         if (error.response.status === 401) {
-            // Cookies.remove('pos_auth_token');
-            // window.location.href = '/login';
-            
+            Cookies.remove('pos_auth_token');
+            window.location.href = '/login';
         }
     }
     return Promise.reject(error);

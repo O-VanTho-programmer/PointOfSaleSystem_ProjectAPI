@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { OrderStatus, OrderType, OrderDTO } from '@/types/OrderDTO';
 import { RoleGuard } from '@/components/RoleGuard';
+import { formatServerTimeOnly } from '@/utils/dateHelper';
 
 const ORDER_TYPE_LABELS: Record<number, string> = {
     [OrderType.DineIn]: 'Dine-In',
@@ -60,7 +61,7 @@ export default function OrdersPage() {
         new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val);
 
     const formatTime = (isoString: string) => {
-        return new Date(isoString).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        return formatServerTimeOnly(isoString);
     };
 
     const handleProceedToPayment = () => {

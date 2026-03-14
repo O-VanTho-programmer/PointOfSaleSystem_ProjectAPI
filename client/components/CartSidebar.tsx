@@ -39,7 +39,6 @@ export function CartSidebar() {
                 quantity: oi.quantity,
                 priceAtOrder: oi.priceAtOrder,
             })),
-            createdDate: new Date().toISOString(),
             tableNumber: order.tableNumber,
             orderType: order.orderType,
         }, {

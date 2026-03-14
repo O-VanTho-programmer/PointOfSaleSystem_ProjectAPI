@@ -26,6 +26,14 @@ namespace CSW306.Infrastructure.Data
                 .Property(a => a.Timestamp)
                 .HasDefaultValueSql("GETUTCDATE()")
                 .ValueGeneratedOnAdd();
+            
+            modelBuilder.Entity<Orders>()
+                .Property(o => o.CreatedDate)
+                .HasColumnType("datetime2(7)");
+
+            modelBuilder.Entity<Payments>()
+                .Property(p => p.CreatedDate)
+                .HasColumnType("datetime2(7)");
         }
     }
 }

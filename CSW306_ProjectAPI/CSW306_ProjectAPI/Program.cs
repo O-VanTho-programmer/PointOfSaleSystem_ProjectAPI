@@ -1,8 +1,9 @@
-using StackExchange.Redis;
 using CSW306.Infrastructure.Data;
+using CSW306.Presentation.Hubs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -17,6 +18,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// SignalR
+builder.Services.AddSignalR();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -115,6 +119,8 @@ app.UseCors("AllowDomains");
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.MapHub<PosHub>("/hubs/pos");
 
 app.MapControllers();
 

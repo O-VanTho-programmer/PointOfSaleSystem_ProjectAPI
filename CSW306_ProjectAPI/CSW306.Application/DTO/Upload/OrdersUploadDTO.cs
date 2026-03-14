@@ -15,9 +15,6 @@ namespace CSW306.Application.DTO.Upload
         [Required]
         public List<OrderItemUploadDTO> OrderItems { get; set; }
 
-        [Required]
-        public DateTime CreatedDate { get; set; }
-
         public int? TableNumber { get; set; }
 
         //0: dine in, 1: take away, 2: delivery

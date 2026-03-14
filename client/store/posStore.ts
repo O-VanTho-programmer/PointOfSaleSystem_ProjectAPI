@@ -19,7 +19,7 @@ const createEmptyOrder = (): OrdersUploadDTO => ({
     orderType: OrderType.DineIn,
     tableNumber: undefined,
     discountId: undefined,
-    createdDate: new Date().toISOString(),
+    createdDate: new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, -1),
     orderItems: [],
 });
 
