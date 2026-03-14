@@ -8,8 +8,11 @@ export const usePosSignalR = () => {
     const queryClient = useQueryClient();
 
     useEffect(() => {
+        // NEXT_PUBLIC_SERVER_URL usually contains "/api", but SignalR is hosted at the root level 
+        const baseUrl = (process.env.NEXT_PUBLIC_SERVER_URL || '').replace(/\/api$/, '');
+        
         const newConnection = new signalR.HubConnectionBuilder()
-            .withUrl(`${process.env.NEXT_PUBLIC_SERVER_URL}/hubs/pos`, {
+            .withUrl(`${baseUrl}/hubs/pos`, {
                 withCredentials: true 
             })
             .withAutomaticReconnect()
@@ -31,7 +34,7 @@ export const usePosSignalR = () => {
                     connection.on('OrderListUpdated', () => {
                         console.log('New order detected! Refreshing cache...');
                         
-                        queryClient.invalidateQueries({ queryKey: orderKeys.lists() });
+                        queryClient.invalidateQueries({ queryKey: orderKeys.all });
                     });
                 })
                 .catch(e => console.log('SignalR Connection Error: ', e));

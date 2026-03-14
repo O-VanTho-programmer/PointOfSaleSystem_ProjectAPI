@@ -17,7 +17,6 @@ const ORDER_TYPE_LABELS: Record<number, string> = {
 export default function KitchenDisplaySystemPage() {
     const { startDate, endDate } = getTodayDateRange();
     const { data: ordersResult, isLoading, error } = useOrdersByDateRange(startDate, endDate);
-    console.log(ordersResult?.listPayload);
     const orders = ordersResult?.listPayload || [];
 
     usePosSignalR();
