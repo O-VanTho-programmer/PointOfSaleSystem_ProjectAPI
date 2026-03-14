@@ -10,6 +10,7 @@ import { useTables } from "@/hooks/useTables";
 import { useItems } from "@/hooks/useItems";
 import { Item } from "@/types/Item";
 import { useCategories } from "@/hooks/useCategories";
+import toast from "react-hot-toast";
 
 const ORDER_TYPE_OPTIONS: { value: OrderType; label: string }[] = [
     { value: OrderType.DineIn, label: 'Dine-In' },
@@ -25,6 +26,9 @@ export default function RegisterScreen() {
 
     const { data: categoryResult } = useCategories();
     const categories = categoryResult?.listPayload || [];
+
+    const { data: tablesResult } = useTables();
+    const tables = tablesResult?.listPayload || [];
 
     const filteredItems = useMemo(() => {
         let items = menuItems || [];
@@ -49,8 +53,18 @@ export default function RegisterScreen() {
         addItem(item);
     }, [addItem]);
 
-    const { data: tablesResult } = useTables();
-    const tables = tablesResult?.listPayload || [];
+    const handleSelectTable = useCallback((tableId: number) => {
+        if (order.orderType !== OrderType.DineIn) {
+            setOrderType(OrderType.DineIn);
+        }
+
+        if (tables.find(table => table.tableId === tableId)?.status === 'occupied') {
+            toast.error("Table is occupied");
+            return;
+        }
+
+        setTableNumber(tableId);
+    }, [setTableNumber, setOrderType, tables]);
 
     return (
         <div className="flex h-screen w-full bg-slate-50 font-sans text-slate-900 overflow-hidden">
@@ -135,7 +149,7 @@ export default function RegisterScreen() {
                             {tables?.map(table => (
                                 <button
                                     key={table.tableId}
-                                    onClick={() => setTableNumber(table.tableId)}
+                                    onClick={() => handleSelectTable(table.tableId)}
                                     disabled={table.status === 'occupied'}
                                     className={`
                                         flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold transition-all border
