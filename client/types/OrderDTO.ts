@@ -36,7 +36,6 @@ export interface OrdersUploadDTO {
     tableNumber?: number;
     orderType?: number;
     discountId?: number;
-    createdDate: string;
 }
 
 export interface OrderItemUploadDTO {
