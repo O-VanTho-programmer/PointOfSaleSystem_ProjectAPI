@@ -24,16 +24,16 @@ namespace CSW306.Infrastructure.Data
 
             modelBuilder.Entity<AuditLog>()
                 .Property(a => a.Timestamp)
-                .HasDefaultValueSql("GETUTCDATE()")
+                .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'")
                 .ValueGeneratedOnAdd();
             
             modelBuilder.Entity<Orders>()
                 .Property(o => o.CreatedDate)
-                .HasColumnType("datetime2(7)");
+                .HasColumnType("timestamp with time zone");
 
             modelBuilder.Entity<Payments>()
                 .Property(p => p.CreatedDate)
-                .HasColumnType("datetime2(7)");
+                .HasColumnType("timestamp with time zone");
         }
     }
 }
