@@ -7,6 +7,10 @@
       "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306.Presentation.csproj|solutionrelative:csw306_projectapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306.Presentation.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306_projectapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306.Presentation.csproj|solutionrelative:csw306_projectapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306.Presentation.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306_projectapi\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306.Presentation.csproj|solutionrelative:csw306_projectapi\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -45,10 +49,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{302717DE-A0C4-4FDC-8475-998219D7FC6A}|CSW306.Domain\\CSW306.Domain.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.domain\\entities\\auditlog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{302717DE-A0C4-4FDC-8475-998219D7FC6A}|CSW306.Domain\\CSW306.Domain.csproj|solutionrelative:csw306.domain\\entities\\auditlog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306.Presentation.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306_projectapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306.Presentation.csproj|solutionrelative:csw306_projectapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306.Presentation.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306_projectapi\\hubs\\poshub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -124,7 +124,7 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "AuthsController.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\AuthsController.cs",
               "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Controllers\\AuthsController.cs",
@@ -136,7 +136,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "UserController.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\UserController.cs",
               "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Controllers\\UserController.cs",
@@ -148,7 +148,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "PaymentsController.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\PaymentsController.cs",
               "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Controllers\\PaymentsController.cs",
@@ -160,19 +160,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 1,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Program.cs",
               "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Program.cs",
               "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Program.cs",
               "RelativeToolTip": "CSW306_ProjectAPI\\Program.cs",
-              "ViewState": "AgIAAGkAAAAAAAAAAAAAAHwAAAAVAAAAAAAAAA==",
+              "ViewState": "AgIAAGYAAAAAAAAAAAAAAHwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-13T04:53:51.815Z"
+              "WhenOpened": "2026-03-13T04:53:51.815Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "AuditLog.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Domain\\Entities\\AuditLog.cs",
               "RelativeDocumentMoniker": "CSW306.Domain\\Entities\\AuditLog.cs",
@@ -184,7 +185,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "Orders.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Domain\\Entities\\Orders.cs",
               "RelativeDocumentMoniker": "CSW306.Domain\\Entities\\Orders.cs",
@@ -196,7 +197,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "OrdersController.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\OrdersController.cs",
               "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Controllers\\OrdersController.cs",
@@ -204,8 +205,7 @@
               "RelativeToolTip": "CSW306_ProjectAPI\\Controllers\\OrdersController.cs",
               "ViewState": "AgIAACkAAAAAAAAAAAAgwDIAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-13T01:56:17.482Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-13T01:56:17.482Z"
             },
             {
               "$type": "Document",
@@ -215,14 +215,14 @@
               "RelativeDocumentMoniker": "CSW306_ProjectAPI\\appsettings.json",
               "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\appsettings.json",
               "RelativeToolTip": "CSW306_ProjectAPI\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAABzAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2026-03-14T03:55:46.298Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "CategoriesController.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\CategoriesController.cs",
               "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Controllers\\CategoriesController.cs",
@@ -246,7 +246,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "OrderItems.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Domain\\Entities\\OrderItems.cs",
               "RelativeDocumentMoniker": "CSW306.Domain\\Entities\\OrderItems.cs",
@@ -258,7 +258,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "ReservationController.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\ReservationController.cs",
               "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Controllers\\ReservationController.cs",
@@ -270,7 +270,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "TableController.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\TableController.cs",
               "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Controllers\\TableController.cs",

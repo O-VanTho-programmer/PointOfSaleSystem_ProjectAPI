@@ -11,7 +11,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSW306.Application.Services
+namespace CSW306.Infrastructure.Services
 {
     public class AuthService : IAuthService
     {

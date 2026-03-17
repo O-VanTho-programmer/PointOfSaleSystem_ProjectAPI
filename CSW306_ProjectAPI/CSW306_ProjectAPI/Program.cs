@@ -39,25 +39,25 @@ builder.Services.AddScoped<CSW306.Application.Interfaces.IRepositories.IPaymentR
 builder.Services.AddScoped<CSW306.Application.Interfaces.IRepositories.IDiscountRepository, CSW306.Infrastructure.Repositories.DiscountRepository>();
 
 // Services
-builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.ICategoryService, CSW306.Application.Services.CategoryService>();
-builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IItemService, CSW306.Application.Services.ItemService>();
-builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IOrderService, CSW306.Application.Services.OrderService>();
-builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IAuthService, CSW306.Application.Services.AuthService>();
-builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.ITableService, CSW306.Application.Services.TableService>();
-builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IReservationService, CSW306.Application.Services.ReservationService>();
-builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IPaymentService, CSW306.Application.Services.PaymentService>();
-builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IDiscountService, CSW306.Application.Services.DiscountService>();
-builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IUserService, CSW306.Application.Services.UserService>();
+builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.ICategoryService, CSW306.Infrastructure.Services.CategoryService>();
+builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IItemService, CSW306.Infrastructure.Services.ItemService>();
+builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IOrderService, CSW306.Infrastructure.Services.OrderService>();
+builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IAuthService, CSW306.Infrastructure.Services.AuthService>();
+builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.ITableService, CSW306.Infrastructure.Services.TableService>();
+builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IReservationService, CSW306.Infrastructure.Services.ReservationService>();
+builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IPaymentService, CSW306.Infrastructure.Services.PaymentService>();
+builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IDiscountService, CSW306.Infrastructure.Services.DiscountService>();
+builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IUserService, CSW306.Infrastructure.Services.UserService>();
 
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
     ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("RedisCache") ?? "localhost:6379,abortConnect=false"));
 
-builder.Services.AddSingleton<CSW306.Application.Interfaces.IServices.IRedisCacheService, CSW306.Application.Services.RedisCacheService>();
+builder.Services.AddSingleton<CSW306.Application.Interfaces.IServices.IRedisCacheService, CSW306.Infrastructure.Services.RedisCacheService>();
 
 // Register Background Services
-builder.Services.AddSingleton<CSW306.Application.Services.AuditLogService>();
+builder.Services.AddSingleton<CSW306.Infrastructure.Services.AuditLogService>();
 builder.Services.AddSingleton<CSW306.Application.Interfaces.IServices.IAuditLogService>(sp =>
-    sp.GetRequiredService<CSW306.Application.Services.AuditLogService>());
+    sp.GetRequiredService<CSW306.Infrastructure.Services.AuditLogService>());
 builder.Services.AddHostedService<CSW306.Infrastructure.BackgroundServices.AuditLogBackgroundService>();
 
 builder.Services.AddDbContext<CSW306_ProjectAPIContext>(options =>

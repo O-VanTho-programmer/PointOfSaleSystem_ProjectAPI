@@ -1,4 +1,4 @@
-namespace CSW306.Application.Services;
+namespace CSW306.Infrastructure.Services;
 
 using CSW306.Application.Interfaces.IServices;
 using StackExchange.Redis;

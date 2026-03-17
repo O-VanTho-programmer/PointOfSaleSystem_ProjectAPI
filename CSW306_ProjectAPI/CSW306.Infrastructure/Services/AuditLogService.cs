@@ -2,7 +2,7 @@ using CSW306.Application.Interfaces.IServices;
 using CSW306.Domain.Entities;
 using System.Collections.Concurrent;
 
-namespace CSW306.Application.Services
+namespace CSW306.Infrastructure.Services
 {
     public class AuditLogService : IAuditLogService
     {

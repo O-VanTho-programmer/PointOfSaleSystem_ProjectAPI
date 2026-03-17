@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSW306.Application.Services
+namespace CSW306.Infrastructure.Services
 {
     public class ItemService : IItemService
     {

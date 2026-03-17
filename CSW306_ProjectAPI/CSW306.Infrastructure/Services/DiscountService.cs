@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CSW306.Application.Services
+namespace CSW306.Infrastructure.Services
 {
     public class DiscountService : IDiscountService
     {

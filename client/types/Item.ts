@@ -7,9 +7,10 @@ export interface Item {
     categoryId: number;
 }
 
+/** Matches backend ItemsUploadDTO: Name, IsSoldOut, Price, ImageUrl?, CategoryId */
 export interface ItemUploadDTO {
     name: string;
-    quantityInStock: number;
+    isSoldOut: number;
     price: number;
     imageUrl?: string;
     categoryId: number;
