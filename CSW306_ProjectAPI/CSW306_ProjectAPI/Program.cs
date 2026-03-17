@@ -61,7 +61,7 @@ builder.Services.AddSingleton<CSW306.Application.Interfaces.IServices.IAuditLogS
 builder.Services.AddHostedService<CSW306.Infrastructure.BackgroundServices.AuditLogBackgroundService>();
 
 builder.Services.AddDbContext<CSW306_ProjectAPIContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DBConnection")));
 
 //Load JWT setting
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
