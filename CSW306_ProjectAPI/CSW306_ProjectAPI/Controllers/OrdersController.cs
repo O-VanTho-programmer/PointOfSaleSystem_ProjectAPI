@@ -1,4 +1,3 @@
-using Azure.Core;
 using CSW306.Application.DTO.Upload;
 using CSW306.Application.Interfaces.IServices;
 using CSW306.Application.Utils;
