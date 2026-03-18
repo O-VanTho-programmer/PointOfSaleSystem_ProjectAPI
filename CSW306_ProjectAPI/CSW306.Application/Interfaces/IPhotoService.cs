@@ -8,6 +8,7 @@ namespace CSW306.Application.Interfaces
 {
     public interface IPhotoService
     {
-        Task<string> AddPhotoAsync(Stream fileStream, string fileName);
+        Task<(string Url, string PublicId)> AddPhotoAsync(Stream fileStream, string fileName);
+        Task<bool> DeletePhotoAsync(string publicId);
     }
 }

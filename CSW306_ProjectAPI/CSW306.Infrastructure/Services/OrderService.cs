@@ -191,7 +191,7 @@ namespace CSW306.Infrastructure.Services
                 }
 
                 // Check for sold out items
-                var soldOutItems = existingItems.Values.Where(i => i.IsSoldOut == 1).Select(i => i.Name).ToList();
+                var soldOutItems = existingItems.Values.Where(i => i.IsSoldOut == true).Select(i => i.Name).ToList();
                 if (soldOutItems.Any())
                 {
                     return new TemplateApi<OrderResponseDTO>(null, null, $"The following items are currently sold out: {string.Join(", ", soldOutItems)}", false, 0, 0, 0, 0);

@@ -48,6 +48,7 @@ builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IReservationS
 builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IPaymentService, CSW306.Infrastructure.Services.PaymentService>();
 builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IDiscountService, CSW306.Infrastructure.Services.DiscountService>();
 builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IUserService, CSW306.Infrastructure.Services.UserService>();
+builder.Services.AddScoped<CSW306.Application.Interfaces.IPhotoService, CSW306.Infrastructure.Services.CloudinaryPhotoService>();
 
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
     ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("RedisCache") ?? "localhost:6379,abortConnect=false"));

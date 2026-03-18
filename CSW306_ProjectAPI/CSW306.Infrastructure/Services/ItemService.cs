@@ -16,12 +16,14 @@ namespace CSW306.Infrastructure.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRedisCacheService _redisCacheService;
         private readonly IAuditLogService _auditLogService;
+        private readonly IPhotoService _photoService;
 
-        public ItemService(IUnitOfWork unitOfWork, IRedisCacheService redisCacheService, IAuditLogService auditLogService)
+        public ItemService(IUnitOfWork unitOfWork, IRedisCacheService redisCacheService, IAuditLogService auditLogService, IPhotoService photoService)
         {
             this._unitOfWork = unitOfWork;
             this._redisCacheService = redisCacheService;
             this._auditLogService = auditLogService;
+            this._photoService = photoService;
         }
 
         public async Task<TemplateApi<Items>> CreateItemAsync(ItemsUploadDTO uploadDTO)
@@ -36,7 +38,7 @@ namespace CSW306.Infrastructure.Services
             if (category == null) {
                 return new TemplateApi<Items>(null, null, "Category not found", false, 0, 0, 0, 0);
             }
-
+          
             var newItem = new Items
             {
                 Name = uploadDTO.Name,
@@ -44,8 +46,16 @@ namespace CSW306.Infrastructure.Services
                 Category = category,
                 Price = uploadDTO.Price,
                 IsSoldOut = uploadDTO.IsSoldOut,
-                ImageUrl = uploadDTO.ImageUrl,
             };
+
+            if (uploadDTO.ImageStream != null)
+            {
+                var fileName = uploadDTO.ImageName ?? Guid.NewGuid().ToString();
+                (string imageUrl, string imagePublicId) = await _photoService.AddPhotoAsync(uploadDTO.ImageStream, fileName);
+
+                newItem.ImageUrl = imageUrl;
+                newItem.ImagePublicId = imagePublicId;
+            }
 
             await _unitOfWork.Items.AddAsync(newItem);
             await _unitOfWork.SaveChangesAsync();
@@ -113,7 +123,19 @@ namespace CSW306.Infrastructure.Services
             item.Category = category;
             item.Price = uploadDTO.Price;
             item.IsSoldOut = uploadDTO.IsSoldOut;
-            item.ImageUrl = uploadDTO.ImageUrl;
+
+            if (item.ImagePublicId != null) {
+                await _photoService.DeletePhotoAsync(item.ImagePublicId);
+            }
+
+            if (uploadDTO.ImageStream != null) { 
+
+                var fileName = uploadDTO.ImageName ?? Guid.NewGuid().ToString();
+                (string imageUrl, string imagePublicId) = await _photoService.AddPhotoAsync(uploadDTO.ImageStream, fileName);
+
+                item.ImageUrl = imageUrl;
+                item.ImagePublicId = imagePublicId;
+            }
 
             await _unitOfWork.Items.UpdateAsync(item);
             await _unitOfWork.SaveChangesAsync();
