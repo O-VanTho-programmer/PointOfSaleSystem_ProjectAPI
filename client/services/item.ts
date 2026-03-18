@@ -17,7 +17,20 @@ export const getItemById = async (id: number): Promise<Item | null> => {
 };
 
 export const createItem = async (dto: ItemUploadDTO): Promise<TemplateApi<Item>> => {
-    const response = await apiClient.post<TemplateApi<Item>>('/Items', dto);
+    const formData = new FormData();
+    formData.append('name', dto.name);
+    formData.append('price', dto.price.toString());
+    formData.append('categoryId', dto.categoryId.toString());
+    formData.append('isSoldOut', dto.isSoldOut.toString());
+    if (dto.image) {
+        formData.append('image', dto.image);
+    }
+
+    const response = await apiClient.post<TemplateApi<Item>>('/Items', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
     return response.data;
 };
 

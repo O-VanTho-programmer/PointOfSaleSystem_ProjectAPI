@@ -4,15 +4,15 @@ export interface Item {
     quantityInStock: number;
     price: number;
     imageUrl?: string;
+    imagePublicId?: string;
     categoryId: number;
 }
 
-/** Matches backend ItemsUploadDTO: Name, IsSoldOut, Price, ImageUrl?, CategoryId */
 export interface ItemUploadDTO {
     name: string;
-    isSoldOut: number;
+    isSoldOut: boolean;
     price: number;
-    imageUrl?: string;
+    image?: File;
     categoryId: number;
 }
 

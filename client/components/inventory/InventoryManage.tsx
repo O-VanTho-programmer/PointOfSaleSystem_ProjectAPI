@@ -1,18 +1,19 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { useCategories, useCreateCategory } from "@/hooks/useCategories";
 import { useCreateItem } from "@/hooks/useItems";
 import { ItemUploadDTO } from "@/types/Item";
 import { CategoryUploadDTO } from "@/types/Category";
 import toast from "react-hot-toast";
+import { ImagePreview } from "../ImagePreview";
 
 const DEFAULT_ITEM_FORM: ItemUploadDTO = {
   name: "",
-  isSoldOut: 0,
+  isSoldOut: false,
   price: 0,
-  imageUrl: "",
   categoryId: 0,
+  image: undefined,
 };
 
 const DEFAULT_CATEGORY_FORM: CategoryUploadDTO = {
@@ -28,9 +29,11 @@ interface InventoryManageProps {
 export function InventoryManage({ isOpen, onClose }: InventoryManageProps) {
   const [mode, setMode] = useState<"item" | "category">("item");
   const [itemForm, setItemForm] = useState<ItemUploadDTO>(DEFAULT_ITEM_FORM);
-  const [categoryForm, setCategoryForm] =
-    useState<CategoryUploadDTO>(DEFAULT_CATEGORY_FORM);
+  const [categoryForm, setCategoryForm] = useState<CategoryUploadDTO>(DEFAULT_CATEGORY_FORM);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+
   const { data: categoriesData } = useCategories(1, 100);
+
   const createItem = useCreateItem();
   const createCategory = useCreateCategory();
 
@@ -65,14 +68,15 @@ export function InventoryManage({ isOpen, onClose }: InventoryManageProps) {
 
       createItem.mutate(
         {
-          ...itemForm,
-          imageUrl: itemForm.imageUrl?.trim() || undefined,
+          ...itemForm
         },
         {
           onSuccess: (res) => {
             if (res.success) {
               toast.success(res.message ?? "Item created");
               setItemForm(DEFAULT_ITEM_FORM);
+              setSelectedImage(null);
+              if (fileInputRef.current) fileInputRef.current.value = "";
               onClose();
             } else {
               toast.error(res.message ?? "Failed to create item");
@@ -115,12 +119,14 @@ export function InventoryManage({ isOpen, onClose }: InventoryManageProps) {
     [categoryForm, createCategory]
   );
 
+  const fileInputRef = useRef<HTMLInputElement>(null); //
+
   const handleItemChange = useCallback(
     (field: keyof ItemUploadDTO) =>
       (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const value = e.target.value;
         if (field === "isSoldOut") {
-          setItemForm((prev) => ({ ...prev, isSoldOut: value === "1" ? 1 : 0 }));
+          setItemForm((prev) => ({ ...prev, isSoldOut: value === "1" ? true : false }));
         } else if (field === "price") {
           const n = parseFloat(value) || 0;
           setItemForm((prev) => ({ ...prev, price: n }));
@@ -129,8 +135,14 @@ export function InventoryManage({ isOpen, onClose }: InventoryManageProps) {
             ...prev,
             categoryId: parseInt(value, 10) || 0,
           }));
-        } else if (field === "name" || field === "imageUrl") {
+        } else if (field === "name") {
           setItemForm((prev) => ({ ...prev, [field]: value }));
+        } else if (field === "image") {
+          const target = e.target as HTMLInputElement;
+
+          const file = target.files?.[0] || undefined;
+          setItemForm((prev) => ({ ...prev, [field]: file }));
+          setSelectedImage(file || null);
         }
       },
     []
@@ -316,7 +328,7 @@ export function InventoryManage({ isOpen, onClose }: InventoryManageProps) {
                           type="radio"
                           name="isSoldOut"
                           value="0"
-                          checked={itemForm.isSoldOut === 0}
+                          checked={itemForm.isSoldOut === false}
                           onChange={handleItemChange("isSoldOut")}
                           className="h-4 w-4 border-slate-300 text-amber-500 focus:ring-amber-500"
                         />
@@ -327,7 +339,7 @@ export function InventoryManage({ isOpen, onClose }: InventoryManageProps) {
                           type="radio"
                           name="isSoldOut"
                           value="1"
-                          checked={itemForm.isSoldOut === 1}
+                          checked={itemForm.isSoldOut === true}
                           onChange={handleItemChange("isSoldOut")}
                           className="h-4 w-4 border-slate-300 text-amber-500 focus:ring-amber-500"
                         />
@@ -346,12 +358,22 @@ export function InventoryManage({ isOpen, onClose }: InventoryManageProps) {
                   </label>
                   <input
                     id="item-image"
-                    type="url"
-                    value={itemForm.imageUrl ?? ""}
-                    onChange={handleItemChange("imageUrl")}
-                    placeholder="https://..."
+                    type="file"
+                    ref={fileInputRef}
+                    accept="image/*"
+                    onChange={handleItemChange("image")}
                     className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-slate-900 placeholder-slate-400 transition-colors focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20"
                   />
+                  {selectedImage && (
+                    <ImagePreview
+                      file={selectedImage}
+                      onClear={() => {
+                        setSelectedImage(null);
+                        setItemForm((prev) => ({ ...prev, image: undefined }));
+                        if (fileInputRef.current) fileInputRef.current.value = "";
+                      }}
+                    />
+                  )}
                 </div>
               </>
             ) : (
