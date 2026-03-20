@@ -1,5 +1,5 @@
 import apiClient from "../lib/apiClient";
-import { UserRole } from "../models/User";
+import { UserRole } from "@/types/User";
 
 export const login = async (phone: string, password: string) => {
     const response = await apiClient.post('/Auths/login', { phone, password });

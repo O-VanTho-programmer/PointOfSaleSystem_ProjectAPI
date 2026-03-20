@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Coffee, Fingerprint, KeyRound, Loader2, ArrowRight } from 'lucide-react';
 import { useAuthLogin } from '@/hooks/authHooks';
 import { useAuthStore } from '@/store/authStore';
-import { ROLE_REDIRECT_MAP, UserRole } from '@/models/User';
+import { ROLE_REDIRECT_MAP, UserRole } from '@/types/User';
 
 export default function LoginPage() {
     const router = useRouter();

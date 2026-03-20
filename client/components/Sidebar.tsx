@@ -15,7 +15,7 @@ import {
     UserCircle,
     Utensils
 } from 'lucide-react';
-import { UserRole } from '../models/User';
+import { UserRole } from '@/types/User';
 import { useAuthStore } from '@/store/authStore';
 
 interface NavItem {

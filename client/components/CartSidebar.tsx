@@ -7,7 +7,7 @@ import { RoleGuard } from './RoleGuard';
 import { useCreateOrder } from '@/hooks/useOrders';
 import { useAuthStore } from '@/store/authStore';
 import toast from 'react-hot-toast';
-import { UserRole } from '@/models/User';
+import { UserRole } from '@/types/User';
 import { useRouter } from 'next/navigation';
 
 export function CartSidebar() {

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { RoleGuard } from '@/components/RoleGuard';
+import { useUsers } from '@/hooks/useUsers';
 
 type Role = 'Manager' | 'Cashier' | 'Chef' | 'Waiter';
 
@@ -22,23 +23,35 @@ const ROLE_CONFIG: Record<Role, { bg: string; text: string; ring: string }> = {
     Waiter: { bg: 'bg-blue-50', text: 'text-blue-700', ring: 'ring-blue-200' },
 };
 
-const MOCK_TEAM: TeamMember[] = [
-    { id: 1, name: 'Nguyen Van A', phone: '0912345678', email: 'a.nguyen@pos.vn', role: 'Manager', status: 'active', avatar: 'NVA' },
-    { id: 2, name: 'Tran Thi B', phone: '0923456789', email: 'b.tran@pos.vn', role: 'Cashier', status: 'active', avatar: 'TTB' },
-    { id: 3, name: 'Le Van C', phone: '0934567890', email: 'c.le@pos.vn', role: 'Chef', status: 'active', avatar: 'LVC' },
-    { id: 4, name: 'Pham D', phone: '0945678901', email: 'd.pham@pos.vn', role: 'Waiter', status: 'active', avatar: 'PD' },
-    { id: 5, name: 'Ho E', phone: '0956789012', email: 'e.ho@pos.vn', role: 'Waiter', status: 'off-duty', avatar: 'HE' },
-    { id: 6, name: 'Doan F', phone: '0967890123', email: 'f.doan@pos.vn', role: 'Chef', status: 'off-duty', avatar: 'DF' },
-];
-
 export default function TeamsPage() {
     const [roleFilter, setRoleFilter] = useState<Role | 'all'>('all');
+    
+    const { data: usersData, isLoading } = useUsers();
+    
+    const teamMembers: TeamMember[] = (usersData?.listPayload || []).map(u => {
+        const initials = u.name ? u.name.split(' ').map(n => n.charAt(0)).join('').substring(0, 2).toUpperCase() : 'U';
+        
+        let validRole: Role = 'Waiter'; // Default fallback
+        if (['Manager', 'Cashier', 'Chef', 'Waiter'].includes(u.role)) {
+            validRole = u.role as Role;
+        }
+
+        return {
+            id: u.userId,
+            name: u.name || 'Unknown User',
+            phone: u.phone || 'N/A',
+            email: u.email || 'N/A',
+            role: validRole,
+            status: 'active', // DB doesn't track shift status currently
+            avatar: initials
+        };
+    });
 
     const filtered = roleFilter === 'all'
-        ? MOCK_TEAM
-        : MOCK_TEAM.filter(m => m.role === roleFilter);
+        ? teamMembers
+        : teamMembers.filter(m => m.role === roleFilter);
 
-    const activeCount = MOCK_TEAM.filter(m => m.status === 'active').length;
+    const activeCount = teamMembers.filter(m => m.status === 'active').length;
 
     return (
         <RoleGuard allowedRoles={['Manager']}>
@@ -50,7 +63,7 @@ export default function TeamsPage() {
                             Team Management
                         </h1>
                         <p className="mt-1 text-sm text-slate-500">
-                            {MOCK_TEAM.length} members · {activeCount} on shift
+                            {teamMembers.length} members · {activeCount} on shift
                         </p>
                     </div>
                     <div className="flex gap-1.5">
@@ -119,7 +132,16 @@ export default function TeamsPage() {
                         );
                     })}
 
-                    {filtered.length === 0 && (
+                    {isLoading && (
+                        <div className="col-span-full flex h-48 items-center justify-center rounded-xl border-2 border-dashed border-slate-200 bg-slate-50">
+                            <div className="flex items-center gap-3">
+                                <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-slate-900"></div>
+                                <p className="text-sm font-medium text-slate-500">Loading team members...</p>
+                            </div>
+                        </div>
+                    )}
+                    
+                    {!isLoading && filtered.length === 0 && (
                         <div className="col-span-full flex h-48 items-center justify-center rounded-xl border-2 border-dashed border-slate-200 bg-slate-50">
                             <p className="text-sm font-medium text-slate-400">No team members match this filter.</p>
                         </div>

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useAuthStore } from '@/store/authStore';
-import { UserRole } from '../models/User';
+import { UserRole } from '@/types/User';
 
 interface RoleGuardProps {
     /** Roles that are allowed to see the children */

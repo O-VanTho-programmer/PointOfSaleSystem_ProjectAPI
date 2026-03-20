@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { login, signup } from '../services/auth';
 import { useAuthStore } from '../store/authStore';
-import { UserRole } from '../models/User';
+import { UserRole } from '@/types/User';
 import Cookies from 'js-cookie';
 
 export const useAuthLogin = () => {

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { ShieldCheck, UserPlus, Mail, KeyRound, Loader2, ArrowLeft, Phone, User as UserIcon, Check } from 'lucide-react';
-import { UserRole } from '@/models/User';
+import { UserRole } from '@/types/User';
 import { useAuthSignup } from '@/hooks/authHooks';
 
 const AVAILABLE_ROLES = ['Manager', 'Cashier', 'Chef'] as const;
