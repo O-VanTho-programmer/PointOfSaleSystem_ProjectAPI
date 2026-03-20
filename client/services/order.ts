@@ -4,10 +4,13 @@ import { OrderDTO, OrdersUploadDTO, UpdateStatusOrderDTO } from '../types/OrderD
 
 export const getOrders = async (
     pageNumber: number = 1,
-    pageSize: number = 100
+    pageSize: number = 100,
+    startDate?: string,
+    endDate?: string,
+    status?: number
 ): Promise<TemplateApi<OrderDTO>> => {
     const response = await apiClient.get<TemplateApi<OrderDTO>>('/Orders', {
-        params: { pageNumber, pageSize },
+        params: { startDate, endDate, pageNumber, pageSize, status }
     });
     return response.data;
 };
@@ -22,7 +25,7 @@ export const getOrdersByDateRange = async (
     endDate?: string
 ): Promise<TemplateApi<OrderDTO>> => {
     const response = await apiClient.get<TemplateApi<OrderDTO>>('/Orders/filter_by_date_range', {
-        params: { start_date: startDate, end_date: endDate },
+        params: { startDate, endDate }
     });
     return response.data;
 };

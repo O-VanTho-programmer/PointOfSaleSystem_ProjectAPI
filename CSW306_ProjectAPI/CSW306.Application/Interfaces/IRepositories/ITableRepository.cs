@@ -5,6 +5,7 @@ namespace CSW306.Application.Interfaces.IRepositories
 {
     public interface ITableRepository : IGenericRepository<Table>
     {
+        Task<IEnumerable<Table>> GetTablesSort();
         Task<bool> TableExistsAsync(int tableId);
     }
 }

@@ -71,12 +71,22 @@ namespace CSW306.Infrastructure.Services
             }
         }
 
-        public async Task<TemplateApi<OrderResponseDTO>> GetOrdersAsync(int pageNumber, int pageSize)
+        public async Task<TemplateApi<OrderResponseDTO>> GetOrdersAsync(int pageNumber, int pageSize, DateTime? startDate, DateTime? endDate, int? status)
         {
             try
             {
-                var orders = await _unitOfWork.Orders.GetAllOrdersWithDetailsAsync(pageNumber, pageSize);
-                var countRecord = await _unitOfWork.Orders.GetTotalOrdersCountAsync();
+                if (startDate.HasValue && startDate.Value.Kind == DateTimeKind.Unspecified)
+                {
+                    startDate = DateTime.SpecifyKind(startDate.Value, DateTimeKind.Utc);
+                }
+                if (endDate.HasValue && endDate.Value.Kind == DateTimeKind.Unspecified)
+                {
+                    endDate = DateTime.SpecifyKind(endDate.Value, DateTimeKind.Utc);
+                }
+
+                var orders = await _unitOfWork.Orders.GetAllOrdersWithDetailsAsync(pageNumber, pageSize, startDate, endDate, status);
+
+                var countRecord = await _unitOfWork.Orders.GetTotalOrdersCountAsync(startDate, endDate, status);
 
                 var res = orders.Select(o => new OrderResponseDTO
                 {
@@ -119,6 +129,15 @@ namespace CSW306.Infrastructure.Services
         {
             try
             {
+                if (start_date.HasValue && start_date.Value.Kind == DateTimeKind.Unspecified)
+                {
+                    start_date = DateTime.SpecifyKind(start_date.Value, DateTimeKind.Utc);
+                }
+                if (end_date.HasValue && end_date.Value.Kind == DateTimeKind.Unspecified)
+                {
+                    end_date = DateTime.SpecifyKind(end_date.Value, DateTimeKind.Utc);
+                }
+
                 var orders = await _unitOfWork.Orders.GetByDateRange(start_date, end_date);
                 var countRecord = orders.Count();
 
@@ -209,7 +228,7 @@ namespace CSW306.Infrastructure.Services
                     Status = dto.Status,
                     DiscountId = dto.DiscountId,
                     UserId = dto.UserId,
-                    CreatedDate = DateTime.Now,
+                    CreatedDate = DateTime.UtcNow,
                     TableNumber = dto.TableNumber,
                     OrderType = dto.OrderType,
                     OrderItems = orderItems

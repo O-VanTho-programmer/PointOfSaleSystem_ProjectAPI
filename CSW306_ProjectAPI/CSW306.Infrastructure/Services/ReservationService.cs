@@ -82,7 +82,7 @@ namespace CSW306.Infrastructure.Services
                     return new TemplateApi<Reservation>(null, null, "table is already reserved", false, 0, 0, 0, 0);
                 }
 
-                DateTime now = DateTime.Now;
+                DateTime now = DateTime.UtcNow;
                 DateTime reservationDateTime = dto.Date.Date + dto.Time.TimeOfDay;
                 if (reservationDateTime <= now)
                 {
@@ -146,7 +146,7 @@ namespace CSW306.Infrastructure.Services
                     return new TemplateApi<Reservation>(null, null, "table is already reserved", false, 0, 0, 0, 0);
                 }
 
-                DateTime now = DateTime.Now;
+                DateTime now = DateTime.UtcNow;
                 DateTime reservationDateTime = dto.Date.Date + dto.Time.TimeOfDay;
                 if (reservationDateTime <= now)
                 {

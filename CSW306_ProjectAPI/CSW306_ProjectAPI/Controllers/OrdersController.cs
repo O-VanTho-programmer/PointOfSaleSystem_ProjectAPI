@@ -28,9 +28,9 @@ namespace CSW306_ProjectAPI.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Manager,Employee,Chef,Cashier")]
-        public async Task<IActionResult> Get([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 100)
+        public async Task<IActionResult> Get([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 100, [FromQuery] int? status = null)
         {
-            var orders = await _orderService.GetOrdersAsync(pageNumber, pageSize);
+            var orders = await _orderService.GetOrdersAsync(pageNumber, pageSize, startDate, endDate, status);
             return Ok(orders);
         }
 
@@ -48,9 +48,9 @@ namespace CSW306_ProjectAPI.Controllers
 
         [HttpGet("filter_by_date_range")]
         [Authorize(Roles = "Manager,Cashier,Chef")]
-        public async Task<IActionResult> Get([FromQuery] DateTime? start_date, [FromQuery] DateTime? end_date)
+        public async Task<IActionResult> Get([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
         {
-            var order = await _orderService.GetOrdersByDateRange(start_date, end_date);
+            var order = await _orderService.GetOrdersByDateRange(startDate, endDate);
 
             // Empty lists from Pagination still return Success = false, but should be a HTTP 200 with an empty array.
             if (!order.Success && order.Message != "Không tìm thấy dữ liệu !")

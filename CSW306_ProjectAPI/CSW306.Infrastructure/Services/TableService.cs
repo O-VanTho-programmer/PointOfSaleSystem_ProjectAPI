@@ -27,7 +27,7 @@ namespace CSW306.Infrastructure.Services
         {
             try
             {
-                var tables = await _unitOfWork.Tables.GetAllAsync();
+                var tables = await _unitOfWork.Tables.GetTablesSort();
                 var countRecord = tables.Count();
                 return new Pagination().HandleGetAllRespond(1, countRecord, tables, countRecord);
             }

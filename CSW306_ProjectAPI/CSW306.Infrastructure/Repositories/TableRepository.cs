@@ -12,6 +12,11 @@ namespace CSW306.Infrastructure.Repositories
         {
         }
 
+        public async Task<IEnumerable<Table>> GetTablesSort()
+        {
+            return await _dbSet.OrderBy(t => t.TableId).ToListAsync();
+        }
+
         public async Task<bool> TableExistsAsync(int tableId)
         {
             return await _dbSet.AnyAsync(t => t.TableId == tableId);

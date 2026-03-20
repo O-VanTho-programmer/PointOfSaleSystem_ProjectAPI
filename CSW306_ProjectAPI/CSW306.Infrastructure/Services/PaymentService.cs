@@ -72,7 +72,7 @@ namespace CSW306.Infrastructure.Services
                     OrderId = paymentRes.OrderId,
                     Amount = paymentRes.Amount,
                     PaymentMethod = paymentRes.PaymentMethod,
-                    CreatedDate = DateTime.Now,
+                    CreatedDate = DateTime.UtcNow,
                     Status = "unpaid"
                 };
 

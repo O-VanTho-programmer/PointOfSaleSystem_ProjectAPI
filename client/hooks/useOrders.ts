@@ -7,22 +7,25 @@ import {
     updateOrderStatus,
 } from '../services/order';
 import { OrdersUploadDTO, UpdateStatusOrderDTO } from '../types/OrderDTO';
+import toast from 'react-hot-toast';
+import { getTodayDateRange } from '@/utils/dateHelper';
 
 export const orderKeys = {
     all: ['orders'] as const,
     lists: () => [...orderKeys.all, 'list'] as const,
-    list: (pageNumber: number, pageSize: number) =>
-        [...orderKeys.lists(), { pageNumber, pageSize }] as const,
+    list: (pageNumber: number, pageSize: number, startDate?: string, endDate?: string, status?: number) =>
+        [...orderKeys.lists(), { pageNumber, pageSize, startDate, endDate, status }] as const,
     details: () => [...orderKeys.all, 'detail'] as const,
     detail: (id: number) => [...orderKeys.details(), id] as const,
     dateRange: (startDate?: string, endDate?: string) =>
         [...orderKeys.all, 'dateRange', { startDate, endDate }] as const,
 };
 
-export const useOrders = (pageNumber: number = 1, pageSize: number = 100) => {
+export const useOrders = (pageNumber: number = 1, pageSize: number = 100, startDate?: string, endDate?: string, status?: number) => {
+    
     return useQuery({
-        queryKey: orderKeys.list(pageNumber, pageSize),
-        queryFn: () => getOrders(pageNumber, pageSize),
+        queryKey: orderKeys.list(pageNumber, pageSize, startDate ?? undefined, endDate ?? undefined, status ?? undefined),
+        queryFn: () => getOrders(pageNumber, pageSize, startDate ?? undefined, endDate ?? undefined, status ?? undefined),
     });
 };
 
@@ -62,10 +65,12 @@ export const useUpdateOrderStatus = () => {
         mutationFn: ({ id, dto }: { id: number; dto: UpdateStatusOrderDTO }) =>
             updateOrderStatus(id, dto),
         onSuccess: (_data, variables) => {
+            toast.success("Order updated");
+            
             queryClient.invalidateQueries({ queryKey: orderKeys.all });
             queryClient.invalidateQueries({ queryKey: orderKeys.detail(variables.id) });
         }, onError: (error) => {
-            console.log(error);
+            toast.error("Failed to update order");
         },
     });
 };
