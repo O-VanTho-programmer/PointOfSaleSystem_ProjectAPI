@@ -10,7 +10,7 @@ namespace CSW306.Infrastructure.Repositories
     {
         private readonly CSW306_ProjectAPIContext _context;
         
-         public IOrderRepository Orders { get; private set; } 
+        public IOrderRepository Orders { get; private set; } 
         // public IOrderItemRepository OrderItems { get; private set; } 
         public IItemRepository Items { get; private set; } 
         public ICategoryRepository Categories { get; private set; } 
@@ -18,9 +18,10 @@ namespace CSW306.Infrastructure.Repositories
         public IPaymentRepository Payments { get; private set; } 
         public IReservationRepository Reservations { get; private set; } 
         public ITableRepository Tables { get; private set; } 
-        public IUserRepository Users { get; private set; } 
+        public IUserRepository Users { get; private set; }
+        public IActivityLogRepository ActivityLogs { get; private set; }
 
-        public UnitOfWork(CSW306_ProjectAPIContext context  )
+        public UnitOfWork(CSW306_ProjectAPIContext context)
         {
             _context = context;
             Orders = new OrderRepository(context);
@@ -32,6 +33,7 @@ namespace CSW306.Infrastructure.Repositories
             Reservations = new ReservationRepository(context);
             Tables = new TableRepository(context);
             Users = new UserRepository(context);
+            ActivityLogs = new ActivityLogRepository(context);
         }       
 
         public async Task<int> SaveChangesAsync()

@@ -13,14 +13,12 @@ namespace CSW306.Infrastructure.Services
     public class TableService : ITableService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IAuditLogService _auditLogService;
 
         private static readonly string[] AllowedStatuses = { "available", "reserved", "occupied" };
 
-        public TableService(IUnitOfWork unitOfWork, IAuditLogService auditLogService)
+        public TableService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _auditLogService = auditLogService;
         }
 
         public async Task<TemplateApi<Table>> GetAllTablesAsync()
@@ -34,7 +32,6 @@ namespace CSW306.Infrastructure.Services
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                _auditLogService.EnqueueLog("GetAllTablesError", "Table", null, null, $"Exception: {ex.Message}");
                 return new TemplateApi<Table>(null, null, "An unexpected error occurred while fetching tables.", false, 0, 0, 0, 0);
             }
         }
@@ -53,7 +50,6 @@ namespace CSW306.Infrastructure.Services
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                _auditLogService.EnqueueLog("GetTableByIdError", "Table", id, null, $"Exception: {ex.Message}");
                 return new TemplateApi<Table>(null, null, "An unexpected error occurred while fetching table.", false, 0, 0, 0, 0);
             }
         }
@@ -88,14 +84,11 @@ namespace CSW306.Infrastructure.Services
                 await _unitOfWork.Tables.AddAsync(table);
                 await _unitOfWork.SaveChangesAsync();
 
-                _auditLogService.EnqueueLog("CreateTable", "Table", table.TableId, null, $"Capacity: {table.Capacity}, Status: {table.Status}");
-
                 return new Pagination().HandleGetByIdRespond(table);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                _auditLogService.EnqueueLog("CreateTableError", "Table", dto?.TableId, null, $"Exception: {ex.Message}");
                 return new TemplateApi<Table>(null, null, "An unexpected error occurred while creating table.", false, 0, 0, 0, 0);
             }
         }
@@ -126,14 +119,11 @@ namespace CSW306.Infrastructure.Services
                 await _unitOfWork.Tables.UpdateAsync(existingTable);
                 await _unitOfWork.SaveChangesAsync();
 
-                _auditLogService.EnqueueLog("UpdateTable", "Table", existingTable.TableId, null, $"Capacity: {existingTable.Capacity}, Status: {existingTable.Status}");
-
                 return new Pagination().HandleGetByIdRespond(existingTable);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                _auditLogService.EnqueueLog("UpdateTableError", "Table", id, null, $"Exception: {ex.Message}");
                 return new TemplateApi<Table>(null, null, "An unexpected error occurred while updating table.", false, 0, 0, 0, 0);
             }
         }
@@ -151,14 +141,11 @@ namespace CSW306.Infrastructure.Services
                 await _unitOfWork.Tables.DeleteAsync(id);
                 await _unitOfWork.SaveChangesAsync();
 
-                _auditLogService.EnqueueLog("DeleteTable", "Table", id, null, $"Deleted Table {id}");
-
                 return new TemplateApi<Table>(table, null, "Table deleted successfully", true, 0, 0, 0, 0);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                _auditLogService.EnqueueLog("DeleteTableError", "Table", id, null, $"Exception: {ex.Message}");
                 return new TemplateApi<Table>(null, null, "An unexpected error occurred while deleting table.", false, 0, 0, 0, 0);
             }
         }

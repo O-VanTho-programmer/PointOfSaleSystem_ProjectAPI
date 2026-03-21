@@ -12,12 +12,10 @@ namespace CSW306.Infrastructure.Services
     public class DiscountService : IDiscountService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IAuditLogService _auditLogService;
 
-        public DiscountService(IUnitOfWork unitOfWork, IAuditLogService auditLogService)
+        public DiscountService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _auditLogService = auditLogService;
         }
 
         public async Task<TemplateApi<Discounts>> GetAllDiscountsAsync()
@@ -31,7 +29,6 @@ namespace CSW306.Infrastructure.Services
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                _auditLogService.EnqueueLog("GetAllDiscountsError", "Discount", null, null, $"Exception: {ex.Message}");
                 return new TemplateApi<Discounts>(null, null, "An unexpected error occurred while fetching discounts.", false, 0, 0, 0, 0);
             }
         }
@@ -50,7 +47,6 @@ namespace CSW306.Infrastructure.Services
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                _auditLogService.EnqueueLog("GetDiscountByIdError", "Discount", id, null, $"Exception: {ex.Message}");
                 return new TemplateApi<Discounts>(null, null, "An unexpected error occurred while fetching the discount.", false, 0, 0, 0, 0);
             }
         }
@@ -68,14 +64,11 @@ namespace CSW306.Infrastructure.Services
                 await _unitOfWork.Discounts.AddAsync(discount);
                 await _unitOfWork.SaveChangesAsync();
 
-                _auditLogService.EnqueueLog("CreateDiscount", "Discount", discount.DiscountId, null, $"Code: {discount.DiscountCode}, Value: {discount.value}");
-
                 return new Pagination().HandleGetByIdRespond(discount);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                _auditLogService.EnqueueLog("CreateDiscountError", "Discount", discount?.DiscountId, null, $"Exception: {ex.Message}");
                 return new TemplateApi<Discounts>(null, null, "An unexpected error occurred while creating discount.", false, 0, 0, 0, 0);
             }
         }
@@ -105,14 +98,11 @@ namespace CSW306.Infrastructure.Services
                 await _unitOfWork.Discounts.UpdateAsync(existing);
                 await _unitOfWork.SaveChangesAsync();
 
-                _auditLogService.EnqueueLog("UpdateDiscount", "Discount", existing.DiscountId, null, $"Code: {existing.DiscountCode}, Value: {existing.value}");
-
                 return new Pagination().HandleGetByIdRespond(existing);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                _auditLogService.EnqueueLog("UpdateDiscountError", "Discount", id, null, $"Exception: {ex.Message}");
                 return new TemplateApi<Discounts>(null, null, "An unexpected error occurred while updating discount.", false, 0, 0, 0, 0);
             }
         }
@@ -127,14 +117,11 @@ namespace CSW306.Infrastructure.Services
                 await _unitOfWork.Discounts.DeleteAsync(id);
                 await _unitOfWork.SaveChangesAsync();
 
-                _auditLogService.EnqueueLog("DeleteDiscount", "Discount", id, null, $"Deleted Discount {id}");
-
                 return new TemplateApi<Discounts>(discount, null, "Discount deleted successfully", true, 0, 0, 0, 0);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                _auditLogService.EnqueueLog("DeleteDiscountError", "Discount", id, null, $"Exception: {ex.Message}");
                 return new TemplateApi<Discounts>(null, null, "An unexpected error occurred while deleting discount.", false, 0, 0, 0, 0);
             }
         }
@@ -187,7 +174,6 @@ namespace CSW306.Infrastructure.Services
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                _auditLogService.EnqueueLog("IsDiscountValidError", "Discount", discountId, null, $"Exception: {ex.Message}");
                 return new TemplateApi<object>(null, null, "An unexpected error occurred while checking discount validity.", false, 0, 0, 0, 0);
             }
         }

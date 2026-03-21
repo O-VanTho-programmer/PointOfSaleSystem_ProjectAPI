@@ -5,7 +5,13 @@ namespace CSW306.Infrastructure.Data
 {
     public class CSW306_ProjectAPIContext : DbContext
     {
-        public CSW306_ProjectAPIContext(DbContextOptions<CSW306_ProjectAPIContext> options) : base(options) { }
+        private readonly AuditSaveChangesInterceptor? _auditInterceptor;
+
+        public CSW306_ProjectAPIContext(DbContextOptions<CSW306_ProjectAPIContext> options, AuditSaveChangesInterceptor? auditInterceptor = null) : base(options)
+        {
+            _auditInterceptor = auditInterceptor;
+        }
+
         public DbSet<Users> Users { get; set; }
         public DbSet<Items> Items { get; set; }
         public DbSet<Orders> Orders { get; set; }
@@ -16,6 +22,7 @@ namespace CSW306.Infrastructure.Data
         public DbSet<Table> Tables { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<AuditLog> AuditLogs { get; set; }
+        public DbSet<ActivityLog> ActivityLogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,7 +33,12 @@ namespace CSW306.Infrastructure.Data
                 .Property(a => a.Timestamp)
                 .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'")
                 .ValueGeneratedOnAdd();
-            
+
+            modelBuilder.Entity<ActivityLog>()
+                .Property(a => a.Timestamp)
+                .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'")
+                .ValueGeneratedOnAdd();
+
             modelBuilder.Entity<Orders>()
                 .Property(o => o.CreatedDate)
                 .HasColumnType("timestamp with time zone");

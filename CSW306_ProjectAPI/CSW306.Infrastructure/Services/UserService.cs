@@ -11,12 +11,9 @@ namespace CSW306.Infrastructure.Services
     public class UserService : IUserService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IAuditLogService _auditLogService;
-
-        public UserService(IUnitOfWork unitOfWork, IAuditLogService auditLogService)
+        public UserService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _auditLogService = auditLogService;
         }
 
         public async Task<TemplateApi<Users>> GetAllUsersAsync()
@@ -30,7 +27,6 @@ namespace CSW306.Infrastructure.Services
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                _auditLogService.EnqueueLog("GetAllUsersError", "User", null, null, $"Exception: {ex.Message}");
                 return new TemplateApi<Users>(null, null, "An unexpected error occurred while fetching users.", false, 0, 0, 0, 0);
             }
         }
@@ -42,14 +38,11 @@ namespace CSW306.Infrastructure.Services
                 await _unitOfWork.Users.AddAsync(user);
                 await _unitOfWork.SaveChangesAsync();
 
-                _auditLogService.EnqueueLog("CreateUser", "User", user.UserId, null, $"Phone: {user.Phone}");
-
                 return new Pagination().HandleGetByIdRespond(user);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                _auditLogService.EnqueueLog("CreateUserError", "User", user?.UserId, null, $"Exception: {ex.Message}");
                 return new TemplateApi<Users>(null, null, "An unexpected error occurred while creating a user.", false, 0, 0, 0, 0);
             }
         }

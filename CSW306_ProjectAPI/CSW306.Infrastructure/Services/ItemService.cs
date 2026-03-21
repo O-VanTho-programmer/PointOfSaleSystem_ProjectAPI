@@ -15,14 +15,12 @@ namespace CSW306.Infrastructure.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRedisCacheService _redisCacheService;
-        private readonly IAuditLogService _auditLogService;
         private readonly IPhotoService _photoService;
 
-        public ItemService(IUnitOfWork unitOfWork, IRedisCacheService redisCacheService, IAuditLogService auditLogService, IPhotoService photoService)
+        public ItemService(IUnitOfWork unitOfWork, IRedisCacheService redisCacheService, IPhotoService photoService)
         {
             this._unitOfWork = unitOfWork;
             this._redisCacheService = redisCacheService;
-            this._auditLogService = auditLogService;
             this._photoService = photoService;
         }
 
@@ -62,8 +60,6 @@ namespace CSW306.Infrastructure.Services
 
             await _redisCacheService.RemoveAsync("items");
             await _redisCacheService.SetAsync("item:" + newItem.ItemId, newItem);
-
-            _auditLogService.EnqueueLog("CreateItem", "Items", newItem.ItemId, null, $"Name: {newItem.Name}, Price: {newItem.Price}");
 
             return new TemplateApi<Items>(newItem, null, "Item created successfully", true, 0, 0, 0, 0);
         }
@@ -143,8 +139,6 @@ namespace CSW306.Infrastructure.Services
             await _redisCacheService.RemoveAsync("items");
             await _redisCacheService.SetAsync("item:" + id, item);
 
-            _auditLogService.EnqueueLog("UpdateItem", "Items", id, null, $"Name: {item.Name}, IsSoldOut: {item.IsSoldOut}");
-
             return new TemplateApi<Items>(item, null, "Item updated successfully", true, 0, 0, 0, 0);
         }
 
@@ -160,8 +154,6 @@ namespace CSW306.Infrastructure.Services
 
             await _redisCacheService.RemoveAsync("items");
             await _redisCacheService.RemoveAsync("item:" + id);
-
-            _auditLogService.EnqueueLog("DeleteItem", "Items", id, null, $"Deleted: {item.Name}");
 
             return new TemplateApi<Items>(item, null, "Item deleted successfully", true, 0, 0, 0, 0);
         }

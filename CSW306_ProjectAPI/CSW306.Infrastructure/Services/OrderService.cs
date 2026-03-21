@@ -14,12 +14,10 @@ namespace CSW306.Infrastructure.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRedisCacheService _redisCacheService;
-        private readonly IAuditLogService _auditLogService;
 
-        public OrderService(IUnitOfWork unitOfWork, IRedisCacheService redisCacheService, IAuditLogService auditLogService) { 
+        public OrderService(IUnitOfWork unitOfWork, IRedisCacheService redisCacheService) { 
             _unitOfWork = unitOfWork;
             _redisCacheService = redisCacheService;
-            _auditLogService = auditLogService;
         }
 
         public async Task<TemplateApi<OrderResponseDTO>> GetOrderAsync(int id)
@@ -66,7 +64,6 @@ namespace CSW306.Infrastructure.Services
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                _auditLogService.EnqueueLog("GetOrderError", "Orders", id, null, $"Exception: {ex.Message}");
                 return new TemplateApi<OrderResponseDTO>(null, null, "An unexpected error occurred while fetching the order.", false, 0, 0, 0, 0);
             }
         }
@@ -120,7 +117,6 @@ namespace CSW306.Infrastructure.Services
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                _auditLogService.EnqueueLog("GetOrdersError", "Orders", null, null, $"Exception: {ex.Message}");
                 return new TemplateApi<OrderResponseDTO>(null, null, "An unexpected error occurred while fetching orders.", false, 0, 0, 0, 0);
             }
         }
@@ -173,7 +169,6 @@ namespace CSW306.Infrastructure.Services
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                _auditLogService.EnqueueLog("GetOrdersByDateRangeError", "Orders", null, null, $"Exception: {ex.Message}");
                 return new TemplateApi<OrderResponseDTO>(null, null, "An unexpected error occurred while fetching orders by date range.", false, 0, 0, 0, 0);
             }
         }
@@ -237,8 +232,6 @@ namespace CSW306.Infrastructure.Services
                 await _unitOfWork.Orders.AddAsync(order);
                 await _unitOfWork.SaveChangesAsync();
 
-                _auditLogService.EnqueueLog("CreateOrder", "Orders", order.OrderId, dto.UserId, $"Status: {dto.Status}, Items: {dto.OrderItems.Count}");
-
                 var resDto = new OrderResponseDTO
                 {
                     OrderId = order.OrderId,
@@ -262,8 +255,6 @@ namespace CSW306.Infrastructure.Services
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                var userId = dto?.UserId;
-                _auditLogService.EnqueueLog("CreateOrderError", "Orders", null, userId, $"Exception: {ex.Message}");
                 return new TemplateApi<OrderResponseDTO>(null, null, "An unexpected error occurred while creating the order on the server.", false, 0, 0, 0, 0);
             }
         }
@@ -282,8 +273,6 @@ namespace CSW306.Infrastructure.Services
                 order.Status = request.Status;
                 await _unitOfWork.Orders.UpdateAsync(order);
                 await _unitOfWork.SaveChangesAsync();
-
-                _auditLogService.EnqueueLog("UpdateOrderStatus", "Orders", order.OrderId, null, $"New status: {request.Status}");
 
                 var resDto = new OrderResponseDTO
                 {
@@ -316,7 +305,6 @@ namespace CSW306.Infrastructure.Services
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                _auditLogService.EnqueueLog("UpdateOrderStatusError", "Orders", id, null, $"Exception: {ex.Message}");
                 return new TemplateApi<OrderResponseDTO>(null, null, "An unexpected error occurred while updating the order status.", false, 0, 0, 0, 0);
             }
         }

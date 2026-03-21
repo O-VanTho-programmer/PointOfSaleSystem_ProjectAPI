@@ -55,14 +55,27 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
 
 builder.Services.AddSingleton<CSW306.Application.Interfaces.IServices.IRedisCacheService, CSW306.Infrastructure.Services.RedisCacheService>();
 
-// Register Background Services
+// AuditLogService retained as no-op
 builder.Services.AddSingleton<CSW306.Infrastructure.Services.AuditLogService>();
 builder.Services.AddSingleton<CSW306.Application.Interfaces.IServices.IAuditLogService>(sp =>
     sp.GetRequiredService<CSW306.Infrastructure.Services.AuditLogService>());
-builder.Services.AddHostedService<CSW306.Infrastructure.BackgroundServices.AuditLogBackgroundService>();
 
-builder.Services.AddDbContext<CSW306_ProjectAPIContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DBConnection")));
+// Register ActivityLogService
+builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IActivityLogService, CSW306.Infrastructure.Services.ActivityLogService>();
+
+builder.Services.AddDbContext<CSW306_ProjectAPIContext>((sp, options) =>
+{
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DBConnection"));
+    // register interceptor
+    var interceptor = sp.GetService<AuditSaveChangesInterceptor>();
+    if (interceptor != null)
+    {
+        options.AddInterceptors(interceptor);
+    }
+});
+
+// register interceptor as singleton
+builder.Services.AddSingleton<AuditSaveChangesInterceptor>();
 
 //Load JWT setting
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");

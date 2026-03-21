@@ -13,12 +13,10 @@ namespace CSW306.Infrastructure.Services
     public class ReservationService : IReservationService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IAuditLogService _auditLogService;
 
-        public ReservationService(IUnitOfWork unitOfWork, IAuditLogService auditLogService)
+        public ReservationService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _auditLogService = auditLogService;
         }
 
         public async Task<TemplateApi<Reservation>> GetAllReservationsAsync()
@@ -32,7 +30,6 @@ namespace CSW306.Infrastructure.Services
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                _auditLogService.EnqueueLog("GetAllReservationsError", "Reservation", null, null, $"Exception: {ex.Message}");
                 return new TemplateApi<Reservation>(null, null, "An unexpected error occurred while fetching reservations.", false, 0, 0, 0, 0);
             }
         }
@@ -51,7 +48,6 @@ namespace CSW306.Infrastructure.Services
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                _auditLogService.EnqueueLog("GetReservationByIdError", "Reservation", id, null, $"Exception: {ex.Message}");
                 return new TemplateApi<Reservation>(null, null, "An unexpected error occurred while fetching the reservation.", false, 0, 0, 0, 0);
             }
         }
@@ -102,14 +98,11 @@ namespace CSW306.Infrastructure.Services
                 await _unitOfWork.Reservations.AddAsync(reservation);
                 await _unitOfWork.SaveChangesAsync();
 
-                _auditLogService.EnqueueLog("CreateReservation", "Reservation", reservation.ReservationId, null, $"TableId: {dto.TableId}, Customer: {dto.CustomerName}, Date: {dto.Date}");
-
                 return new Pagination().HandleGetByIdRespond(reservation);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                _auditLogService.EnqueueLog("CreateReservationError", "Reservation", dto?.ReservationId, null, $"Exception: {ex.Message}");
                 return new TemplateApi<Reservation>(null, null, "An unexpected error occurred while creating the reservation.", false, 0, 0, 0, 0);
             }
         }
@@ -163,14 +156,11 @@ namespace CSW306.Infrastructure.Services
                 await _unitOfWork.Reservations.UpdateAsync(existingReservation);
                 await _unitOfWork.SaveChangesAsync();
 
-                _auditLogService.EnqueueLog("UpdateReservation", "Reservation", existingReservation.ReservationId, null, $"TableId: {dto.TableId}, Customer: {dto.CustomerName}");
-
                 return new Pagination().HandleGetByIdRespond(existingReservation);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                _auditLogService.EnqueueLog("UpdateReservationError", "Reservation", id, null, $"Exception: {ex.Message}");
                 return new TemplateApi<Reservation>(null, null, "An unexpected error occurred while updating the reservation.", false, 0, 0, 0, 0);
             }
         }
@@ -188,14 +178,11 @@ namespace CSW306.Infrastructure.Services
                 await _unitOfWork.Reservations.DeleteAsync(id);
                 await _unitOfWork.SaveChangesAsync();
 
-                _auditLogService.EnqueueLog("DeleteReservation", "Reservation", id, null, $"Deleted Reservation {id}");
-
                 return new TemplateApi<Reservation>(reservation, null, "Reservation deleted successfully", true, 0, 0, 0, 0);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                _auditLogService.EnqueueLog("DeleteReservationError", "Reservation", id, null, $"Exception: {ex.Message}");
                 return new TemplateApi<Reservation>(null, null, "An unexpected error occurred while deleting the reservation.", false, 0, 0, 0, 0);
             }
         }

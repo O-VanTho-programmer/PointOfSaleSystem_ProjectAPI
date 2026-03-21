@@ -17,13 +17,11 @@ namespace CSW306.Infrastructure.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IConfiguration _configuration;
-        private readonly IAuditLogService _auditLogService;
 
-        public AuthService(IUnitOfWork unitOfWork, IConfiguration configuration, IAuditLogService auditLogService)
+        public AuthService(IUnitOfWork unitOfWork, IConfiguration configuration)
         {
             _unitOfWork = unitOfWork;
             _configuration = configuration;
-            _auditLogService = auditLogService;
         }
 
         public async Task<LoginResponseDTO?> LoginAsync(LoginRequestDTO request)
@@ -45,8 +43,6 @@ namespace CSW306.Infrastructure.Services
                 }
             };
 
-            _auditLogService.EnqueueLog("Login", "Users", user.UserId, user.UserId, $"Role: {user.Role}");
-
             return response;
         }
 
@@ -64,8 +60,6 @@ namespace CSW306.Infrastructure.Services
             await _unitOfWork.Users.AddAsync(newCustomer);
             await _unitOfWork.SaveChangesAsync();
 
-            _auditLogService.EnqueueLog("RegisterCustomer", "Users", newCustomer.UserId, newCustomer.UserId, $"Name: {newCustomer.Name}");
-
             return newCustomer;
         }
 
@@ -82,8 +76,6 @@ namespace CSW306.Infrastructure.Services
 
             await _unitOfWork.Users.AddAsync(newEmployee);
             await _unitOfWork.SaveChangesAsync();
-
-            _auditLogService.EnqueueLog("RegisterEmployee", "Users", newEmployee.UserId, newEmployee.UserId, $"Name: {newEmployee.Name}, Role: {newEmployee.Role}");
 
             return newEmployee;
         }

@@ -15,6 +15,7 @@ namespace CSW306.Application.Interfaces
         IReservationRepository Reservations { get; }
         ITableRepository Tables { get; }
         IUserRepository Users { get; }
+        IActivityLogRepository ActivityLogs { get; }
         Task<int> SaveChangesAsync();
     }
 }

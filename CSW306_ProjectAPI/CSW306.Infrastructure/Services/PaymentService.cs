@@ -13,12 +13,10 @@ namespace CSW306.Infrastructure.Services
     public class PaymentService : IPaymentService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IAuditLogService _auditLogService;
 
-        public PaymentService(IUnitOfWork unitOfWork, IAuditLogService auditLogService)
+        public PaymentService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _auditLogService = auditLogService;
         }
 
         public async Task<TemplateApi<Payments>> GetAllPaymentsAsync()
@@ -32,7 +30,6 @@ namespace CSW306.Infrastructure.Services
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                _auditLogService.EnqueueLog("GetAllPaymentsError", "Payment", null, null, $"Exception: {ex.Message}");
                 return new TemplateApi<Payments>(null, null, "An unexpected error occurred while fetching payments.", false, 0, 0, 0, 0);
             }
         }
@@ -51,7 +48,6 @@ namespace CSW306.Infrastructure.Services
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                _auditLogService.EnqueueLog("GetPaymentByIdError", "Payment", id, null, $"Exception: {ex.Message}");
                 return new TemplateApi<Payments>(null, null, "An unexpected error occurred while fetching payment.", false, 0, 0, 0, 0);
             }
         }
@@ -79,14 +75,11 @@ namespace CSW306.Infrastructure.Services
                 await _unitOfWork.Payments.AddAsync(payment);
                 await _unitOfWork.SaveChangesAsync();
 
-                _auditLogService.EnqueueLog("CreatePayment", "Payment", payment.PaymentId, null, $"OrderId: {payment.OrderId}, Amount: {payment.Amount}");
-
                 return new Pagination().HandleGetByIdRespond(payment);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                _auditLogService.EnqueueLog("CreatePaymentError", "Payment", paymentRes?.PaymentId, null, $"Exception: {ex.Message}");
                 return new TemplateApi<Payments>(null, null, "An unexpected error occurred while creating payment.", false, 0, 0, 0, 0);
             }
         }
@@ -108,14 +101,11 @@ namespace CSW306.Infrastructure.Services
                 await _unitOfWork.Payments.UpdateAsync(existing);
                 await _unitOfWork.SaveChangesAsync();
 
-                _auditLogService.EnqueueLog("UpdatePayment", "Payment", id, null, $"Amount: {existing.Amount}, Method: {existing.PaymentMethod}");
-
                 return new Pagination().HandleGetByIdRespond(existing);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                _auditLogService.EnqueueLog("UpdatePaymentError", "Payment", id, null, $"Exception: {ex.Message}");
                 return new TemplateApi<Payments>(null, null, "An unexpected error occurred while updating payment.", false, 0, 0, 0, 0);
             }
         }
@@ -130,14 +120,11 @@ namespace CSW306.Infrastructure.Services
                 await _unitOfWork.Payments.DeleteAsync(id);
                 await _unitOfWork.SaveChangesAsync();
 
-                _auditLogService.EnqueueLog("DeletePayment", "Payment", id, null, $"Deleted Payment {id}");
-
                 return new TemplateApi<Payments>(existing, null, "Payment deleted successfully", true, 0, 0, 0, 0);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                _auditLogService.EnqueueLog("DeletePaymentError", "Payment", id, null, $"Exception: {ex.Message}");
                 return new TemplateApi<Payments>(null, null, "An unexpected error occurred while deleting payment.", false, 0, 0, 0, 0);
             }
         }
@@ -213,8 +200,6 @@ namespace CSW306.Infrastructure.Services
                 await _unitOfWork.Payments.UpdateAsync(payment);
                 await _unitOfWork.SaveChangesAsync();
 
-                _auditLogService.EnqueueLog("ProcessPayment", "Payment", id, null, $"Total: {totalAmount}, Paid: {payment.Amount}, Change: {change}");
-
                 return new TemplateApi<object>(new
                 {
                     TotalQuantity = totalQuantity,
@@ -227,7 +212,6 @@ namespace CSW306.Infrastructure.Services
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                _auditLogService.EnqueueLog("ProcessPaymentError", "Payment", id, null, $"Exception: {ex.Message}");
                 return new TemplateApi<object>(null, null, "An unexpected error occurred while processing payment.", false, 0, 0, 0, 0);
             }
         }
