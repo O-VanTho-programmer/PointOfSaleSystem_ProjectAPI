@@ -57,7 +57,7 @@ export default function LoginPage() {
 
                 <div className="relative z-10 max-w-xl">
                     <h1 className="text-6xl font-black uppercase tracking-tighter text-white leading-[0.9]">
-                        System <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-600">Terminal</span>
+                        System <br /><span className="text-transparent bg-clip-text bg-linear-to-r from-emerald-400 to-emerald-600">Terminal</span>
                     </h1>
                     <p className="mt-6 text-zinc-400 font-sans text-lg font-medium max-w-sm">
                         Authorised personnel only. Enter your credentials to access the point of sale interface.

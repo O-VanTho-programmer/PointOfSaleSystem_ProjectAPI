@@ -6,7 +6,7 @@ import { useUsers } from '@/hooks/useUsers';
 
 type Role = 'Manager' | 'Cashier' | 'Chef' | 'Waiter';
 
-interface TeamMember {
+interface StaffMember {
     id: number;
     name: string;
     phone: string;
@@ -23,12 +23,12 @@ const ROLE_CONFIG: Record<Role, { bg: string; text: string; ring: string }> = {
     Waiter: { bg: 'bg-blue-50', text: 'text-blue-700', ring: 'ring-blue-200' },
 };
 
-export default function TeamsPage() {
+export default function StaffsPage() {
     const [roleFilter, setRoleFilter] = useState<Role | 'all'>('all');
     
     const { data: usersData, isLoading } = useUsers();
     
-    const teamMembers: TeamMember[] = (usersData?.listPayload || []).map(u => {
+    const staffMembers: StaffMember[] = (usersData?.listPayload || []).map(u => {
         const initials = u.name ? u.name.split(' ').map(n => n.charAt(0)).join('').substring(0, 2).toUpperCase() : 'U';
         
         let validRole: Role = 'Waiter'; // Default fallback
@@ -48,10 +48,10 @@ export default function TeamsPage() {
     });
 
     const filtered = roleFilter === 'all'
-        ? teamMembers
-        : teamMembers.filter(m => m.role === roleFilter);
+        ? staffMembers
+        : staffMembers.filter(m => m.role === roleFilter);
 
-    const activeCount = teamMembers.filter(m => m.status === 'active').length;
+    const activeCount = staffMembers.filter(m => m.status === 'active').length;
 
     return (
         <RoleGuard allowedRoles={['Manager']}>
@@ -60,10 +60,10 @@ export default function TeamsPage() {
                 <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                     <div>
                         <h1 className="text-2xl font-bold tracking-tight text-slate-900 lg:text-3xl">
-                            Team Management
+                            Staff Management
                         </h1>
                         <p className="mt-1 text-sm text-slate-500">
-                            {teamMembers.length} members · {activeCount} on shift
+                            {staffMembers.length} members · {activeCount} on shift
                         </p>
                     </div>
                     <div className="flex gap-1.5">
@@ -87,7 +87,6 @@ export default function TeamsPage() {
                     </div>
                 </header>
 
-                {/* Team Grid */}
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 overflow-y-auto flex-1">
                     {filtered.map(member => {
                         const config = ROLE_CONFIG[member.role];

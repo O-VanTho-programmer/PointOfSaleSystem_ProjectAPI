@@ -6,7 +6,7 @@ const PUBLIC_PATHS = ['/login', '/'];
 const ROUTE_ROLE_MAP: Record<string, string[]> = {
     '/activity': ['Manager'],
     '/reports': ['Manager'],
-    '/teams': ['Manager'],
+    '/staffs': ['Manager'],
     '/inventory': ['Manager'],
     '/settings': ['Manager'],
     '/signup': ['Manager'],

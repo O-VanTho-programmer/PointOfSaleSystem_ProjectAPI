@@ -41,7 +41,7 @@ export default function LandingPage() {
         </h1>
 
         <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-600 leading-relaxed font-medium animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100">
-          A lightning-fast, highly intuitive Point of Sale system tailored for modern culinary teams. Manage tables, blast through orders, and perfectly sync front-of-house with the kitchen.
+          A lightning-fast, highly intuitive Point of Sale system tailored for modern culinary staffs. Manage tables, blast through orders, and perfectly sync front-of-house with the kitchen.
         </p>
 
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 animate-in fade-in slide-in-from-bottom-10 duration-700 delay-200">

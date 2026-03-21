@@ -18,14 +18,15 @@ namespace CSW306_ProjectAPI.Controllers
             _authService = authService;
         }
 
-        [HttpPost("customer/register")]
-        public async Task<ActionResult<Users>> RegisterCustomer([FromBody] RegisterCustomerDTO dto)
-        {
-            var newCustomer = await _authService.RegisterCustomerAsync(dto);
-            return Ok(newCustomer);
-        }
+        //[HttpPost("customer/register")]
+        //public async Task<ActionResult<Users>> RegisterCustomer([FromBody] RegisterCustomerDTO dto)
+        //{
+        //    var newCustomer = await _authService.RegisterCustomerAsync(dto);
+        //    return Ok(newCustomer);
+        //}
 
         [HttpPost("employee/register")]
+        [Authorize(Roles ="Manager")]
         public async Task<ActionResult<Users>> RegisterEmployee([FromBody] RegisterEmployeeDTO dto)
         {
             var newEmployee = await _authService.RegisterEmployeeAsync(dto);

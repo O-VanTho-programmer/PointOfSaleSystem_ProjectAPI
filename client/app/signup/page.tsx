@@ -80,7 +80,7 @@ export default function AdminSignupPage() {
                         </div>
 
                         <Link
-                            href="/teams"
+                            href="/staffs"
                             className="bg-zinc-100 text-black px-8 py-4 font-bold uppercase tracking-widest text-sm hover:bg-white transition-colors w-full text-center"
                         >
                             Return to Directory
@@ -96,7 +96,7 @@ export default function AdminSignupPage() {
 
             {/* Top Admin Nav */}
             <header className="flex h-16 shrink-0 items-center justify-between border-b-2 border-black bg-white px-6 uppercase tracking-widest font-bold text-xs font-mono">
-                <Link href="/teams" className="flex items-center gap-2 hover:text-blue-600 transition-colors">
+                <Link href="/staffs" className="flex items-center gap-2 hover:text-blue-600 transition-colors">
                     <ArrowLeft className="h-4 w-4" />
                     System Directory
                 </Link>

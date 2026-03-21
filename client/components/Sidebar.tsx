@@ -37,7 +37,7 @@ const NAV_ITEMS: NavItem[] = [
     // Manager workspace
     { label: 'Activity Logs', href: '/activity', icon: LayoutDashboard, allowedRoles: ['Manager'] },
     { label: 'Sales Reports', href: '/reports', icon: ClipboardList, allowedRoles: ['Manager'] },
-    { label: 'Team', href: '/teams', icon: Users, allowedRoles: ['Manager'] },
+    { label: 'Team', href: '/staffs', icon: Users, allowedRoles: ['Manager'] },
     { label: 'Inventory', href: '/inventory', icon: Package, allowedRoles: ['Manager'] },
     { label: 'Settings', href: '/settings', icon: Settings, allowedRoles: ['Manager'] },
 ];

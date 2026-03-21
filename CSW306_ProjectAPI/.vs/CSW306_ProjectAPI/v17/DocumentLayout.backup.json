@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{94B7448C-A1E7-4CC1-866C-6478A869BA8E}|CSW306.Infrastructure\\CSW306.Infrastructure.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.infrastructure\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{94B7448C-A1E7-4CC1-866C-6478A869BA8E}|CSW306.Infrastructure\\CSW306.Infrastructure.csproj|solutionrelative:csw306.infrastructure\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{94B7448C-A1E7-4CC1-866C-6478A869BA8E}|CSW306.Infrastructure\\CSW306.Infrastructure.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.infrastructure\\services\\tableservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{94B7448C-A1E7-4CC1-866C-6478A869BA8E}|CSW306.Infrastructure\\CSW306.Infrastructure.csproj|solutionrelative:csw306.infrastructure\\services\\tableservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{94B7448C-A1E7-4CC1-866C-6478A869BA8E}|CSW306.Infrastructure\\CSW306.Infrastructure.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.infrastructure\\repositories\\tablerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{94B7448C-A1E7-4CC1-866C-6478A869BA8E}|CSW306.Infrastructure\\CSW306.Infrastructure.csproj|solutionrelative:csw306.infrastructure\\repositories\\tablerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -17,10 +25,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{94B7448C-A1E7-4CC1-866C-6478A869BA8E}|CSW306.Infrastructure\\CSW306.Infrastructure.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.infrastructure\\services\\orderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{94B7448C-A1E7-4CC1-866C-6478A869BA8E}|CSW306.Infrastructure\\CSW306.Infrastructure.csproj|solutionrelative:csw306.infrastructure\\services\\orderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{94B7448C-A1E7-4CC1-866C-6478A869BA8E}|CSW306.Infrastructure\\CSW306.Infrastructure.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.infrastructure\\services\\tableservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{94B7448C-A1E7-4CC1-866C-6478A869BA8E}|CSW306.Infrastructure\\CSW306.Infrastructure.csproj|solutionrelative:csw306.infrastructure\\services\\tableservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.application\\interfaces\\irepositories\\iorderrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -103,19 +107,32 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "UserService.cs",
+              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Infrastructure\\Services\\UserService.cs",
+              "RelativeDocumentMoniker": "CSW306.Infrastructure\\Services\\UserService.cs",
+              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Infrastructure\\Services\\UserService.cs",
+              "RelativeToolTip": "CSW306.Infrastructure\\Services\\UserService.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAmwB8AAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-20T07:04:21.181Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "TableRepository.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Infrastructure\\Repositories\\TableRepository.cs",
               "RelativeDocumentMoniker": "CSW306.Infrastructure\\Repositories\\TableRepository.cs",
               "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Infrastructure\\Repositories\\TableRepository.cs",
               "RelativeToolTip": "CSW306.Infrastructure\\Repositories\\TableRepository.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAxwBAAAAA2AAAAAAAAAA==",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAA4AAAA7AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-20T06:53:55.183Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "ITableRepository.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Interfaces\\IRepositories\\ITableRepository.cs",
               "RelativeDocumentMoniker": "CSW306.Application\\Interfaces\\IRepositories\\ITableRepository.cs",
@@ -128,20 +145,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 1,
               "Title": "TableService.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Infrastructure\\Services\\TableService.cs",
               "RelativeDocumentMoniker": "CSW306.Infrastructure\\Services\\TableService.cs",
               "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Infrastructure\\Services\\TableService.cs",
               "RelativeToolTip": "CSW306.Infrastructure\\Services\\TableService.cs",
-              "ViewState": "AgIAABQAAAAAAAAAAAAwwBsAAAAPAAAAAAAAAA==",
+              "ViewState": "AgIAABQAAAAAAAAAAAAwwB4AAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-20T06:51:32.032Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "IOrderRepository.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Interfaces\\IRepositories\\IOrderRepository.cs",
               "RelativeDocumentMoniker": "CSW306.Application\\Interfaces\\IRepositories\\IOrderRepository.cs",
@@ -154,7 +171,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "OrderService.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Infrastructure\\Services\\OrderService.cs",
               "RelativeDocumentMoniker": "CSW306.Infrastructure\\Services\\OrderService.cs",
@@ -167,7 +184,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "IOrderService.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Interfaces\\IServices\\IOrderService.cs",
               "RelativeDocumentMoniker": "CSW306.Application\\Interfaces\\IServices\\IOrderService.cs",
@@ -180,7 +197,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "OrderRepository.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Infrastructure\\Repositories\\OrderRepository.cs",
               "RelativeDocumentMoniker": "CSW306.Infrastructure\\Repositories\\OrderRepository.cs",
@@ -193,7 +210,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "ReservationService.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Infrastructure\\Services\\ReservationService.cs",
               "RelativeDocumentMoniker": "CSW306.Infrastructure\\Services\\ReservationService.cs",
@@ -206,7 +223,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "PaymentService.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Infrastructure\\Services\\PaymentService.cs",
               "RelativeDocumentMoniker": "CSW306.Infrastructure\\Services\\PaymentService.cs",
@@ -219,7 +236,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "OrdersController.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\OrdersController.cs",
               "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Controllers\\OrdersController.cs",
@@ -232,7 +249,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "ItemResponseDTO.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\DTO\\Response\\ItemResponseDTO.cs",
               "RelativeDocumentMoniker": "CSW306.Application\\DTO\\Response\\ItemResponseDTO.cs",
@@ -244,7 +261,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "CreateItemRequest.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Requests\\CreateItemRequest.cs",
               "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Requests\\CreateItemRequest.cs",
@@ -257,7 +274,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "ItemsUploadDTO.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\DTO\\Upload\\ItemsUploadDTO.cs",
               "RelativeDocumentMoniker": "CSW306.Application\\DTO\\Upload\\ItemsUploadDTO.cs",
@@ -269,7 +286,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "ItemService.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Infrastructure\\Services\\ItemService.cs",
               "RelativeDocumentMoniker": "CSW306.Infrastructure\\Services\\ItemService.cs",
@@ -281,7 +298,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "ItemsController.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\ItemsController.cs",
               "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Controllers\\ItemsController.cs",
@@ -294,7 +311,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 16,
               "Title": "Items.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Domain\\Entities\\Items.cs",
               "RelativeDocumentMoniker": "CSW306.Domain\\Entities\\Items.cs",
@@ -306,7 +323,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 19,
               "Title": "IPhotoService.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Interfaces\\IPhotoService.cs",
               "RelativeDocumentMoniker": "CSW306.Application\\Interfaces\\IPhotoService.cs",
@@ -318,7 +335,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 17,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\appsettings.json",
               "RelativeDocumentMoniker": "CSW306_ProjectAPI\\appsettings.json",
@@ -330,7 +347,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 18,
               "Title": "CloudinaryPhotoService.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Infrastructure\\Services\\CloudinaryPhotoService.cs",
               "RelativeDocumentMoniker": "CSW306.Infrastructure\\Services\\CloudinaryPhotoService.cs",
