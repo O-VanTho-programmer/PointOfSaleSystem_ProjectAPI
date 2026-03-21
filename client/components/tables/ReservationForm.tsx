@@ -1,7 +1,7 @@
 import React from "react";
 import { toast } from "react-hot-toast";
 import { Square, Users, User, Calendar, Clock } from "lucide-react";
-import { InputField } from "@/components/InputField";
+import { InputField } from "@/components/ui/InputField";
 import { useTableManagementStore } from "@/store/tableManagementStore";
 import { useCreateReservation } from "@/hooks/useReservations";
 
@@ -10,12 +10,12 @@ export function ReservationForm() {
         resTableId, resName, resGuests, resDate, resTime, resNote,
         setReservationField, resetReservationForm, setIsOpen
     } = useTableManagementStore();
-    
+
     const createReservation = useCreateReservation();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        
+
         if (!resTableId || !resName || !resGuests || !resDate || !resTime) {
             toast.error("Please fill in all required fields.");
             return;
@@ -31,7 +31,7 @@ export function ReservationForm() {
         // We construct a valid date for the Date field.
         const dateObj = new Date(resDate);
         const isoDate = dateObj.toISOString();
-        
+
         // For the Time field, we construct a dummy date but with the correct time to get a valid ISO string.
         const [hours, minutes] = resTime.split(':');
         dateObj.setHours(parseInt(hours, 10));
@@ -39,7 +39,7 @@ export function ReservationForm() {
         dateObj.setSeconds(0);
         dateObj.setMilliseconds(0);
         const isoTime = dateObj.toISOString();
-        
+
         const promise = createReservation.mutateAsync({
             tableId: tId,
             customerName: resName,

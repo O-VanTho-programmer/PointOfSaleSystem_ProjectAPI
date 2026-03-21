@@ -6,7 +6,7 @@ import { useCreateItem } from "@/hooks/useItems";
 import { ItemUploadDTO } from "@/types/Item";
 import { CategoryUploadDTO } from "@/types/Category";
 import toast from "react-hot-toast";
-import { ImagePreview } from "../ImagePreview";
+import { ImagePreview } from "../ui/ImagePreview";
 
 const DEFAULT_ITEM_FORM: ItemUploadDTO = {
   name: "",

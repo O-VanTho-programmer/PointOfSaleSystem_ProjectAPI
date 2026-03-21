@@ -5,7 +5,7 @@ import { OrderStatus, OrderType, OrderDTO } from '@/types/OrderDTO';
 import { RoleGuard } from '@/components/RoleGuard';
 import { formatServerTimeOnly, getTodayDateRange } from '@/utils/dateHelper';
 import { useOrders, useOrdersByDateRange, useUpdateOrderStatus } from '@/hooks/useOrders';
-import DateRangePicker from '@/components/DateRangePicker';
+import DateRangePicker from '@/components/ui/DateRangePicker';
 import { Pagination } from '@/components/inventory/Pagination';
 
 const ORDER_TYPE_LABELS: Record<number, string> = {
@@ -163,7 +163,7 @@ export default function OrdersPage() {
                         <div className={`absolute left-0 top-0 h-full w-1.5 ${order.status === OrderStatus.Complete ? 'bg-emerald-400' :
                             order.status === OrderStatus.Cancelled ? 'bg-red-400' :
                                 order.status === OrderStatus.Paid ? 'bg-blue-400' :
-                                'bg-amber-400'
+                                    'bg-amber-400'
                             }`} />
 
                         <div className="flex w-full items-start justify-between">

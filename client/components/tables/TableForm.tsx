@@ -1,8 +1,8 @@
 import React from "react";
 import { toast } from "react-hot-toast";
 import { Square, Users, Info } from "lucide-react";
-import { InputField } from "@/components/InputField";
-import { SelectField } from "@/components/SelectField";
+import { InputField } from "@/components/ui/InputField";
+import { SelectField } from "@/components/ui/SelectField";
 import { useTableManagementStore } from "@/store/tableManagementStore";
 import { useCreateTable } from "@/hooks/useTables";
 import { TableStatus } from "@/types/Table";
@@ -13,7 +13,7 @@ export function TableForm() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        
+
         if (!tableId || !capacity) {
             toast.error("Please fill in all table details.");
             return;
