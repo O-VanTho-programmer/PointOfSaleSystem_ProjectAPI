@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { RoleGuard } from '@/components/RoleGuard';
 import { useUsers } from '@/hooks/useUsers';
+import { AddStaffModal } from '@/components/staffs/AddStaffModal';
 
 type Role = 'Manager' | 'Cashier' | 'Chef' | 'Waiter';
 
@@ -25,12 +26,13 @@ const ROLE_CONFIG: Record<Role, { bg: string; text: string; ring: string }> = {
 
 export default function StaffsPage() {
     const [roleFilter, setRoleFilter] = useState<Role | 'all'>('all');
-    
+    const [isAddStaffOpen, setIsAddStaffOpen] = useState(false);
+
     const { data: usersData, isLoading } = useUsers();
-    
+
     const staffMembers: StaffMember[] = (usersData?.listPayload || []).map(u => {
         const initials = u.name ? u.name.split(' ').map(n => n.charAt(0)).join('').substring(0, 2).toUpperCase() : 'U';
-        
+
         let validRole: Role = 'Waiter'; // Default fallback
         if (['Manager', 'Cashier', 'Chef', 'Waiter'].includes(u.role)) {
             validRole = u.role as Role;
@@ -57,34 +59,46 @@ export default function StaffsPage() {
         <RoleGuard allowedRoles={['Manager']}>
             <div className="flex h-full flex-col gap-6 p-6 lg:p-8">
                 {/* Header */}
-                <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+                <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                         <h1 className="text-2xl font-bold tracking-tight text-slate-900 lg:text-3xl">
                             Staff Management
                         </h1>
                         <p className="mt-1 text-sm text-slate-500">
-                            {staffMembers.length} members · {activeCount} on shift
+                            {staffMembers.length} staffs · {activeCount} on shift
                         </p>
-                    </div>
-                    <div className="flex gap-1.5">
-                        <button
-                            onClick={() => setRoleFilter('all')}
-                            className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${roleFilter === 'all' ? 'bg-slate-900 text-white shadow-sm' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
-                                }`}
-                        >
-                            All
-                        </button>
-                        {(Object.keys(ROLE_CONFIG) as Role[]).map(role => (
+
+                        <div className="flex gap-1.5 mt-1.5">
                             <button
-                                key={role}
-                                onClick={() => setRoleFilter(role)}
-                                className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${roleFilter === role ? 'bg-slate-900 text-white shadow-sm' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
+                                onClick={() => setRoleFilter('all')}
+                                className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${roleFilter === 'all' ? 'bg-slate-900 text-white shadow-sm' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
                                     }`}
                             >
-                                {role}
+                                All
                             </button>
-                        ))}
+                            {(Object.keys(ROLE_CONFIG) as Role[]).map(role => (
+                                <button
+                                    key={role}
+                                    onClick={() => setRoleFilter(role)}
+                                    className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${roleFilter === role ? 'bg-slate-900 text-white shadow-sm' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
+                                        }`}
+                                >
+                                    {role}
+                                </button>
+                            ))}
+                        </div>
                     </div>
+
+                    <button
+                        type="button"
+                        onClick={() => setIsAddStaffOpen(true)}
+                        className="flex cursor-pointer items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                    >
+                        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                        </svg>
+                        Add Staff
+                    </button>
                 </header>
 
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 overflow-y-auto flex-1">
@@ -139,13 +153,18 @@ export default function StaffsPage() {
                             </div>
                         </div>
                     )}
-                    
+
                     {!isLoading && filtered.length === 0 && (
                         <div className="col-span-full flex h-48 items-center justify-center rounded-xl border-2 border-dashed border-slate-200 bg-slate-50">
                             <p className="text-sm font-medium text-slate-400">No team members match this filter.</p>
                         </div>
                     )}
                 </div>
+
+                <AddStaffModal 
+                    isOpen={isAddStaffOpen} 
+                    onClose={() => setIsAddStaffOpen(false)} 
+                />
             </div>
         </RoleGuard>
     );

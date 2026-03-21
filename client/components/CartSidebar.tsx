@@ -33,7 +33,7 @@ export function CartSidebar() {
         createOrder.mutateAsync({
             status: OrderStatus.Pending,
             discountId: order.discountId,
-            userId: user?.id || -1,
+            userId: user?.userId || -1,
             orderItems: order.orderItems.map((oi) => ({
                 itemId: oi.itemId,
                 quantity: oi.quantity,
