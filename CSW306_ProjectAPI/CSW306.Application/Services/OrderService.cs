@@ -314,13 +314,22 @@ namespace CSW306.Application.Services
                 }
                 catch { /* ignore */ }
 
-                var userDescriptor = currentUser != null
-                    ? $"{currentUser.UserId} ({currentUser.Name}, {currentUser.Role ?? "Unknown"})"
-                    : order.UserId.ToString();
+                string userDescriptor;
 
-                var createDetails = $"{userDescriptor} created order #{order.OrderId} for Table Number {order.TableNumber} with {order.OrderItems.Count} items.";
+                if (currentUser != null && !string.IsNullOrWhiteSpace(currentUser.Name))
+                {
+                    var role = string.IsNullOrWhiteSpace(currentUser.Role) ? "Staff" : currentUser.Role;
+                    userDescriptor = $"{role} {currentUser.Name}"; 
+                }
+                else
+                {
+                    userDescriptor = $"Staff #{order.UserId}"; 
+                }
 
-                // Persist activity log via UnitOfWork so it's part of repository pattern
+                string itemWord = order.OrderItems.Count == 1 ? "item" : "items";
+
+                var createDetails = $"{userDescriptor} created Order #{order.OrderId} for Table {order.TableNumber} with {order.OrderItems.Count} {itemWord}.";
+   
                 await _unitOfWork.ActivityLogs.AddAsync(new ActivityLog
                 {
                     Action = "CreateOrder",

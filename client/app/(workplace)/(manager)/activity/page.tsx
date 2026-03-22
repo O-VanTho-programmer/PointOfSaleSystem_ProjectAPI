@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import { RoleGuard } from '@/components/RoleGuard';
 import { formatTimeAgo } from '@/utils/formatTimeAgo';
 import { useActivityLogs } from '@/hooks/useActivityLogs';
+import { config } from 'process';
 
 type LogType = 'login' | 'order' | 'inventory' | 'settings' | 'team';
 
@@ -24,16 +25,16 @@ const LOG_TYPE_CONFIG: Record<LogType, { icon: string; bg: string; text: string 
     team: { icon: '👤', bg: 'bg-blue-50', text: 'text-blue-600' },
 };
 
-const MOCK_LOGS: ActivityLog[] = [
-    { id: 1, user: 'Nguyen Van A', role: 'Manager', action: 'Updated tax rate from 10% to 12%', type: 'settings', timestamp: new Date(Date.now() - 1000 * 60 * 5).toISOString() },
-    { id: 2, user: 'Tran Thi B', role: 'Cashier', action: 'Completed payment for Order #1042', type: 'order', timestamp: new Date(Date.now() - 1000 * 60 * 12).toISOString() },
-    { id: 3, user: 'Le Van C', role: 'Chef', action: 'Logged in from Kitchen Terminal', type: 'login', timestamp: new Date(Date.now() - 1000 * 60 * 25).toISOString() },
-    { id: 4, user: 'Nguyen Van A', role: 'Manager', action: 'Added new item "Mango Smoothie" to inventory', type: 'inventory', timestamp: new Date(Date.now() - 1000 * 60 * 40).toISOString() },
-    { id: 5, user: 'Pham D', role: 'Waiter', action: 'Created Order #1041 (Dine-In, Table 3)', type: 'order', timestamp: new Date(Date.now() - 1000 * 60 * 55).toISOString() },
-    { id: 6, user: 'Nguyen Van A', role: 'Manager', action: 'Changed role of Tran Thi B to Cashier', type: 'team', timestamp: new Date(Date.now() - 1000 * 60 * 70).toISOString() },
-    { id: 7, user: 'Tran Thi B', role: 'Cashier', action: 'Voided Order #1038', type: 'order', timestamp: new Date(Date.now() - 1000 * 60 * 90).toISOString() },
-    { id: 8, user: 'Ho E', role: 'Waiter', action: 'Logged in from Tablet POS', type: 'login', timestamp: new Date(Date.now() - 1000 * 60 * 120).toISOString() },
-];
+// const MOCK_LOGS: ActivityLog[] = [
+//     { id: 1, user: 'Nguyen Van A', role: 'Manager', action: 'Updated tax rate from 10% to 12%', type: 'settings', timestamp: new Date(Date.now() - 1000 * 60 * 5).toISOString() },
+//     { id: 2, user: 'Tran Thi B', role: 'Cashier', action: 'Completed payment for Order #1042', type: 'order', timestamp: new Date(Date.now() - 1000 * 60 * 12).toISOString() },
+//     { id: 3, user: 'Le Van C', role: 'Chef', action: 'Logged in from Kitchen Terminal', type: 'login', timestamp: new Date(Date.now() - 1000 * 60 * 25).toISOString() },
+//     { id: 4, user: 'Nguyen Van A', role: 'Manager', action: 'Added new item "Mango Smoothie" to inventory', type: 'inventory', timestamp: new Date(Date.now() - 1000 * 60 * 40).toISOString() },
+//     { id: 5, user: 'Pham D', role: 'Waiter', action: 'Created Order #1041 (Dine-In, Table 3)', type: 'order', timestamp: new Date(Date.now() - 1000 * 60 * 55).toISOString() },
+//     { id: 6, user: 'Nguyen Van A', role: 'Manager', action: 'Changed role of Tran Thi B to Cashier', type: 'team', timestamp: new Date(Date.now() - 1000 * 60 * 70).toISOString() },
+//     { id: 7, user: 'Tran Thi B', role: 'Cashier', action: 'Voided Order #1038', type: 'order', timestamp: new Date(Date.now() - 1000 * 60 * 90).toISOString() },
+//     { id: 8, user: 'Ho E', role: 'Waiter', action: 'Logged in from Tablet POS', type: 'login', timestamp: new Date(Date.now() - 1000 * 60 * 120).toISOString() },
+// ];
 
 const FILTER_OPTIONS: { value: LogType | 'all'; label: string }[] = [
     { value: 'all', label: 'All Activity' },
@@ -46,11 +47,12 @@ const FILTER_OPTIONS: { value: LogType | 'all'; label: string }[] = [
 
 export default function ActivityLogsPage() {
     const [filter, setFilter] = useState<LogType | 'all'>('all');
-    const { data: activityLogs } = useActivityLogs();
+    const { data: activityLogsResult } = useActivityLogs();
 
-    const filteredLogs = useMemo(() => {
-        return filter === 'all' ? MOCK_LOGS : MOCK_LOGS.filter(l => l.type === filter);
-    }, [filter]);
+    const activityLogs = activityLogsResult?.listPayload;
+    // const filteredLogs = useMemo(() => {
+    //     return filter === 'all' ? MOCK_LOGS : MOCK_LOGS.filter(l => l.type === filter);
+    // }, [filter]);
 
     return (
         <RoleGuard allowedRoles={['Manager']}>
@@ -85,20 +87,15 @@ export default function ActivityLogsPage() {
                 {/* Timeline */}
                 <div className="flex-1 overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-sm">
                     <div className="divide-y divide-slate-100">
-                        {filteredLogs.map(log => {
-                            const config = LOG_TYPE_CONFIG[log.type];
+                        {activityLogs?.map(log => {
                             return (
-                                <div key={log.id} className="flex items-start gap-4 px-5 py-4 transition-colors hover:bg-slate-50/60">
-                                    <div className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-sm ${config.bg}`}>
-                                        {config.icon}
+                                <div key={log.activityId} className="flex items-start gap-4 px-5 py-4 transition-colors hover:bg-slate-50/60">
+                                    <div className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-sm bg-slate-100`}>
+                                        📝
                                     </div>
                                     <div className="flex-1 min-w-0">
                                         <p className="text-sm text-slate-800">
-                                            <span className="font-semibold">{log.user}</span>
-                                            <span className="mx-1.5 text-slate-300">·</span>
-                                            <span className={`rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${config.bg} ${config.text}`}>
-                                                {log.role}
-                                            </span>
+                                            {log.details}
                                         </p>
                                         <p className="mt-1 text-sm text-slate-500 leading-relaxed">{log.action}</p>
                                     </div>
@@ -109,7 +106,7 @@ export default function ActivityLogsPage() {
                             );
                         })}
 
-                        {filteredLogs.length === 0 && (
+                        {activityLogs?.length === 0 && (
                             <div className="flex h-48 items-center justify-center">
                                 <p className="text-sm font-medium text-slate-400">No activity matching this filter.</p>
                             </div>
