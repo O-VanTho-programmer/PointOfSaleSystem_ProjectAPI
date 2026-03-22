@@ -7,44 +7,36 @@
       "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306.Presentation.csproj|solutionrelative:csw306_projectapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{94B7448C-A1E7-4CC1-866C-6478A869BA8E}|CSW306.Infrastructure\\CSW306.Infrastructure.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.infrastructure\\data\\designtimedbcontextfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{94B7448C-A1E7-4CC1-866C-6478A869BA8E}|CSW306.Infrastructure\\CSW306.Infrastructure.csproj|solutionrelative:csw306.infrastructure\\data\\designtimedbcontextfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.application\\services\\activitylogservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|solutionrelative:csw306.application\\services\\activitylogservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.application\\interfaces\\iservices\\iauditlogservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|solutionrelative:csw306.application\\interfaces\\iservices\\iauditlogservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.application\\services\\orderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|solutionrelative:csw306.application\\services\\orderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{94B7448C-A1E7-4CC1-866C-6478A869BA8E}|CSW306.Infrastructure\\CSW306.Infrastructure.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.infrastructure\\services\\auditlogservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{94B7448C-A1E7-4CC1-866C-6478A869BA8E}|CSW306.Infrastructure\\CSW306.Infrastructure.csproj|solutionrelative:csw306.infrastructure\\services\\auditlogservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.application\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|solutionrelative:csw306.application\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{94B7448C-A1E7-4CC1-866C-6478A869BA8E}|CSW306.Infrastructure\\CSW306.Infrastructure.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.infrastructure\\services\\activitylogservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{94B7448C-A1E7-4CC1-866C-6478A869BA8E}|CSW306.Infrastructure\\CSW306.Infrastructure.csproj|solutionrelative:csw306.infrastructure\\services\\activitylogservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.application\\services\\auditlogservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|solutionrelative:csw306.application\\services\\auditlogservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.application\\interfaces\\irepositories\\iactivitylogrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|solutionrelative:csw306.application\\interfaces\\irepositories\\iactivitylogrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{94B7448C-A1E7-4CC1-866C-6478A869BA8E}|CSW306.Infrastructure\\CSW306.Infrastructure.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.infrastructure\\services\\orderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{94B7448C-A1E7-4CC1-866C-6478A869BA8E}|CSW306.Infrastructure\\CSW306.Infrastructure.csproj|solutionrelative:csw306.infrastructure\\services\\orderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{94B7448C-A1E7-4CC1-866C-6478A869BA8E}|CSW306.Infrastructure\\CSW306.Infrastructure.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.infrastructure\\repositories\\activitylogrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{94B7448C-A1E7-4CC1-866C-6478A869BA8E}|CSW306.Infrastructure\\CSW306.Infrastructure.csproj|solutionrelative:csw306.infrastructure\\repositories\\activitylogrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{302717DE-A0C4-4FDC-8475-998219D7FC6A}|CSW306.Domain\\CSW306.Domain.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.domain\\entities\\orders.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{302717DE-A0C4-4FDC-8475-998219D7FC6A}|CSW306.Domain\\CSW306.Domain.csproj|solutionrelative:csw306.domain\\entities\\orders.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{94B7448C-A1E7-4CC1-866C-6478A869BA8E}|CSW306.Infrastructure\\CSW306.Infrastructure.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.infrastructure\\repositories\\orderrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{94B7448C-A1E7-4CC1-866C-6478A869BA8E}|CSW306.Infrastructure\\CSW306.Infrastructure.csproj|solutionrelative:csw306.infrastructure\\repositories\\orderrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{94B7448C-A1E7-4CC1-866C-6478A869BA8E}|CSW306.Infrastructure\\CSW306.Infrastructure.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.infrastructure\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{94B7448C-A1E7-4CC1-866C-6478A869BA8E}|CSW306.Infrastructure\\CSW306.Infrastructure.csproj|solutionrelative:csw306.infrastructure\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.application\\interfaces\\iservices\\iactivitylogservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|solutionrelative:csw306.application\\interfaces\\iservices\\iactivitylogservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.application\\interfaces\\iservices\\iorderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|solutionrelative:csw306.application\\interfaces\\iservices\\iorderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306.Presentation.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306_projectapi\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306.Presentation.csproj|solutionrelative:csw306_projectapi\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.application\\interfaces\\iservices\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|solutionrelative:csw306.application\\interfaces\\iservices\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -54,8 +46,125 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 4,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "OrderService.cs",
+              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Services\\OrderService.cs",
+              "RelativeDocumentMoniker": "CSW306.Application\\Services\\OrderService.cs",
+              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Services\\OrderService.cs",
+              "RelativeToolTip": "CSW306.Application\\Services\\OrderService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-22T06:59:52.372Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AuthService.cs",
+              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Services\\AuthService.cs",
+              "RelativeDocumentMoniker": "CSW306.Application\\Services\\AuthService.cs",
+              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Services\\AuthService.cs",
+              "RelativeToolTip": "CSW306.Application\\Services\\AuthService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-22T06:59:49.359Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "AuditLogService.cs",
+              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Services\\AuditLogService.cs",
+              "RelativeDocumentMoniker": "CSW306.Application\\Services\\AuditLogService.cs",
+              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Services\\AuditLogService.cs",
+              "RelativeToolTip": "CSW306.Application\\Services\\AuditLogService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-22T06:59:46.033Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ActivityLogService.cs",
+              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Services\\ActivityLogService.cs",
+              "RelativeDocumentMoniker": "CSW306.Application\\Services\\ActivityLogService.cs",
+              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Services\\ActivityLogService.cs",
+              "RelativeToolTip": "CSW306.Application\\Services\\ActivityLogService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-22T06:59:42.682Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Program.cs",
+              "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Program.cs",
+              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Program.cs",
+              "RelativeToolTip": "CSW306_ProjectAPI\\Program.cs",
+              "ViewState": "AgIAADAAAAAAAAAAAAAAADwAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-22T06:47:38.094Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Orders.cs",
+              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Domain\\Entities\\Orders.cs",
+              "RelativeDocumentMoniker": "CSW306.Domain\\Entities\\Orders.cs",
+              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Domain\\Entities\\Orders.cs",
+              "RelativeToolTip": "CSW306.Domain\\Entities\\Orders.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAxwAkAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-22T06:30:26.076Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "OrderService.cs",
+              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Infrastructure\\Services\\OrderService.cs",
+              "RelativeDocumentMoniker": "CSW306.Infrastructure\\Services\\OrderService.cs",
+              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Infrastructure\\Services\\OrderService.cs",
+              "RelativeToolTip": "CSW306.Infrastructure\\Services\\OrderService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAPkAAABKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-22T06:07:28.219Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "UserService.cs",
+              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Infrastructure\\Services\\UserService.cs",
+              "RelativeDocumentMoniker": "CSW306.Infrastructure\\Services\\UserService.cs",
+              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Infrastructure\\Services\\UserService.cs",
+              "RelativeToolTip": "CSW306.Infrastructure\\Services\\UserService.cs",
+              "ViewState": "AgIAACIAAAAAAAAAAAASwDcAAABJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-22T06:23:52.575Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "IUserService.cs",
+              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Interfaces\\IServices\\IUserService.cs",
+              "RelativeDocumentMoniker": "CSW306.Application\\Interfaces\\IServices\\IUserService.cs",
+              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Interfaces\\IServices\\IUserService.cs",
+              "RelativeToolTip": "CSW306.Application\\Interfaces\\IServices\\IUserService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-22T06:22:35.722Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
@@ -67,149 +176,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Program.cs",
-              "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Program.cs",
-              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Program.cs",
-              "RelativeToolTip": "CSW306_ProjectAPI\\Program.cs",
-              "ViewState": "AgIAABsAAAAAAAAAAAAkwCkAAAALAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-22T02:33:39.459Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "DesignTimeDbContextFactory.cs",
-              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Infrastructure\\Data\\DesignTimeDbContextFactory.cs",
-              "RelativeDocumentMoniker": "CSW306.Infrastructure\\Data\\DesignTimeDbContextFactory.cs",
-              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Infrastructure\\Data\\DesignTimeDbContextFactory.cs",
-              "RelativeToolTip": "CSW306.Infrastructure\\Data\\DesignTimeDbContextFactory.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAgAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-22T02:25:03.887Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "AuditLogService.cs",
-              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Infrastructure\\Services\\AuditLogService.cs",
-              "RelativeDocumentMoniker": "CSW306.Infrastructure\\Services\\AuditLogService.cs",
-              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Infrastructure\\Services\\AuditLogService.cs",
-              "RelativeToolTip": "CSW306.Infrastructure\\Services\\AuditLogService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-21T11:44:55.078Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "IAuditLogService.cs",
-              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Interfaces\\IServices\\IAuditLogService.cs",
-              "RelativeDocumentMoniker": "CSW306.Application\\Interfaces\\IServices\\IAuditLogService.cs",
-              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Interfaces\\IServices\\IAuditLogService.cs",
-              "RelativeToolTip": "CSW306.Application\\Interfaces\\IServices\\IAuditLogService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-21T11:44:48.713Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "IActivityLogRepository.cs",
-              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Interfaces\\IRepositories\\IActivityLogRepository.cs",
-              "RelativeDocumentMoniker": "CSW306.Application\\Interfaces\\IRepositories\\IActivityLogRepository.cs",
-              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Interfaces\\IRepositories\\IActivityLogRepository.cs",
-              "RelativeToolTip": "CSW306.Application\\Interfaces\\IRepositories\\IActivityLogRepository.cs",
-              "ViewState": "AgIAAAEAAAAAAAAAAAAswAsAAAAnAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-21T10:27:04.503Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "ActivityLogService.cs",
-              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Infrastructure\\Services\\ActivityLogService.cs",
-              "RelativeDocumentMoniker": "CSW306.Infrastructure\\Services\\ActivityLogService.cs",
-              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Infrastructure\\Services\\ActivityLogService.cs",
-              "RelativeToolTip": "CSW306.Infrastructure\\Services\\ActivityLogService.cs",
-              "ViewState": "AgIAABEAAAAAAAAAAAAIwBoAAAA1AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-21T10:12:41.432Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "ActivityLogRepository.cs",
-              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Infrastructure\\Repositories\\ActivityLogRepository.cs",
-              "RelativeDocumentMoniker": "CSW306.Infrastructure\\Repositories\\ActivityLogRepository.cs",
-              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Infrastructure\\Repositories\\ActivityLogRepository.cs",
-              "RelativeToolTip": "CSW306.Infrastructure\\Repositories\\ActivityLogRepository.cs",
-              "ViewState": "AgIAACAAAAAAAAAAAAAgwC0AAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-21T10:30:19.165Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "OrderRepository.cs",
-              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Infrastructure\\Repositories\\OrderRepository.cs",
-              "RelativeDocumentMoniker": "CSW306.Infrastructure\\Repositories\\OrderRepository.cs",
-              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Infrastructure\\Repositories\\OrderRepository.cs",
-              "RelativeToolTip": "CSW306.Infrastructure\\Repositories\\OrderRepository.cs",
-              "ViewState": "AgIAAB0AAAAAAAAAAAA3wDAAAAAfAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-21T10:31:46.622Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "IActivityLogService.cs",
-              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Interfaces\\IServices\\IActivityLogService.cs",
-              "RelativeDocumentMoniker": "CSW306.Application\\Interfaces\\IServices\\IActivityLogService.cs",
-              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Interfaces\\IServices\\IActivityLogService.cs",
-              "RelativeToolTip": "CSW306.Application\\Interfaces\\IServices\\IActivityLogService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-21T10:12:27.196Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "IOrderService.cs",
-              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Interfaces\\IServices\\IOrderService.cs",
-              "RelativeDocumentMoniker": "CSW306.Application\\Interfaces\\IServices\\IOrderService.cs",
-              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Interfaces\\IServices\\IOrderService.cs",
-              "RelativeToolTip": "CSW306.Application\\Interfaces\\IServices\\IOrderService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-21T10:16:29.586Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "OrdersController.cs",
-              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\OrdersController.cs",
-              "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Controllers\\OrdersController.cs",
-              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\OrdersController.cs",
-              "RelativeToolTip": "CSW306_ProjectAPI\\Controllers\\OrdersController.cs",
-              "ViewState": "AgIAAD8AAAAAAAAAAAAkwBkAAAAkAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-21T10:11:49.495Z",
-              "EditorCaption": ""
             }
           ]
         }

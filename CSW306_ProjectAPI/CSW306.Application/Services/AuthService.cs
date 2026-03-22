@@ -11,7 +11,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSW306.Infrastructure.Services
+namespace CSW306.Application.Services
 {
     public class AuthService : IAuthService
     {
@@ -35,7 +35,7 @@ namespace CSW306.Infrastructure.Services
             var response = new LoginResponseDTO{
                 Token = GenerateJwtToken(user),
                 User = new UserSessionDTO{
-                    Id = user.UserId,
+                    UserId = user.UserId,
                     Phone = user.Phone,
                     Email = user.Email,
                     Name = user.Name,

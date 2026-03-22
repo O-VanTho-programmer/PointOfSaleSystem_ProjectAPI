@@ -13,10 +13,11 @@ namespace CSW306.Application.DTO.Upload
         [StringLength(50)]
         public string Action { get; set; }
         [Required]
+        public int? UserId { get; set; }
+        [Required]
         [StringLength(100)]
         public string EntityName { get; set; }
         public int? EntityId { get; set; }
-        public int? UserId { get; set; }
         [StringLength(500)]
         public string? Details { get; set; }
     }

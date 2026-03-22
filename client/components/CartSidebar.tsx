@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation';
 export function CartSidebar() {
     const { order, updateQuantity, clearOrder } = usePosStore();
     const { user } = useAuthStore();
+    console.log(user);
     const router = useRouter();
 
     const subtotal = useMemo(() => {

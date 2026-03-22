@@ -1,3 +1,4 @@
+using CSW306.Application.Services;
 using CSW306.Infrastructure.Data;
 using CSW306.Presentation.Hubs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -40,17 +41,17 @@ builder.Services.AddScoped<CSW306.Application.Interfaces.IRepositories.IDiscount
 builder.Services.AddScoped<CSW306.Application.Interfaces.IRepositories.IActivityLogRepository, CSW306.Infrastructure.Repositories.ActivityLogRepository>();
 
 // Services
-builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.ICategoryService, CSW306.Infrastructure.Services.CategoryService>();
-builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IItemService, CSW306.Infrastructure.Services.ItemService>();
-builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IOrderService, CSW306.Infrastructure.Services.OrderService>();
-builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IAuthService, CSW306.Infrastructure.Services.AuthService>();
-builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.ITableService, CSW306.Infrastructure.Services.TableService>();
-builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IReservationService, CSW306.Infrastructure.Services.ReservationService>();
-builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IPaymentService, CSW306.Infrastructure.Services.PaymentService>();
-builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IDiscountService, CSW306.Infrastructure.Services.DiscountService>();
-builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IUserService, CSW306.Infrastructure.Services.UserService>();
+builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.ICategoryService, CategoryService>();
+builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IItemService, ItemService>();
+builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IOrderService, CSW306.Application.Services.OrderService>();
+builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IAuthService, AuthService>();
+builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.ITableService, TableService>();
+builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IReservationService, ReservationService>();
+builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IPaymentService, PaymentService>();
+builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IDiscountService, DiscountService>();
+builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IUserService, UserService>();
 builder.Services.AddScoped<CSW306.Application.Interfaces.IPhotoService, CSW306.Infrastructure.Services.CloudinaryPhotoService>();
-builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IActivityLogService, CSW306.Infrastructure.Services.ActivityLogService>();
+builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IActivityLogService, CSW306.Application.Services.ActivityLogService>();
 
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
     ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("RedisCache") ?? "localhost:6379,abortConnect=false"));
@@ -58,9 +59,9 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
 builder.Services.AddSingleton<CSW306.Application.Interfaces.IServices.IRedisCacheService, CSW306.Infrastructure.Services.RedisCacheService>();
 
 // AuditLogService retained as no-op
-builder.Services.AddSingleton<CSW306.Infrastructure.Services.AuditLogService>();
+builder.Services.AddSingleton<CSW306.Application.Services.AuditLogService>();
 builder.Services.AddSingleton<CSW306.Application.Interfaces.IServices.IAuditLogService>(sp =>
-    sp.GetRequiredService<CSW306.Infrastructure.Services.AuditLogService>());
+    sp.GetRequiredService<AuditLogService>());
 
 builder.Services.AddDbContext<CSW306_ProjectAPIContext>((sp, options) =>
 {

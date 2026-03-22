@@ -1,6 +1,6 @@
 using CSW306.Application.Interfaces.IServices;
 
-namespace CSW306.Infrastructure.Services
+namespace CSW306.Application.Services
 {
     // No-op audit log service retained for compatibility with DI registrations in Program.cs
     public class AuditLogService : IAuditLogService

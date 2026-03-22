@@ -8,7 +8,7 @@ namespace CSW306.Application.DTO.Response
 
     public class UserSessionDTO
     {
-        public int Id { get; set; }
+        public int UserId { get; set; }
         public string Name { get; set; }
         public string Phone { get; set; }   
         public string Email { get; set; }   

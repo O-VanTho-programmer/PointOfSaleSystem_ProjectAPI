@@ -6,7 +6,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CSW306.Infrastructure.Services
+namespace CSW306.Application.Services
 {
     public class UserService : IUserService
     {
@@ -45,6 +45,18 @@ namespace CSW306.Infrastructure.Services
                 Console.WriteLine(ex);
                 return new TemplateApi<Users>(null, null, "An unexpected error occurred while creating a user.", false, 0, 0, 0, 0);
             }
+        }
+
+        public async Task<TemplateApi<Users>> GetById(int id)
+        {
+            var user = await _unitOfWork.Users.GetByIdAsync(id);
+
+            if (user == null)
+            {
+                return new TemplateApi<Users>(null, null, "Not user found.", false, 0, 0, 0, 0);
+            }
+
+            return new Pagination().HandleGetByIdRespond(user);
         }
     }
 }

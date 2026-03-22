@@ -6,7 +6,7 @@ using CSW306.Application.Utils;
 using CSW306.Domain.Entities;
 using System.Linq;
 
-namespace CSW306.Infrastructure.Services
+namespace CSW306.Application.Services
 {
     public class CategoryService : ICategoryService
     {

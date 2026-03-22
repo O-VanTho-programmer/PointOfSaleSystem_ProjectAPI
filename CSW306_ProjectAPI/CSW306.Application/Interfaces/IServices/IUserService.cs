@@ -6,6 +6,7 @@ namespace CSW306.Application.Interfaces.IServices
 {
     public interface IUserService
     {
+        Task<TemplateApi<Users>> GetById(int id);
         Task<TemplateApi<Users>> GetAllUsersAsync();
         Task<TemplateApi<Users>> CreateUserAsync(Users user);
     }

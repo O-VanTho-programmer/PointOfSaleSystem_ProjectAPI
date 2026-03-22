@@ -11,7 +11,7 @@ namespace CSW306.Domain.Entities
         public int OrderId { get; set; }
 
         public int? DiscountId { get; set; }
-        public int? UserId { get; set; }
+        public int UserId { get; set; }
 
         [Required]
         //0: pending, 1:completed, 2: paid, -1: cancelled

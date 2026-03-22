@@ -47,7 +47,7 @@ const FILTER_OPTIONS: { value: LogType | 'all'; label: string }[] = [
 export default function ActivityLogsPage() {
     const [filter, setFilter] = useState<LogType | 'all'>('all');
     const { data: activityLogs } = useActivityLogs();
-    console.log(activityLogs);
+
     const filteredLogs = useMemo(() => {
         return filter === 'all' ? MOCK_LOGS : MOCK_LOGS.filter(l => l.type === filter);
     }, [filter]);
@@ -72,8 +72,8 @@ export default function ActivityLogsPage() {
                                 key={opt.value}
                                 onClick={() => setFilter(opt.value)}
                                 className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${filter === opt.value
-                                        ? 'bg-slate-900 text-white shadow-sm'
-                                        : 'bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-700'
+                                    ? 'bg-slate-900 text-white shadow-sm'
+                                    : 'bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-700'
                                     }`}
                             >
                                 {opt.label}

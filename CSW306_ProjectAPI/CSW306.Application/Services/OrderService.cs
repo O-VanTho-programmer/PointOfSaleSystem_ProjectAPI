@@ -8,20 +8,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CSW306.Infrastructure.Services
+namespace CSW306.Application.Services
 {
     public class OrderService : IOrderService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRedisCacheService _redisCacheService;
-        private readonly IActivityLogService _activityLogService;
         private const string OrdersCacheSetKey = "orders:cachedKeys";
 
-        public OrderService(IUnitOfWork unitOfWork, IRedisCacheService redisCacheService, IActivityLogService activityLogService)
+        public OrderService(IUnitOfWork unitOfWork, IRedisCacheService redisCacheService)
         {
             _unitOfWork = unitOfWork;
             _redisCacheService = redisCacheService;
-            _activityLogService = activityLogService;
         }
 
         public async Task<TemplateApi<OrderResponseDTO>> GetOrderAsync(int id)
@@ -309,15 +307,31 @@ namespace CSW306.Infrastructure.Services
                     }).ToList()
                 };
 
-                var createDetails = $"User {order.UserId} created order {order.OrderId} with {order.OrderItems.Count} items.";
-                await _activityLogService.LogActivity(new ActivityLogUploadDTO
+                Users? currentUser = null;
+                try
+                {
+                    currentUser = await _unitOfWork.Users.GetByIdAsync(order.UserId);
+                }
+                catch { /* ignore */ }
+
+                var userDescriptor = currentUser != null
+                    ? $"{currentUser.UserId} ({currentUser.Name}, {currentUser.Role ?? "Unknown"})"
+                    : order.UserId.ToString();
+
+                var createDetails = $"{userDescriptor} created order #{order.OrderId} for Table Number {order.TableNumber} with {order.OrderItems.Count} items.";
+
+                // Persist activity log via UnitOfWork so it's part of repository pattern
+                await _unitOfWork.ActivityLogs.AddAsync(new ActivityLog
                 {
                     Action = "CreateOrder",
                     EntityName = "Order",
                     EntityId = order.OrderId,
                     UserId = order.UserId,
-                    Details = createDetails
+                    Details = createDetails,
+                    Timestamp = DateTimeOffset.UtcNow
                 });
+
+                await _unitOfWork.SaveChangesAsync();
 
                 return pagination.HandleGetByIdRespond(resDto);
             }
@@ -358,16 +372,31 @@ namespace CSW306.Infrastructure.Services
                 }
                 catch { }
 
-                // Log status change including user performing the action
-                var updateDetails = $"User {order.UserId} changed order {order.OrderId} status from {oldStatus} to {order.Status}.";
-                await _activityLogService.LogActivity(new ActivityLogUploadDTO
+                // Build user descriptor
+                Users? currentUser = null;
+                try
+                {
+                    currentUser = await _unitOfWork.Users.GetByIdAsync(order.UserId);
+                }
+                catch { }
+
+                var userDescriptor = currentUser != null
+                    ? $"{currentUser.UserId} ({currentUser.Name}, {currentUser.Role ?? "Unknown"})"
+                    : order.UserId.ToString();
+
+                var updateDetails = $"{userDescriptor} changed order {order.OrderId} status from {oldStatus} to {order.Status}.";
+
+                await _unitOfWork.ActivityLogs.AddAsync(new ActivityLog
                 {
                     Action = "UpdateOrderStatus",
                     EntityName = "Order",
                     EntityId = order.OrderId,
                     UserId = order.UserId,
-                    Details = updateDetails
+                    Details = updateDetails,
+                    Timestamp = DateTimeOffset.UtcNow
                 });
+
+                await _unitOfWork.SaveChangesAsync();
 
                 var resDto = new OrderResponseDTO
                 {

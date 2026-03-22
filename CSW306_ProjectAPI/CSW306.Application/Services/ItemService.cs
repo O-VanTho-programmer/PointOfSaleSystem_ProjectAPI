@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSW306.Infrastructure.Services
+namespace CSW306.Application.Services
 {
     public class ItemService : IItemService
     {
@@ -19,9 +19,9 @@ namespace CSW306.Infrastructure.Services
 
         public ItemService(IUnitOfWork unitOfWork, IRedisCacheService redisCacheService, IPhotoService photoService)
         {
-            this._unitOfWork = unitOfWork;
-            this._redisCacheService = redisCacheService;
-            this._photoService = photoService;
+            _unitOfWork = unitOfWork;
+            _redisCacheService = redisCacheService;
+            _photoService = photoService;
         }
 
         public async Task<TemplateApi<Items>> CreateItemAsync(ItemsUploadDTO uploadDTO)
