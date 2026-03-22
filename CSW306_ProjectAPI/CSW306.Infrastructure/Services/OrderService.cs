@@ -14,10 +14,14 @@ namespace CSW306.Infrastructure.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRedisCacheService _redisCacheService;
+        private readonly IActivityLogService _activityLogService;
+        private const string OrdersCacheSetKey = "orders:cachedKeys";
 
-        public OrderService(IUnitOfWork unitOfWork, IRedisCacheService redisCacheService) { 
+        public OrderService(IUnitOfWork unitOfWork, IRedisCacheService redisCacheService, IActivityLogService activityLogService)
+        {
             _unitOfWork = unitOfWork;
             _redisCacheService = redisCacheService;
+            _activityLogService = activityLogService;
         }
 
         public async Task<TemplateApi<OrderResponseDTO>> GetOrderAsync(int id)
@@ -25,6 +29,14 @@ namespace CSW306.Infrastructure.Services
             var pagination = new Pagination();
             try
             {
+                var cacheKey = $"order:{id}";
+
+                var cached = await _redisCacheService.GetAsync<OrderResponseDTO>(cacheKey);
+                if (cached != null)
+                {
+                    return pagination.HandleGetByIdRespond(cached);
+                }
+
                 var order = await _unitOfWork.Orders.GetOrderByIdWithDetailsAsync(id);
 
                 if (order == null)
@@ -45,7 +57,7 @@ namespace CSW306.Infrastructure.Services
                     {
                         ItemId = oi.ItemId,
                         OrderId = oi.OrderId,
-                        ItemName = oi.Item.Name,
+                        ItemName = oi.Item?.Name,
                         Quantity = oi.Quantity,
                         PriceAtOrder = oi.PriceAtOrder,
                         Item = oi.Item == null ? null : new ItemResponseDTO
@@ -58,6 +70,9 @@ namespace CSW306.Infrastructure.Services
                         }
                     }).ToList() ?? new List<OrderItemResponseDTO>()
                 };
+
+                await _redisCacheService.SetAsync(cacheKey, res, TimeSpan.FromMinutes(5));
+                await _redisCacheService.SetAddAsync(OrdersCacheSetKey, cacheKey);
 
                 return pagination.HandleGetByIdRespond(res);
             }
@@ -81,6 +96,17 @@ namespace CSW306.Infrastructure.Services
                     endDate = DateTime.SpecifyKind(endDate.Value, DateTimeKind.Utc);
                 }
 
+                var startKey = startDate.HasValue ? startDate.Value.ToString("o") : "null";
+                var endKey = endDate.HasValue ? endDate.Value.ToString("o") : "null";
+                var statusKey = status.HasValue ? status.Value.ToString() : "null";
+                var cacheKey = $"orders:page:{pageNumber}:size:{pageSize}:start:{startKey}:end:{endKey}:status:{statusKey}";
+
+                var cached = await _redisCacheService.GetAsync<TemplateApi<OrderResponseDTO>>(cacheKey);
+                if (cached != null)
+                {
+                    return cached;
+                }
+
                 var orders = await _unitOfWork.Orders.GetAllOrdersWithDetailsAsync(pageNumber, pageSize, startDate, endDate, status);
 
                 var countRecord = await _unitOfWork.Orders.GetTotalOrdersCountAsync(startDate, endDate, status);
@@ -98,7 +124,7 @@ namespace CSW306.Infrastructure.Services
                     {
                         ItemId = oi.ItemId,
                         OrderId = oi.OrderId,
-                        ItemName= oi.Item.Name,
+                        ItemName= oi.Item?.Name,
                         Quantity = oi.Quantity,
                         PriceAtOrder = oi.PriceAtOrder,
                         Item = oi.Item == null ? null : new ItemResponseDTO
@@ -112,7 +138,12 @@ namespace CSW306.Infrastructure.Services
                     }).ToList() ?? new List<OrderItemResponseDTO>()
                 });
 
-                return new Pagination().HandlePagedRespond(pageNumber, pageSize, res, countRecord);
+                var response = new Pagination().HandlePagedRespond(pageNumber, pageSize, res, countRecord);
+
+                await _redisCacheService.SetAsync(cacheKey, response, TimeSpan.FromMinutes(2));
+                await _redisCacheService.SetAddAsync(OrdersCacheSetKey, cacheKey);
+
+                return response;
             }
             catch (Exception ex)
             {
@@ -134,6 +165,16 @@ namespace CSW306.Infrastructure.Services
                     end_date = DateTime.SpecifyKind(end_date.Value, DateTimeKind.Utc);
                 }
 
+                var startKey = start_date.HasValue ? start_date.Value.ToString("o") : "null";
+                var endKey = end_date.HasValue ? end_date.Value.ToString("o") : "null";
+                var cacheKey = $"orders:range:start:{startKey}:end:{endKey}";
+
+                var cached = await _redisCacheService.GetAsync<TemplateApi<OrderResponseDTO>>(cacheKey);
+                if (cached != null)
+                {
+                    return cached;
+                }
+
                 var orders = await _unitOfWork.Orders.GetByDateRange(start_date, end_date);
                 var countRecord = orders.Count();
 
@@ -150,7 +191,7 @@ namespace CSW306.Infrastructure.Services
                     {
                         ItemId = oi.ItemId,
                         OrderId = oi.OrderId,
-                        ItemName = oi.Item.Name,
+                        ItemName = oi.Item?.Name,
                         Quantity = oi.Quantity,
                         PriceAtOrder = oi.PriceAtOrder,
                         Item = oi.Item == null ? null : new ItemResponseDTO
@@ -164,7 +205,12 @@ namespace CSW306.Infrastructure.Services
                     }).ToList() ?? new List<OrderItemResponseDTO>()
                 });
 
-                return new Pagination().HandleGetAllRespond(1, countRecord, res, countRecord);
+                var response = new Pagination().HandleGetAllRespond(1, countRecord, res, countRecord);
+
+                await _redisCacheService.SetAsync(cacheKey, response, TimeSpan.FromMinutes(2));
+                await _redisCacheService.SetAddAsync(OrdersCacheSetKey, cacheKey);
+
+                return response;
             }
             catch (Exception ex)
             {
@@ -197,14 +243,12 @@ namespace CSW306.Infrastructure.Services
                 
                 var existingItems = itemsList.Where(i => itemIds.Contains(i.ItemId)).ToDictionary(i => i.ItemId);
                 
-                // Check for missing items
                 var missingIds = itemIds.Except(existingItems.Keys).ToList();
                 if (missingIds.Any())
                 {
                     return new TemplateApi<OrderResponseDTO>(null, null, $"The following items do not exist: {string.Join(", ", missingIds)}", false, 0, 0, 0, 0);
                 }
 
-                // Check for sold out items
                 var soldOutItems = existingItems.Values.Where(i => i.IsSoldOut == true).Select(i => i.Name).ToList();
                 if (soldOutItems.Any())
                 {
@@ -232,6 +276,21 @@ namespace CSW306.Infrastructure.Services
                 await _unitOfWork.Orders.AddAsync(order);
                 await _unitOfWork.SaveChangesAsync();
 
+                // Invalidate cached order keys
+                try
+                {
+                    var keys = await _redisCacheService.SetMembersAsync(OrdersCacheSetKey);
+                    foreach (var k in keys)
+                    {
+                        await _redisCacheService.RemoveAsync(k);
+                        await _redisCacheService.SetRemoveAsync(OrdersCacheSetKey, k);
+                    }
+
+                    // Remove per-item cache for the created order id
+                    await _redisCacheService.RemoveAsync($"order:{order.OrderId}");
+                }
+                catch { /* ignore redis errors */ }
+
                 var resDto = new OrderResponseDTO
                 {
                     OrderId = order.OrderId,
@@ -249,6 +308,16 @@ namespace CSW306.Infrastructure.Services
                         PriceAtOrder = oi.PriceAtOrder
                     }).ToList()
                 };
+
+                var createDetails = $"User {order.UserId} created order {order.OrderId} with {order.OrderItems.Count} items.";
+                await _activityLogService.LogActivity(new ActivityLogUploadDTO
+                {
+                    Action = "CreateOrder",
+                    EntityName = "Order",
+                    EntityId = order.OrderId,
+                    UserId = order.UserId,
+                    Details = createDetails
+                });
 
                 return pagination.HandleGetByIdRespond(resDto);
             }
@@ -270,9 +339,35 @@ namespace CSW306.Infrastructure.Services
                     return new TemplateApi<OrderResponseDTO>(null, null, "Order not found", false, 0, 0, 0, 0);
                 }
 
+                var oldStatus = order.Status;
                 order.Status = request.Status;
                 await _unitOfWork.Orders.UpdateAsync(order);
                 await _unitOfWork.SaveChangesAsync();
+
+                // Invalidate cached order keys
+                try
+                {
+                    var keys = await _redisCacheService.SetMembersAsync(OrdersCacheSetKey);
+                    foreach (var k in keys)
+                    {
+                        await _redisCacheService.RemoveAsync(k);
+                        await _redisCacheService.SetRemoveAsync(OrdersCacheSetKey, k);
+                    }
+
+                    await _redisCacheService.RemoveAsync($"order:{order.OrderId}");
+                }
+                catch { }
+
+                // Log status change including user performing the action
+                var updateDetails = $"User {order.UserId} changed order {order.OrderId} status from {oldStatus} to {order.Status}.";
+                await _activityLogService.LogActivity(new ActivityLogUploadDTO
+                {
+                    Action = "UpdateOrderStatus",
+                    EntityName = "Order",
+                    EntityId = order.OrderId,
+                    UserId = order.UserId,
+                    Details = updateDetails
+                });
 
                 var resDto = new OrderResponseDTO
                 {

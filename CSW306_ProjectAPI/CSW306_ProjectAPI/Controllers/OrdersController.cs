@@ -28,7 +28,7 @@ namespace CSW306_ProjectAPI.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Manager,Employee,Chef,Cashier")]
-        public async Task<IActionResult> Get([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 100, [FromQuery] int? status = null)
+        public async Task<IActionResult> GetByFilter([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 100, [FromQuery] int? status = null)
         {
             var orders = await _orderService.GetOrdersAsync(pageNumber, pageSize, startDate, endDate, status);
             return Ok(orders);
@@ -48,7 +48,7 @@ namespace CSW306_ProjectAPI.Controllers
 
         [HttpGet("filter_by_date_range")]
         [Authorize(Roles = "Manager,Cashier,Chef")]
-        public async Task<IActionResult> Get([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
+        public async Task<IActionResult> GetByDateRange([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
         {
             var order = await _orderService.GetOrdersByDateRange(startDate, endDate);
 

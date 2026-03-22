@@ -26,6 +26,7 @@ namespace CSW306.Infrastructure.Data
 
             var optionsBuilder = new DbContextOptionsBuilder<CSW306_ProjectAPIContext>();
             optionsBuilder.UseNpgsql(connStr);
+
             return new CSW306_ProjectAPIContext(optionsBuilder.Options, null);
         }
     }

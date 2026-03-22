@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import { RoleGuard } from '@/components/RoleGuard';
 import { formatTimeAgo } from '@/utils/formatTimeAgo';
+import { useActivityLogs } from '@/hooks/useActivityLogs';
 
 type LogType = 'login' | 'order' | 'inventory' | 'settings' | 'team';
 
@@ -45,7 +46,8 @@ const FILTER_OPTIONS: { value: LogType | 'all'; label: string }[] = [
 
 export default function ActivityLogsPage() {
     const [filter, setFilter] = useState<LogType | 'all'>('all');
-
+    const { data: activityLogs } = useActivityLogs();
+    console.log(activityLogs);
     const filteredLogs = useMemo(() => {
         return filter === 'all' ? MOCK_LOGS : MOCK_LOGS.filter(l => l.type === filter);
     }, [filter]);

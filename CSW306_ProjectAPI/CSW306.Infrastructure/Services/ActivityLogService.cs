@@ -1,3 +1,5 @@
+using CSW306.Application.DTO.Upload;
+using CSW306.Application.Interfaces;
 using CSW306.Application.Interfaces.IRepositories;
 using CSW306.Application.Interfaces.IServices;
 using CSW306.Application.Utils;
@@ -12,10 +14,12 @@ namespace CSW306.Infrastructure.Services
     public class ActivityLogService : IActivityLogService
     {
         private readonly IActivityLogRepository _activityLogRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ActivityLogService(IActivityLogRepository activityLogRepository)
+        public ActivityLogService(IActivityLogRepository activityLogRepository, IUnitOfWork unitOfWork)
         {
             _activityLogRepository = activityLogRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<TemplateApi<ActivityLog>> GetAllActivitiesAsync(int pageNumber, int pageSize, DateTime? startDate, DateTime? endDate)
@@ -102,6 +106,32 @@ namespace CSW306.Infrastructure.Services
             {
                 Console.WriteLine(ex);
                 return new TemplateApi<ActivityLog>(null, null, "An unexpected error occurred while fetching activity logs by entity.", false, 0, 0, 0, 0);
+            }
+        }
+
+        public async Task<TemplateApi<ActivityLog>> LogActivity(ActivityLogUploadDTO dto)
+        {
+            try
+            {
+                var newActivityLog = new ActivityLog
+                {
+                    Action = dto.Action,
+                    Details = dto.Details,
+                    EntityId = dto.EntityId,
+                    EntityName = dto.EntityName,
+                    UserId = dto.UserId,
+                    Timestamp = DateTimeOffset.UtcNow
+                };
+
+                await _activityLogRepository.AddAsync(newActivityLog);
+                await _unitOfWork.SaveChangesAsync();
+
+                return new Pagination().HandleGetByIdRespond(newActivityLog);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return new TemplateApi<ActivityLog>(null, null, "An unexpected error occurred while creating the activity log on the server.", false, 0, 0, 0, 0);
             }
         }
     }
