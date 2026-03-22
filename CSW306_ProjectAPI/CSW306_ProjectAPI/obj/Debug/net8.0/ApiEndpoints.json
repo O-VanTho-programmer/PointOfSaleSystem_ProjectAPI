@@ -1,32 +1,6 @@
 [
   {
     "ContainingType": "CSW306_ProjectAPI.Controllers.AuthsController",
-    "Method": "RegisterCustomer",
-    "RelativePath": "api/Auths/customer/register",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "dto",
-        "Type": "CSW306.Application.DTO.Upload.RegisterCustomerDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "CSW306.Domain.Entities.Users",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "CSW306_ProjectAPI.Controllers.AuthsController",
     "Method": "RegisterEmployee",
     "RelativePath": "api/Auths/employee/register",
     "HttpMethod": "POST",

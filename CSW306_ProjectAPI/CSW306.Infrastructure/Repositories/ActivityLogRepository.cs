@@ -41,5 +41,17 @@ namespace CSW306.Infrastructure.Repositories
                 .OrderByDescending(a => a.Timestamp)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<ActivityLog>> GetActivitiesAsync(DateTime startDate, DateTime endDate, int pageNumber = 1, int pageSize = 100)
+        {
+            var query = _dbSet
+                .Where(log => log.Timestamp >= startDate && log.Timestamp <= endDate);
+
+            return await query
+                .OrderByDescending(log => log.Timestamp)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
     }
 }
