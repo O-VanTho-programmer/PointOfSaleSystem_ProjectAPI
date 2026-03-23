@@ -9,7 +9,7 @@ namespace CSW306.Application.DTO.Response
         public PaymentStatus PaymentStatus { get; set; }
         public KitchenStatus KitchenStatus { get; set; }
         public int? DiscountId { get; set; }
-        public int? UsserId { get; set; }
+        public int? UserId { get; set; }
         public DateTime CreatedDate { get; set; }
         public int? TableNumber { get; set; }
         public OrderType? OrderType { get; set; }

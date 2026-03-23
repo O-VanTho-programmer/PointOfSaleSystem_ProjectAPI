@@ -190,9 +190,9 @@ namespace CSW306.Application.Services
 
                 var order = new Orders
                 {
-                    Status = OrderStatus.Active,  // Always start as Active
-                    PaymentStatus = PaymentStatus.Unpaid,  // Always start as Unpaid
-                    KitchenStatus = KitchenStatus.Pending,  // Always start as Pending
+                    Status = OrderStatus.Active,  
+                    PaymentStatus = PaymentStatus.Unpaid,  
+                    KitchenStatus = KitchenStatus.Pending, 
                     DiscountId = dto.DiscountId,
                     UserId = dto.UserId,
                     CreatedDate = DateTime.UtcNow,
@@ -457,7 +457,7 @@ namespace CSW306.Application.Services
                     return new TemplateApi<OrderResponseDTO>(null, null, "Order not found.", false, 0, 0, 0, 0);
                 }
 
-                // Business rule: Only complete if payment is done and kitchen is served/ready
+                // Only complete if payment is done and kitchen is served/ready
                 if (order.PaymentStatus != PaymentStatus.Paid)
                 {
                     return new TemplateApi<OrderResponseDTO>(null, null, $"Cannot complete order. Payment status is {order.PaymentStatus}. Must be Paid.", false, 0, 0, 0, 0);
@@ -526,7 +526,7 @@ namespace CSW306.Application.Services
                 PaymentStatus = order.PaymentStatus,
                 KitchenStatus = order.KitchenStatus,
                 DiscountId = order.DiscountId,
-                UsserId = order.UserId,
+                UserId = order.UserId,
                 CreatedDate = order.CreatedDate,
                 TableNumber = order.TableNumber,
                 OrderType = order.OrderType,

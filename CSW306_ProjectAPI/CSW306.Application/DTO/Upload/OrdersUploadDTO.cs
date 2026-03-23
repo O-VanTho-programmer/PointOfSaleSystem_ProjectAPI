@@ -20,8 +20,5 @@ namespace CSW306.Application.DTO.Upload
 
         [Required]
         public OrderType OrderType { get; set; }
-
-        // PaymentStatus and KitchenStatus are managed by service logic
-        // Clients should not set these directly
     }
 }

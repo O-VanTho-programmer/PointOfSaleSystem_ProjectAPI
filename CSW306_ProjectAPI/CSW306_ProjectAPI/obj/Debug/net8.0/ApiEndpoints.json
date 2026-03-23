@@ -487,7 +487,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CSW306.Application.Utils.TemplateApi\u00601[[OrderResponseDTO, CSW306.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "CSW306.Application.Utils.TemplateApi\u00601[[CSW306.Application.DTO.Response.OrderResponseDTO, CSW306.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -515,6 +515,94 @@
   },
   {
     "ContainingType": "CSW306_ProjectAPI.Controllers.OrdersController",
+    "Method": "CompleteOrder",
+    "RelativePath": "api/Orders/{id}/complete",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "CSW306.Application.Utils.TemplateApi\u00601[[CSW306.Application.DTO.Response.OrderResponseDTO, CSW306.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CSW306_ProjectAPI.Controllers.OrdersController",
+    "Method": "UpdateKitchenStatus",
+    "RelativePath": "api/Orders/{id}/kitchen-status",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "CSW306.Application.DTO.Upload.UpdateKitchenStatusDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "CSW306.Application.Utils.TemplateApi\u00601[[CSW306.Application.DTO.Response.OrderResponseDTO, CSW306.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CSW306_ProjectAPI.Controllers.OrdersController",
+    "Method": "UpdatePaymentStatus",
+    "RelativePath": "api/Orders/{id}/payment-status",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "CSW306.Application.DTO.Upload.UpdatePaymentStatusDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "CSW306.Application.Utils.TemplateApi\u00601[[CSW306.Application.DTO.Response.OrderResponseDTO, CSW306.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CSW306_ProjectAPI.Controllers.OrdersController",
     "Method": "UpdateStatusOrder",
     "RelativePath": "api/Orders/{id}/status",
     "HttpMethod": "PATCH",
@@ -534,7 +622,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CSW306.Application.Utils.TemplateApi\u00601[[OrderResponseDTO, CSW306.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "CSW306.Application.Utils.TemplateApi\u00601[[CSW306.Application.DTO.Response.OrderResponseDTO, CSW306.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
