@@ -1,29 +1,45 @@
 export enum OrderType {
     DineIn = 0,
     TakeAway = 1,
-    Delivery = 2,
 }
 
 export enum OrderStatus {
     Cancelled = -1,
-    Pending = 0,
-    Complete = 1,
-    Paid = 2,
+    Active = 0,
+    Completed = 1,
 }
 
-export interface OrderDTO {
+export enum PaymentStatus {
+    Voided = -2,
+    Refunded = -1,
+    Unpaid = 0,
+    Paid = 1,
+}
+
+export enum KitchenStatus {
+    Cancelled = -1,
+    Pending = 0,
+    Cooking = 1,
+    Ready = 2,
+    Served = 3,
+}
+
+export interface OrderResponseDTO {
     orderId: number;
-    userId?: number;
-    discountId?: number;
     status: OrderStatus;
+    paymentStatus: PaymentStatus;
+    kitchenStatus: KitchenStatus;
+    discountId?: number;
+    userId?: number;
     createdDate: string;
     tableNumber?: number;
     orderType?: OrderType;
-    orderItems: OrderItemDTO[];
+    orderItems: OrderItemResponseDTO[];
 }
 
-export interface OrderItemDTO {
+export interface OrderItemResponseDTO {
     itemId: number;
+    orderId: number;
     itemName?: string;
     quantity: number;
     priceAtOrder: number;
@@ -31,10 +47,10 @@ export interface OrderItemDTO {
 
 export interface OrdersUploadDTO {
     userId: number;
-    status: number;
+    status: OrderStatus;
     orderItems: OrderItemUploadDTO[];
     tableNumber?: number;
-    orderType?: number;
+    orderType: OrderType;
     discountId?: number;
 }
 
@@ -43,6 +59,15 @@ export interface OrderItemUploadDTO {
     quantity: number;
     priceAtOrder: number;
 }
+
 export interface UpdateStatusOrderDTO {
-    status: number;
+    status: OrderStatus;
+}
+
+export interface UpdatePaymentStatusDTO {
+    paymentStatus: PaymentStatus;
+}
+
+export interface UpdateKitchenStatusDTO {
+    kitchenStatus: KitchenStatus;
 }

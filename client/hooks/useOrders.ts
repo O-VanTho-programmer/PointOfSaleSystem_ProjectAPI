@@ -5,10 +5,17 @@ import {
     getOrdersByDateRange,
     createOrder,
     updateOrderStatus,
+    updatePaymentStatus,
+    updateKitchenStatus,
+    completeOrder,
 } from '../services/order';
-import { OrdersUploadDTO, UpdateStatusOrderDTO } from '../types/OrderDTO';
+import {
+    OrdersUploadDTO,
+    UpdateStatusOrderDTO,
+    UpdatePaymentStatusDTO,
+    UpdateKitchenStatusDTO,
+} from '../types/OrderDTO';
 import toast from 'react-hot-toast';
-import { getTodayDateRange } from '@/utils/dateHelper';
 
 export const orderKeys = {
     all: ['orders'] as const,
@@ -65,12 +72,65 @@ export const useUpdateOrderStatus = () => {
         mutationFn: ({ id, dto }: { id: number; dto: UpdateStatusOrderDTO }) =>
             updateOrderStatus(id, dto),
         onSuccess: (_data, variables) => {
-            toast.success("Order updated");
+            toast.success("Order status updated");
             
             queryClient.invalidateQueries({ queryKey: orderKeys.all });
             queryClient.invalidateQueries({ queryKey: orderKeys.detail(variables.id) });
         }, onError: (error) => {
-            toast.error("Failed to update order");
+            toast.error("Failed to update order status");
+        },
+    });
+};
+
+export const useUpdatePaymentStatus = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: ({ id, dto }: { id: number; dto: UpdatePaymentStatusDTO }) =>
+            updatePaymentStatus(id, dto),
+        onSuccess: (_data, variables) => {
+            toast.success("Payment status updated");
+
+            queryClient.invalidateQueries({ queryKey: orderKeys.all });
+            queryClient.invalidateQueries({ queryKey: orderKeys.detail(variables.id) });
+        },
+        onError: () => {
+            toast.error("Failed to update payment status");
+        },
+    });
+};
+
+export const useUpdateKitchenStatus = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: ({ id, dto }: { id: number; dto: UpdateKitchenStatusDTO }) =>
+            updateKitchenStatus(id, dto),
+        onSuccess: (_data, variables) => {
+            toast.success("Kitchen status updated");
+
+            queryClient.invalidateQueries({ queryKey: orderKeys.all });
+            queryClient.invalidateQueries({ queryKey: orderKeys.detail(variables.id) });
+        },
+        onError: () => {
+            toast.error("Failed to update kitchen status");
+        },
+    });
+};
+
+export const useCompleteOrder = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (id: number) => completeOrder(id),
+        onSuccess: (_data, id) => {
+            toast.success("Order completed");
+
+            queryClient.invalidateQueries({ queryKey: orderKeys.all });
+            queryClient.invalidateQueries({ queryKey: orderKeys.detail(id) });
+        },
+        onError: () => {
+            toast.error("Failed to complete order");
         },
     });
 };

@@ -11,6 +11,7 @@ import {
     ClipboardList,
     Coffee,
     UtensilsCrossed,
+    HandPlatter,
     LogOut,
     UserCircle,
     Utensils
@@ -29,6 +30,7 @@ const NAV_ITEMS: NavItem[] = [
     // Cashier & Waiter workspace
     { label: 'Register', href: '/register', icon: Coffee, allowedRoles: ['Cashier', 'Waiter', 'Manager'] },
     { label: 'Orders', href: '/orders', icon: ClipboardList, allowedRoles: ['Cashier', 'Waiter', 'Manager'] },
+    { label: 'Pickup', href: '/pickup', icon: HandPlatter, allowedRoles: ['Waiter', 'Cashier', 'Manager'] },
     { label: 'Tables', href: '/tables', icon: Utensils, allowedRoles: ['Cashier', 'Waiter', 'Manager'] },
 
     // Chef workspace

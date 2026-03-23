@@ -1,17 +1,39 @@
 "use client";
 
 import React, { useState } from 'react';
-import { OrderStatus, OrderType, OrderDTO } from '@/types/OrderDTO';
+import { OrderStatus, OrderType, OrderResponseDTO, PaymentStatus, KitchenStatus } from '@/types/OrderDTO';
 import { RoleGuard } from '@/components/RoleGuard';
 import { formatServerTimeOnly, getTodayDateRange } from '@/utils/dateHelper';
-import { useOrders, useOrdersByDateRange, useUpdateOrderStatus } from '@/hooks/useOrders';
+import { useOrders, useUpdateOrderStatus, useUpdatePaymentStatus, useCompleteOrder, useUpdateKitchenStatus } from '@/hooks/useOrders';
 import DateRangePicker from '@/components/ui/DateRangePicker';
 import { Pagination } from '@/components/inventory/Pagination';
+import OrderCard from '@/components/order/OrderCard';
+import { formatCurrency } from '@/utils/formatCurrency';
 
-const ORDER_TYPE_LABELS: Record<number, string> = {
+export const ORDER_TYPE_LABELS: Record<number, string> = {
     [OrderType.DineIn]: 'Dine-In',
     [OrderType.TakeAway]: 'Takeaway',
-    [OrderType.Delivery]: 'Delivery',
+};
+
+export const ORDER_STATUS_LABELS: Record<number, string> = {
+    [OrderStatus.Cancelled]: 'Cancelled',
+    [OrderStatus.Active]: 'Active',
+    [OrderStatus.Completed]: 'Completed',
+};
+
+export const PAYMENT_STATUS_LABELS: Record<number, string> = {
+    [PaymentStatus.Voided]: 'Voided',
+    [PaymentStatus.Refunded]: 'Refunded',
+    [PaymentStatus.Unpaid]: 'Unpaid',
+    [PaymentStatus.Paid]: 'Paid',
+};
+
+export const KITCHEN_STATUS_LABELS: Record<number, string> = {
+    [KitchenStatus.Cancelled]: 'Cancelled',
+    [KitchenStatus.Pending]: 'Pending',
+    [KitchenStatus.Cooking]: 'Cooking',
+    [KitchenStatus.Ready]: 'Ready',
+    [KitchenStatus.Served]: 'Served',
 };
 
 export default function OrdersPage() {
@@ -24,30 +46,44 @@ export default function OrdersPage() {
     const { data: ordersData } = useOrders(pageNumber, pageSize, startDate, endDate, statusFilter == "All" ? undefined : statusFilter);
     const orders = ordersData?.listPayload ?? [];
 
-    const [selectedOrder, setSelectedOrder] = useState<OrderDTO | null>(null);
+    const [selectedOrder, setSelectedOrder] = useState<OrderResponseDTO | null>(null);
 
-    const calculateTotal = (order: OrderDTO) => {
+    const calculateTotal = (order: OrderResponseDTO) => {
         const subtotal = order.orderItems.reduce((sum, oi) => sum + (oi.priceAtOrder * oi.quantity), 0);
         return subtotal * 1.10;
     };
 
-    const formatCurrency = (val: number) =>
-        new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val);
+    const updateOrderStatus = useUpdateOrderStatus();
+    const updatePaymentStatus = useUpdatePaymentStatus();
+    const updateKitchenStatus = useUpdateKitchenStatus();
+    const completeOrder = useCompleteOrder();
 
-    const formatTime = (isoString: string) => {
-        return formatServerTimeOnly(isoString);
+    const handleMarkPaid = () => {
+        if (!selectedOrder) return;
+        updatePaymentStatus.mutate({
+            id: selectedOrder.orderId,
+            dto: { paymentStatus: PaymentStatus.Paid }
+        });
+        setSelectedOrder(null);
     };
 
-    const updateOrderStatus = useUpdateOrderStatus();
-
-    const handleProceedToPayment = () => {
+    const handleCompleteOrder = () => {
         if (!selectedOrder) return;
-        updateOrderStatus.mutate({
+        completeOrder.mutate(selectedOrder.orderId);
+        setSelectedOrder(null);
+    };
+
+    // Mark served and complete order
+    const handleHandoverToCustomer = async () => {
+        if (!selectedOrder) return;
+
+        await updateKitchenStatus.mutateAsync({
             id: selectedOrder.orderId,
-            dto: {
-                status: OrderStatus.Paid
-            }
+            dto: { kitchenStatus: KitchenStatus.Served }
         });
+
+        await completeOrder.mutateAsync(selectedOrder.orderId);
+
         setSelectedOrder(null);
     };
 
@@ -55,9 +91,7 @@ export default function OrdersPage() {
         if (!selectedOrder) return;
         updateOrderStatus.mutate({
             id: selectedOrder.orderId,
-            dto: {
-                status: OrderStatus.Cancelled
-            }
+            dto: { status: OrderStatus.Cancelled }
         });
         setSelectedOrder(null);
     };
@@ -74,7 +108,11 @@ export default function OrdersPage() {
                     <div className="flex gap-4">
                         <div className="flex items-center gap-2">
                             <span className="h-3 w-3 rounded-full bg-amber-400"></span>
-                            <span className="text-sm font-medium text-slate-600">Pending</span>
+                            <span className="text-sm font-medium text-slate-600">Active</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span className="h-3 w-3 rounded-full bg-blue-400"></span>
+                            <span className="text-sm font-medium text-slate-600">Paid</span>
                         </div>
                         <div className="flex items-center gap-2">
                             <span className="h-3 w-3 rounded-full bg-emerald-400"></span>
@@ -83,10 +121,6 @@ export default function OrdersPage() {
                         <div className="flex items-center gap-2">
                             <span className="h-3 w-3 rounded-full bg-red-400"></span>
                             <span className="text-sm font-medium text-slate-600">Cancelled</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <span className="h-3 w-3 rounded-full bg-blue-400"></span>
-                            <span className="text-sm font-medium text-slate-600">Paid</span>
                         </div>
                     </div>
                 )}
@@ -101,14 +135,14 @@ export default function OrdersPage() {
                         All
                     </button>
                     <button
-                        onClick={() => setStatusFilter(OrderStatus.Pending)}
-                        className={`rounded-md px-6 py-2 text-sm font-bold transition-all duration-200 touch-manipulation select-none whitespace-nowrap ${statusFilter === OrderStatus.Pending ? 'bg-white text-amber-600 shadow-sm ring-1 ring-slate-200/50' : 'text-slate-500 hover:text-slate-700'}`}
+                        onClick={() => setStatusFilter(OrderStatus.Active)}
+                        className={`rounded-md px-6 py-2 text-sm font-bold transition-all duration-200 touch-manipulation select-none whitespace-nowrap ${statusFilter === OrderStatus.Active ? 'bg-white text-amber-600 shadow-sm ring-1 ring-slate-200/50' : 'text-slate-500 hover:text-slate-700'}`}
                     >
-                        Pending
+                        Active
                     </button>
                     <button
-                        onClick={() => setStatusFilter(OrderStatus.Complete)}
-                        className={`rounded-md px-6 py-2 text-sm font-bold transition-all duration-200 touch-manipulation select-none whitespace-nowrap ${statusFilter === OrderStatus.Complete ? 'bg-white text-emerald-600 shadow-sm ring-1 ring-slate-200/50' : 'text-slate-500 hover:text-slate-700'}`}
+                        onClick={() => setStatusFilter(OrderStatus.Completed)}
+                        className={`rounded-md px-6 py-2 text-sm font-bold transition-all duration-200 touch-manipulation select-none whitespace-nowrap ${statusFilter === OrderStatus.Completed ? 'bg-white text-emerald-600 shadow-sm ring-1 ring-slate-200/50' : 'text-slate-500 hover:text-slate-700'}`}
                     >
                         Completed
                     </button>
@@ -117,12 +151,6 @@ export default function OrdersPage() {
                         className={`rounded-md px-6 py-2 text-sm font-bold transition-all duration-200 touch-manipulation select-none whitespace-nowrap ${statusFilter === OrderStatus.Cancelled ? 'bg-white text-red-600 shadow-sm ring-1 ring-slate-200/50' : 'text-slate-500 hover:text-slate-700'}`}
                     >
                         Cancelled
-                    </button>
-                    <button
-                        onClick={() => setStatusFilter(OrderStatus.Paid)}
-                        className={`rounded-md px-6 py-2 text-sm font-bold transition-all duration-200 touch-manipulation select-none whitespace-nowrap ${statusFilter === OrderStatus.Paid ? 'bg-white text-blue-600 shadow-sm ring-1 ring-slate-200/50' : 'text-slate-500 hover:text-slate-700'}`}
-                    >
-                        Paid
                     </button>
                 </div>
 
@@ -147,52 +175,18 @@ export default function OrdersPage() {
             {/* Orders Grid */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {orders.map(order => (
-                    <button
+                    <OrderCard
                         key={order.orderId}
-                        onClick={() => setSelectedOrder(order)}
-                        className={`
-              relative flex flex-col items-start overflow-hidden rounded-2xl border-2 bg-white p-5 text-left shadow-sm transition-all duration-200 
-              hover:-translate-y-1 hover:shadow-md active:translate-y-0
-              ${order.status === OrderStatus.Complete ? 'border-emerald-200 hover:border-emerald-400' :
-                                order.status === OrderStatus.Cancelled ? 'border-red-200 hover:border-red-400' :
-                                    order.status === OrderStatus.Paid ? 'border-blue-200 hover:border-blue-400' :
-                                        'border-amber-200 hover:border-amber-400'}
-            `}
-                    >
-                        {/* Status Indicator Band */}
-                        <div className={`absolute left-0 top-0 h-full w-1.5 ${order.status === OrderStatus.Complete ? 'bg-emerald-400' :
-                            order.status === OrderStatus.Cancelled ? 'bg-red-400' :
-                                order.status === OrderStatus.Paid ? 'bg-blue-400' :
-                                    'bg-amber-400'
-                            }`} />
-
-                        <div className="flex w-full items-start justify-between">
-                            <span className="font-mono text-lg font-bold text-slate-900">#{order.orderId}</span>
-                            <span className="font-mono text-sm font-medium text-slate-500">{formatTime(order.createdDate)}</span>
-                        </div>
-
-                        <div className="mt-3 flex gap-2">
-                            <span className="inline-flex items-center rounded-md bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-700">
-                                {order.orderType !== undefined ? ORDER_TYPE_LABELS[order.orderType] : '—'}
-                            </span>
-                            {order.tableNumber && (
-                                <span className="inline-flex items-center rounded-md bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700 ring-1 ring-inset ring-blue-700/10">
-                                    Table {order.tableNumber}
-                                </span>
-                            )}
-                        </div>
-
-                        <div className="mt-6 flex w-full items-end justify-between border-t border-slate-100 pt-4">
-                            <span className="text-sm text-slate-500">{order.orderItems.length} items</span>
-                            <span className="font-mono text-xl font-bold text-emerald-600">{formatCurrency(calculateTotal(order))}</span>
-                        </div>
-                    </button>
+                        order={order}
+                        setSelectedOrder={setSelectedOrder}
+                        calculateTotal={calculateTotal}
+                    />
                 ))}
 
                 {orders.length === 0 && (
                     <div className="col-span-full flex h-64 flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-200 bg-white">
                         <span className="text-lg font-medium text-slate-400">
-                            {statusFilter === 'All' ? 'No orders found for this date' : `No ${statusFilter === OrderStatus.Pending ? 'pending' : statusFilter === OrderStatus.Complete ? 'completed' : 'cancelled'} orders`}
+                            {statusFilter === 'All' ? 'No orders found for this date' : `No ${ORDER_STATUS_LABELS[statusFilter]?.toLowerCase()} orders`}
                         </span>
                     </div>
                 )}
@@ -201,7 +195,10 @@ export default function OrdersPage() {
             {selectedOrder && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-sm transition-opacity">
                     <div className="w-full max-w-lg overflow-hidden rounded-3xl bg-white shadow-2xl">
-                        <div className={`h-2 w-full ${selectedOrder.status === OrderStatus.Complete ? 'bg-emerald-500' : 'bg-amber-500'}`}></div>
+                        <div className={`h-2 w-full ${selectedOrder.status === OrderStatus.Completed ? 'bg-emerald-500' :
+                            selectedOrder.status === OrderStatus.Cancelled ? 'bg-red-500' :
+                                selectedOrder.paymentStatus === PaymentStatus.Paid ? 'bg-blue-500' : 'bg-amber-500'
+                            }`}></div>
                         <div className="p-6 sm:p-8">
                             <div className="flex items-center justify-between">
                                 <h2 className="font-serif text-3xl font-bold text-slate-900">Order #{selectedOrder.orderId}</h2>
@@ -222,14 +219,27 @@ export default function OrdersPage() {
                                     </span>
                                 </div>
                                 <div className="flex justify-between p-4">
-                                    <span className="text-sm font-medium text-slate-500">Status</span>
-                                    <span className={`font-semibold ${selectedOrder.status === OrderStatus.Complete ? 'text-emerald-600' :
-                                        selectedOrder.status === OrderStatus.Cancelled ? 'text-red-600' :
-                                            selectedOrder.status === OrderStatus.Paid ? 'text-blue-600' : 'text-amber-600'
+                                    <span className="text-sm font-medium text-slate-500">Order Status</span>
+                                    <span className={`font-semibold ${selectedOrder.status === OrderStatus.Completed ? 'text-emerald-600' :
+                                        selectedOrder.status === OrderStatus.Cancelled ? 'text-red-600' : 'text-amber-600'
                                         }`}>
-                                        {selectedOrder.status === OrderStatus.Complete ? 'Complete (Ready)' :
-                                            selectedOrder.status === OrderStatus.Cancelled ? 'Cancelled' :
-                                                selectedOrder.status === OrderStatus.Paid ? 'Paid' : 'Pending (Cooking)'}
+                                        {ORDER_STATUS_LABELS[selectedOrder.status]}
+                                    </span>
+                                </div>
+                                <div className="flex justify-between p-4">
+                                    <span className="text-sm font-medium text-slate-500">Payment</span>
+                                    <span className={`font-semibold ${selectedOrder.paymentStatus === PaymentStatus.Paid ? 'text-emerald-600' :
+                                        selectedOrder.paymentStatus === PaymentStatus.Unpaid ? 'text-amber-600' : 'text-red-600'
+                                        }`}>
+                                        {PAYMENT_STATUS_LABELS[selectedOrder.paymentStatus]}
+                                    </span>
+                                </div>
+                                <div className="flex justify-between p-4">
+                                    <span className="text-sm font-medium text-slate-500">Kitchen</span>
+                                    <span className={`font-semibold ${selectedOrder.kitchenStatus === KitchenStatus.Served || selectedOrder.kitchenStatus === KitchenStatus.Ready ? 'text-emerald-600' :
+                                        selectedOrder.kitchenStatus === KitchenStatus.Cooking ? 'text-orange-600' : 'text-slate-600'
+                                        }`}>
+                                        {KITCHEN_STATUS_LABELS[selectedOrder.kitchenStatus]}
                                     </span>
                                 </div>
                                 <div className="flex justify-between p-4">
@@ -238,25 +248,58 @@ export default function OrdersPage() {
                                 </div>
                             </div>
 
-                            {selectedOrder.status !== OrderStatus.Cancelled && (
-                                <div className="mt-8 flex gap-3">
-                                    <button
-                                        type="button"
-                                        onClick={handleCancelOrder}
-                                        className="flex-1 rounded-xl bg-white px-4 py-4 font-bold text-red-600 ring-1 ring-inset ring-slate-200 transition-colors hover:bg-red-50 active:bg-red-100"
-                                    >
-                                        Cancel Order
-                                    </button>
-                                    <RoleGuard allowedRoles={['Manager', 'Cashier']}>
+                            {selectedOrder.status === OrderStatus.Active && (
+                                <div className="mt-8 flex flex-col gap-3">
+                                    <div className="flex gap-3">
                                         <button
                                             type="button"
-                                            onClick={handleProceedToPayment}
-                                            disabled={selectedOrder.status === OrderStatus.Paid}
-                                            className="flex-[2] rounded-xl bg-slate-900 px-4 py-4 text-lg font-bold text-white shadow-md transition-transform hover:-translate-y-1 hover:bg-emerald-600 hover:shadow-lg active:translate-y-0 active:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:bg-slate-900"
+                                            onClick={handleCancelOrder}
+                                            className="flex-1 rounded-xl bg-white px-4 py-4 font-bold text-red-600 ring-1 ring-inset ring-slate-200 transition-colors hover:bg-red-50 active:bg-red-100"
                                         >
-                                            {selectedOrder.status === OrderStatus.Paid ? 'Paid' : 'Proceed to Payment'}
+                                            Cancel Order
                                         </button>
-                                    </RoleGuard>
+                                        <RoleGuard allowedRoles={['Manager', 'Cashier']}>
+                                            {selectedOrder.paymentStatus !== PaymentStatus.Paid ? (
+                                                <button
+                                                    type="button"
+                                                    onClick={handleMarkPaid}
+                                                    className="flex-2 rounded-xl bg-slate-900 px-4 py-4 text-lg font-bold text-white shadow-md transition-transform hover:-translate-y-1 hover:bg-blue-600 hover:shadow-lg active:translate-y-0 active:bg-blue-700"
+                                                >
+                                                    Mark as Paid
+                                                </button>
+                                            ) : selectedOrder.orderType === OrderType.TakeAway ? (
+                                                <button
+                                                    type="button"
+                                                    onClick={handleHandoverToCustomer}
+                                                    disabled={selectedOrder.kitchenStatus !== KitchenStatus.Ready}
+                                                    className="flex-2 rounded-xl bg-emerald-600 px-4 py-4 text-lg font-bold text-white shadow-md transition-transform hover:-translate-y-1 hover:bg-emerald-500 hover:shadow-lg active:translate-y-0 active:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:bg-emerald-600"
+                                                >
+                                                    Handed to Customer
+                                                </button>
+                                            ) : (
+                                                <button
+                                                    type="button"
+                                                    onClick={handleCompleteOrder}
+                                                    disabled={
+                                                        selectedOrder.kitchenStatus !== KitchenStatus.Served &&
+                                                        selectedOrder.kitchenStatus !== KitchenStatus.Ready
+                                                    }
+                                                    className="flex-2 rounded-xl bg-emerald-600 px-4 py-4 text-lg font-bold text-white shadow-md transition-transform hover:-translate-y-1 hover:bg-emerald-500 hover:shadow-lg active:translate-y-0 active:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:bg-emerald-600"
+                                                >
+                                                    Complete Order
+                                                </button>
+                                            )}
+                                        </RoleGuard>
+                                    </div>
+                                    {selectedOrder.paymentStatus === PaymentStatus.Paid &&
+                                        selectedOrder.kitchenStatus !== KitchenStatus.Served &&
+                                        selectedOrder.kitchenStatus !== KitchenStatus.Ready && (
+                                            <p className="text-center text-xs text-slate-400">
+                                                {selectedOrder.orderType === OrderType.TakeAway
+                                                    ? "Takeaway order must be Ready in the kitchen before handoff."
+                                                    : "Dine-In order must be Ready or Served in the kitchen before it can be completed."}
+                                            </p>
+                                        )}
                                 </div>
                             )}
                         </div>

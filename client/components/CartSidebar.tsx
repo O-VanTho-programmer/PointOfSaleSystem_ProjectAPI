@@ -32,7 +32,7 @@ export function CartSidebar() {
 
     const handleSubmitOrder = (role: UserRole) => {
         createOrder.mutateAsync({
-            status: OrderStatus.Pending,
+            status: OrderStatus.Active,
             discountId: order.discountId,
             userId: user?.userId || -1,
             orderItems: order.orderItems.map((oi) => ({

@@ -1,6 +1,5 @@
 import { create } from 'zustand';
-import { OrderType, OrderItemDTO, OrdersUploadDTO } from '../types/OrderDTO';
-import { OrderStatus } from '../types/OrderDTO';
+import { OrderType, OrderItemUploadDTO, OrdersUploadDTO, OrderStatus } from '../types/OrderDTO';
 import { Item } from '@/types/Item';
 
 interface PosState {
@@ -15,7 +14,7 @@ interface PosState {
 
 const createEmptyOrder = (): OrdersUploadDTO => ({
     userId: -1,
-    status: OrderStatus.Pending,
+    status: OrderStatus.Active,
     orderType: OrderType.DineIn,
     tableNumber: undefined,
     discountId: undefined,
@@ -51,7 +50,7 @@ export const usePosStore = create<PosState>((set) => ({
                 };
                 return { order: { ...state.order, orderItems: updated } };
             } else {
-                const newItem: OrderItemDTO = {
+                const newItem: OrderItemUploadDTO = {
                     itemId: menuItem.itemId,
                     quantity: 1,
                     priceAtOrder: menuItem.price,
