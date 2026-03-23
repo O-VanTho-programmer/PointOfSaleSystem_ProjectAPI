@@ -1,5 +1,7 @@
+using CSW306.Application.Interfaces.IServices;
 using CSW306.Application.Services;
 using CSW306.Infrastructure.Data;
+using CSW306.Infrastructure.Services;
 using CSW306.Presentation.Hubs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -41,26 +43,26 @@ builder.Services.AddScoped<CSW306.Application.Interfaces.IRepositories.IDiscount
 builder.Services.AddScoped<CSW306.Application.Interfaces.IRepositories.IActivityLogRepository, CSW306.Infrastructure.Repositories.ActivityLogRepository>();
 
 // Services
-builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.ICategoryService, CategoryService>();
-builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IItemService, ItemService>();
-builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IOrderService, CSW306.Application.Services.OrderService>();
-builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IAuthService, AuthService>();
-builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.ITableService, TableService>();
-builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IReservationService, ReservationService>();
-builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IPaymentService, PaymentService>();
-builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IDiscountService, DiscountService>();
-builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IUserService, UserService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IItemService, ItemService>();
+builder.Services.AddScoped<IOrderService, CSW306.Application.Services.OrderService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ITableService, TableService>();
+builder.Services.AddScoped<IReservationService, ReservationService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
+builder.Services.AddScoped<IDiscountService, DiscountService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<CSW306.Application.Interfaces.IPhotoService, CSW306.Infrastructure.Services.CloudinaryPhotoService>();
-builder.Services.AddScoped<CSW306.Application.Interfaces.IServices.IActivityLogService, CSW306.Application.Services.ActivityLogService>();
-
+builder.Services.AddScoped<IActivityLogService, CSW306.Application.Services.ActivityLogService>();
+builder.Services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
     ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("RedisCache") ?? "localhost:6379,abortConnect=false"));
 
-builder.Services.AddSingleton<CSW306.Application.Interfaces.IServices.IRedisCacheService, CSW306.Infrastructure.Services.RedisCacheService>();
+builder.Services.AddSingleton<IRedisCacheService, RedisCacheService>();
 
 // AuditLogService retained as no-op
-builder.Services.AddSingleton<CSW306.Application.Services.AuditLogService>();
-builder.Services.AddSingleton<CSW306.Application.Interfaces.IServices.IAuditLogService>(sp =>
+builder.Services.AddSingleton<AuditLogService>();
+builder.Services.AddSingleton<IAuditLogService>(sp =>
     sp.GetRequiredService<AuditLogService>());
 
 builder.Services.AddDbContext<CSW306_ProjectAPIContext>((sp, options) =>
@@ -97,6 +99,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
      };
  });
 builder.Services.AddAuthorization();
+builder.Services.AddHttpContextAccessor();
 
 // Add CORS
 var allowedDomains = new[]{

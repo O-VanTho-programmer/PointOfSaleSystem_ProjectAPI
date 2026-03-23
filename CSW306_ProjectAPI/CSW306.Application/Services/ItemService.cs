@@ -16,12 +16,14 @@ namespace CSW306.Application.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRedisCacheService _redisCacheService;
         private readonly IPhotoService _photoService;
+        private readonly ICurrentUserProvider _currentUserProvider;
 
-        public ItemService(IUnitOfWork unitOfWork, IRedisCacheService redisCacheService, IPhotoService photoService)
+        public ItemService(IUnitOfWork unitOfWork, IRedisCacheService redisCacheService, IPhotoService photoService, ICurrentUserProvider currentUserProvider)
         {
             _unitOfWork = unitOfWork;
             _redisCacheService = redisCacheService;
             _photoService = photoService;
+            _currentUserProvider = currentUserProvider;
         }
 
         public async Task<TemplateApi<Items>> CreateItemAsync(ItemsUploadDTO uploadDTO)
@@ -60,6 +62,35 @@ namespace CSW306.Application.Services
 
             await _redisCacheService.RemoveAsync("items");
             await _redisCacheService.SetAsync("item:" + newItem.ItemId, newItem);
+
+            try
+            {
+                var performerId = _currentUserProvider?.GetCurrentUserId();
+                Users? performer = null;
+                if (performerId.HasValue)
+                {
+                    performer = await _unitOfWork.Users.GetByIdAsync(performerId.Value);
+                }
+
+                var performerDescriptor = performer != null
+                    ? $"{performer.Role ?? "User"} {performer.Name} (#{performer.UserId})"
+                    : (performerId.HasValue ? $"User #{performerId.Value}" : "Anonymous");
+
+                var details = $"{performerDescriptor} created item '{newItem.Name}' (Id: {newItem.ItemId}) in category '{category.Name}' with price {newItem.Price:C}.";
+
+                await _unitOfWork.ActivityLogs.AddAsync(new ActivityLog
+                {
+                    Action = "CreateItem",
+                    EntityName = "Item",
+                    EntityId = newItem.ItemId,
+                    UserId = performerId ?? 0,
+                    Details = details,
+                    Timestamp = DateTimeOffset.UtcNow
+                });
+
+                await _unitOfWork.SaveChangesAsync();
+            }
+            catch { /* ignore logging failures */ }
 
             return new TemplateApi<Items>(newItem, null, "Item created successfully", true, 0, 0, 0, 0);
         }
@@ -114,6 +145,11 @@ namespace CSW306.Application.Services
                 return new TemplateApi<Items>(null, null, "Category not found", false, 0, 0, 0, 0);
             }
 
+            var oldName = item.Name;
+            var oldPrice = item.Price;
+            var oldIsSoldOut = item.IsSoldOut;
+            var oldCategory = await _unitOfWork.Categories.GetByIdAsync(item.CategoryId);
+
             item.Name = uploadDTO.Name;
             item.CategoryId = uploadDTO.CategoryId;
             item.Category = category;
@@ -139,6 +175,35 @@ namespace CSW306.Application.Services
             await _redisCacheService.RemoveAsync("items");
             await _redisCacheService.SetAsync("item:" + id, item);
 
+            try
+            {
+                var performerId = _currentUserProvider?.GetCurrentUserId();
+                Users? performer = null;
+                if (performerId.HasValue)
+                {
+                    performer = await _unitOfWork.Users.GetByIdAsync(performerId.Value);
+                }
+
+                var performerDescriptor = performer != null
+                    ? $"{performer.Role ?? "User"} {performer.Name} (#{performer.UserId})"
+                    : (performerId.HasValue ? $"User #{performerId.Value}" : "Anonymous");
+
+                var details = $"{performerDescriptor} updated item (Id: {item.ItemId}). Name: '{oldName}' => '{item.Name}'; Price: {oldPrice:C} => {item.Price:C}; SoldOut: {oldIsSoldOut} => {item.IsSoldOut}; Category: '{oldCategory?.Name ?? oldCategory?.CategoryId.ToString()}' => '{category.Name}'.";
+
+                await _unitOfWork.ActivityLogs.AddAsync(new ActivityLog
+                {
+                    Action = "UpdateItem",
+                    EntityName = "Item",
+                    EntityId = item.ItemId,
+                    UserId = performerId ?? 0,
+                    Details = details,
+                    Timestamp = DateTimeOffset.UtcNow
+                });
+
+                await _unitOfWork.SaveChangesAsync();
+            }
+            catch { /* ignore logging failures */ }
+
             return new TemplateApi<Items>(item, null, "Item updated successfully", true, 0, 0, 0, 0);
         }
 
@@ -154,6 +219,35 @@ namespace CSW306.Application.Services
 
             await _redisCacheService.RemoveAsync("items");
             await _redisCacheService.RemoveAsync("item:" + id);
+
+            try
+            {
+                var performerId = _currentUserProvider?.GetCurrentUserId();
+                Users? performer = null;
+                if (performerId.HasValue)
+                {
+                    performer = await _unitOfWork.Users.GetByIdAsync(performerId.Value);
+                }
+
+                var performerDescriptor = performer != null
+                    ? $"{performer.Role ?? "User"} {performer.Name} (#{performer.UserId})"
+                    : (performerId.HasValue ? $"User #{performerId.Value}" : "Anonymous");
+
+                var details = $"{performerDescriptor} deleted item '{item.Name}' (Id: {item.ItemId}) from category '{item.Category?.Name ?? item.CategoryId.ToString()}' with price {item.Price:C}.";
+
+                await _unitOfWork.ActivityLogs.AddAsync(new ActivityLog
+                {
+                    Action = "DeleteItem",
+                    EntityName = "Item",
+                    EntityId = item.ItemId,
+                    UserId = performerId ?? 0,
+                    Details = details,
+                    Timestamp = DateTimeOffset.UtcNow
+                });
+
+                await _unitOfWork.SaveChangesAsync();
+            }
+            catch { /* ignore logging failures */ }
 
             return new TemplateApi<Items>(item, null, "Item deleted successfully", true, 0, 0, 0, 0);
         }

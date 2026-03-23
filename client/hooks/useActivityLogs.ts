@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { getActivityLogs } from '../services/activityLog';
 
 export const activityLogKeys = {
@@ -17,5 +17,8 @@ export const useActivityLogs = (
     return useQuery({
         queryKey: activityLogKeys.list(pageNumber, pageSize, startDate ?? undefined, endDate ?? undefined),
         queryFn: () => getActivityLogs(pageNumber, pageSize, startDate ?? undefined, endDate ?? undefined),
+        staleTime: 0,
+        gcTime: 0,
+        placeholderData: keepPreviousData,
     });
 };

@@ -5,6 +5,8 @@ import { RoleGuard } from '@/components/RoleGuard';
 import { formatTimeAgo } from '@/utils/formatTimeAgo';
 import { useActivityLogs } from '@/hooks/useActivityLogs';
 import { config } from 'process';
+import { getTodayDateRange } from '@/utils/dateHelper';
+import DateRangePicker from '@/components/ui/DateRangePicker';
 
 type LogType = 'login' | 'order' | 'inventory' | 'settings' | 'team';
 
@@ -47,7 +49,12 @@ const FILTER_OPTIONS: { value: LogType | 'all'; label: string }[] = [
 
 export default function ActivityLogsPage() {
     const [filter, setFilter] = useState<LogType | 'all'>('all');
-    const { data: activityLogsResult } = useActivityLogs();
+
+    const [pageNumber, setPageNumber] = useState(1);
+    const [pageSize, setPageSize] = useState(100);
+    const [{ startDate, endDate }, setDateRange] = useState(getTodayDateRange());
+
+    const { data: activityLogsResult } = useActivityLogs(pageNumber, pageSize, startDate, endDate);
 
     const activityLogs = activityLogsResult?.listPayload;
     // const filteredLogs = useMemo(() => {
@@ -58,29 +65,46 @@ export default function ActivityLogsPage() {
         <RoleGuard allowedRoles={['Manager']}>
             <div className="flex h-full flex-col gap-6 p-6 lg:p-8">
                 {/* Header */}
-                <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-                    <div>
-                        <h1 className="text-2xl font-bold tracking-tight text-slate-900 lg:text-3xl">
-                            Activity Logs
-                        </h1>
-                        <p className="mt-1 text-sm text-slate-500">
-                            System audit trail — track every action across your team.
-                        </p>
+                <header className="flex flex-col gap-4">
+                    <div className='flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between'>
+                        <div>
+                            <h1 className="text-2xl font-bold tracking-tight text-slate-900 lg:text-3xl">
+                                Activity Logs
+                            </h1>
+                            <p className="mt-1 text-sm text-slate-500">
+                                System audit trail — track every action across your team.
+                            </p>
+                        </div>
+                        {/* Filter pills */}
+                        <div className="flex flex-wrap gap-1.5">
+                            {FILTER_OPTIONS.map(opt => (
+                                <button
+                                    key={opt.value}
+                                    onClick={() => setFilter(opt.value)}
+                                    className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${filter === opt.value
+                                        ? 'bg-slate-900 text-white shadow-sm'
+                                        : 'bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-700'
+                                        }`}
+                                >
+                                    {opt.label}
+                                </button>
+                            ))}
+                        </div>
                     </div>
-                    {/* Filter pills */}
-                    <div className="flex flex-wrap gap-1.5">
-                        {FILTER_OPTIONS.map(opt => (
-                            <button
-                                key={opt.value}
-                                onClick={() => setFilter(opt.value)}
-                                className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${filter === opt.value
-                                    ? 'bg-slate-900 text-white shadow-sm'
-                                    : 'bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-700'
-                                    }`}
-                            >
-                                {opt.label}
-                            </button>
-                        ))}
+
+                    <div className="flex items-center gap-2">
+                        <button
+                            onClick={() => setDateRange(getTodayDateRange())}
+                            className="bg-white border border-slate-200 text-slate-500 hover:text-blue-600 hover:border-blue-600 cursor-pointer rounded-md px-6 py-2 text-sm font-bold transition-all duration-200 touch-manipulation select-none whitespace-nowrap"
+                        >
+                            Today
+                        </button>
+
+                        <DateRangePicker
+                            startDate={startDate}
+                            endDate={endDate}
+                            setDateRange={setDateRange}
+                        />
                     </div>
                 </header>
 

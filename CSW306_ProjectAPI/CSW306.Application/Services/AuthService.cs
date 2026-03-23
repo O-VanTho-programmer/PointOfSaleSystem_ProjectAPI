@@ -17,11 +17,13 @@ namespace CSW306.Application.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IConfiguration _configuration;
+        private readonly ICurrentUserProvider _currentUserProvider;
 
-        public AuthService(IUnitOfWork unitOfWork, IConfiguration configuration)
+        public AuthService(IUnitOfWork unitOfWork, IConfiguration configuration, ICurrentUserProvider currentUserProvider)
         {
             _unitOfWork = unitOfWork;
             _configuration = configuration;
+            _currentUserProvider = currentUserProvider;
         }
 
         public async Task<LoginResponseDTO?> LoginAsync(LoginRequestDTO request)
@@ -43,6 +45,38 @@ namespace CSW306.Application.Services
                 }
             };
 
+            Users? currentUser = null;
+            try
+            {
+                currentUser = await _unitOfWork.Users.GetByIdAsync(user.UserId);
+            }
+            catch { /* ignore */ }
+            string userDescriptor;
+
+            if (currentUser != null && !string.IsNullOrWhiteSpace(currentUser.Name))
+            {
+                var role = string.IsNullOrWhiteSpace(currentUser.Role) ? "Staff" : currentUser.Role;
+                userDescriptor = $"{role} {currentUser.Name}";
+            }
+            else
+            {
+                userDescriptor = $"Staff #{user.UserId}";
+            }
+
+            var createDetails = $"{userDescriptor} login successfully.";
+
+            await _unitOfWork.ActivityLogs.AddAsync(new ActivityLog
+            {
+                Action = "Login",
+                EntityName = "User",
+                EntityId = user.UserId,
+                UserId = user.UserId,
+                Details = createDetails,
+                Timestamp = DateTimeOffset.UtcNow
+            });
+
+            await _unitOfWork.SaveChangesAsync();
+
             return response;
         }
 
@@ -59,6 +93,32 @@ namespace CSW306.Application.Services
 
             await _unitOfWork.Users.AddAsync(newCustomer);
             await _unitOfWork.SaveChangesAsync();
+
+            var performingUserId = _currentUserProvider?.GetCurrentUserId();
+            if (performingUserId.HasValue)
+            {
+                try
+                {
+                    var performingUser = await _unitOfWork.Users.GetByIdAsync(performingUserId.Value);
+                    var performerName = performingUser?.Name ?? $"User #{performingUserId}";
+                    var performerRole = performingUser?.Role ?? "Staff";
+
+                    var registrationDetails = $"{performerRole} {performerName} registered customer {newCustomer.Name} ({newCustomer.Phone}).";
+
+                    await _unitOfWork.ActivityLogs.AddAsync(new ActivityLog
+                    {
+                        Action = "RegisterCustomer",
+                        EntityName = "User",
+                        EntityId = newCustomer.UserId,
+                        UserId = performingUserId.Value,
+                        Details = registrationDetails,
+                        Timestamp = DateTimeOffset.UtcNow
+                    });
+
+                    await _unitOfWork.SaveChangesAsync();
+                }
+                catch { /* Log silently fails; registration still succeeds */ }
+            }
 
             return newCustomer;
         }
@@ -77,6 +137,32 @@ namespace CSW306.Application.Services
             await _unitOfWork.Users.AddAsync(newEmployee);
             await _unitOfWork.SaveChangesAsync();
 
+            var performingUserId = _currentUserProvider?.GetCurrentUserId();
+            if (performingUserId.HasValue)
+            {
+                try
+                {
+                    var performingUser = await _unitOfWork.Users.GetByIdAsync(performingUserId.Value);
+                    var performerName = performingUser?.Name ?? $"User #{performingUserId}";
+                    var performerRole = performingUser?.Role ?? "Staff";
+
+                    var registrationDetails = $"{performerRole} {performerName} registered employee {newEmployee.Name} as {newEmployee.Role}.";
+
+                    await _unitOfWork.ActivityLogs.AddAsync(new ActivityLog
+                    {
+                        Action = "RegisterEmployee",
+                        EntityName = "User",
+                        EntityId = newEmployee.UserId,
+                        UserId = performingUserId.Value,
+                        Details = registrationDetails,
+                        Timestamp = DateTimeOffset.UtcNow
+                    });
+
+                    await _unitOfWork.SaveChangesAsync();
+                }
+                catch { /* Log silently fails; registration still succeeds */ }
+            }
+
             return newEmployee;
         }
 
@@ -84,6 +170,7 @@ namespace CSW306.Application.Services
         {
             var claims = new[]
             {
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
                 new Claim(ClaimTypes.Name, user.Name),
                 new Claim(ClaimTypes.Role, user.Role)
             };
