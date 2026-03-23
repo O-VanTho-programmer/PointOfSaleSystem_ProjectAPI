@@ -8,9 +8,8 @@ export const usePosSignalR = () => {
     const queryClient = useQueryClient();
 
     useEffect(() => {
-        // NEXT_PUBLIC_SERVER_URL usually contains "/api", but SignalR is hosted at the root level 
         const baseUrl = (process.env.NEXT_PUBLIC_SERVER_URL || '').replace(/\/api$/, '');
-        
+
         const newConnection = new signalR.HubConnectionBuilder()
             .withUrl(`${baseUrl}/hubs/pos`, {
                 withCredentials: true 
