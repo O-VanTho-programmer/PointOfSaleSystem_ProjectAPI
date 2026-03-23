@@ -7,6 +7,7 @@ export function SkeletonRow() {
             <td className="px-5 py-4"><div className="h-4 w-20 rounded bg-slate-200" /></td>
             <td className="px-5 py-4"><div className="h-5 w-20 rounded-full bg-slate-200" /></td>
             <td className="px-5 py-4"><div className="h-4 w-14 rounded bg-slate-200" /></td>
+            <td className="px-5 py-4"><div className="h-4 w-6 rounded bg-slate-200 mx-auto" /></td>
         </tr>
     );
 }

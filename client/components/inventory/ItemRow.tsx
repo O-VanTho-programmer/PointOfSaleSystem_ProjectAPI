@@ -1,3 +1,7 @@
+'use client';
+
+import { useState, useRef, useEffect } from 'react';
+import { MoreVertical, Pencil, Trash2 } from 'lucide-react';
 import { Item } from '../../types/Item';
 
 const STATUS_CONFIG = {
@@ -16,8 +20,29 @@ function formatCurrency(value: number) {
     return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
 }
 
-export function ItemRow({ item, index }: { item: Item; index: number }) {
+interface ItemRowProps {
+    item: Item;
+    index: number;
+    onEdit?: (item: Item) => void;
+    onRemove?: (item: Item) => void;
+}
+
+export function ItemRow({ item, index, onEdit, onRemove }: ItemRowProps) {
     const status = getStockStatus(item.quantityInStock);
+    const [menuOpen, setMenuOpen] = useState(false);
+    const menuRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        function handleClickOutside(e: MouseEvent) {
+            if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+                setMenuOpen(false);
+            }
+        }
+        if (menuOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [menuOpen]);
 
     return (
         <tr
@@ -60,6 +85,38 @@ export function ItemRow({ item, index }: { item: Item; index: number }) {
             </td>
             <td className="px-5 py-4 font-mono text-xs text-slate-400">
                 {item.categoryId}
+            </td>
+            <td className="px-5 py-4">
+                <div className="relative" ref={menuRef}>
+                    <button
+                        type="button"
+                        onClick={() => setMenuOpen(prev => !prev)}
+                        className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
+                    >
+                        <MoreVertical className="h-4 w-4" />
+                    </button>
+
+                    {menuOpen && (
+                        <div className="absolute right-0 z-20 mt-1 w-36 origin-top-right rounded-lg border border-slate-200 bg-white py-1 shadow-lg ring-1 ring-black/5 animate-in fade-in">
+                            <button
+                                type="button"
+                                onClick={() => { onEdit?.(item); setMenuOpen(false); }}
+                                className="flex w-full items-center gap-2 px-3 py-2 text-sm text-slate-700 transition-colors hover:bg-slate-50"
+                            >
+                                <Pencil className="h-3.5 w-3.5 text-slate-400" />
+                                Edit
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => { onRemove?.(item); setMenuOpen(false); }}
+                                className="flex w-full items-center gap-2 px-3 py-2 text-sm text-red-600 transition-colors hover:bg-red-50"
+                            >
+                                <Trash2 className="h-3.5 w-3.5 text-red-400" />
+                                Remove
+                            </button>
+                        </div>
+                    )}
+                </div>
             </td>
         </tr>
     );

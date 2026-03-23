@@ -86,6 +86,7 @@ export default function InventoryPage() {
                                     <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-slate-500">Price</th>
                                     <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-slate-500">Status</th>
                                     <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-slate-500">Cat ID</th>
+                                    <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-slate-500 text-center w-16">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -95,7 +96,7 @@ export default function InventoryPage() {
                                     ))
                                 ) : isError ? (
                                     <tr>
-                                        <td colSpan={6} className="px-5 py-16 text-center">
+                                        <td colSpan={7} className="px-5 py-16 text-center">
                                             <div className="flex flex-col items-center gap-2">
                                                 <svg className="h-8 w-8 text-red-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                                                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />

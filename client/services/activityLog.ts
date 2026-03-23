@@ -6,10 +6,11 @@ export const getActivityLogs = async (
     pageNumber: number = 1,
     pageSize: number = 100,
     startDate?: string,
-    endDate?: string
+    endDate?: string,
+    entityName?: string
 ): Promise<TemplateApi<ActivityLog>> => {
     const response = await apiClient.get<TemplateApi<ActivityLog>>('/ActivityLogs', {
-        params: { pageNumber, pageSize, startDate, endDate }
+        params: { pageNumber, pageSize, startDate, endDate, entityName }
     });
     return response.data;
 };
