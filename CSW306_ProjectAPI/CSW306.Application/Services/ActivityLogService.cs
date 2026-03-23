@@ -22,7 +22,7 @@ namespace CSW306.Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<TemplateApi<ActivityLog>> GetAllActivitiesAsync(int pageNumber, int pageSize, DateTime? startDate, DateTime? endDate)
+        public async Task<TemplateApi<ActivityLog>> GetAllActivitiesAsync(int pageNumber, int pageSize, DateTime? startDate, DateTime? endDate, string? entityName)
         {
             try
             {
@@ -54,7 +54,7 @@ namespace CSW306.Application.Services
                 var listForCount = await _activityLogRepository.GetActivitiesByDateRangeAsync(s, e);
                 int countRecord = listForCount.Count();
 
-                var activities = await _activityLogRepository.GetActivitiesAsync(s, e, pageNumber, pageSize);
+                var activities = await _activityLogRepository.GetActivitiesAsync(s, e, entityName, pageNumber, pageSize);
 
                 return new Pagination().HandlePagedRespond(pageNumber, pageSize, activities, countRecord);
             }

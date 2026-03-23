@@ -16,8 +16,8 @@ namespace CSW306.Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllWithFilter([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 100) { 
-            var activityLogs = await _activityLogService.GetAllActivitiesAsync(pageNumber, pageSize, startDate, endDate);
+        public async Task<IActionResult> GetAllWithFilter([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate, [FromQuery] string? entityName, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 100) { 
+            var activityLogs = await _activityLogService.GetAllActivitiesAsync(pageNumber, pageSize, startDate, endDate, entityName);
 
             return Ok(activityLogs);
         }

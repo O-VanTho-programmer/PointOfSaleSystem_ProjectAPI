@@ -193,7 +193,8 @@ namespace CSW306.Application.Services
                 }
 
                 decimal change = payment.Amount - totalAmount;
-                order.Status = 3;
+                order.Status = OrderStatus.Completed;
+                order.PaymentStatus = PaymentStatus.Paid;
                 payment.Status = "paid";
 
                 await _unitOfWork.Orders.UpdateAsync(order);

@@ -1,4 +1,5 @@
 ﻿using CSW306.Application.DTO.Upload;
+using CSW306.Application.DTO.Response;
 using CSW306.Application.Utils;
 using CSW306.Domain.Entities;
 using System;
@@ -14,5 +15,8 @@ namespace CSW306.Application.Interfaces.IServices
         Task<TemplateApi<OrderResponseDTO>> GetOrdersByDateRange(DateTime? start_date, DateTime? end_date);
         Task<TemplateApi<OrderResponseDTO>> CreateOrderAsync(OrdersUploadDTO dto);
         Task<TemplateApi<OrderResponseDTO>> UpdateOrderStatusAsync(int id, UpdateStatusOrderDTO request);
+        Task<TemplateApi<OrderResponseDTO>> UpdatePaymentStatusAsync(int id, UpdatePaymentStatusDTO request);
+        Task<TemplateApi<OrderResponseDTO>> UpdateKitchenStatusAsync(int id, UpdateKitchenStatusDTO request);
+        Task<TemplateApi<OrderResponseDTO>> CompleteOrderAsync(int id);
     }
 }

@@ -43,10 +43,15 @@ namespace CSW306.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<ActivityLog>> GetActivitiesAsync(DateTime startDate, DateTime endDate, int pageNumber = 1, int pageSize = 100)
+        public async Task<IEnumerable<ActivityLog>> GetActivitiesAsync(DateTime startDate, DateTime endDate, string entityName, int pageNumber = 1, int pageSize = 100)
         {
             var query = _dbSet
                 .Where(log => log.Timestamp >= startDate && log.Timestamp <= endDate);
+
+            if(entityName != null)
+            {
+                query = query.Where(log => log.EntityName == entityName);
+            }
 
             return await query
                 .OrderByDescending(log => log.Timestamp)

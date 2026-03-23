@@ -9,19 +9,48 @@ namespace CSW306.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Required]
         public int OrderId { get; set; }
-
         public int? DiscountId { get; set; }
         public int UserId { get; set; }
-
         [Required]
-        //0: pending, 1:completed, 2: paid, -1: cancelled
-        public int Status { get; set; }
+        public OrderStatus Status { get; set; }
+        public PaymentStatus PaymentStatus { get; set; }
+        public KitchenStatus KitchenStatus { get; set; }
         [Required]
         public DateTime CreatedDate { get; set; }
         public int? TableNumber { get; set; }
         //0: dine in, 1: take away, 2: delivery
-        public int? OrderType { get; set; }
+        public OrderType? OrderType { get; set; }
 
         public ICollection<OrderItems> OrderItems { get; set; }
     }
+}
+
+public enum OrderStatus
+{
+    Cancelled = -1,
+    Active = 0,
+    Completed = 1
+}
+
+public enum PaymentStatus
+{
+    Voided = -2,
+    Refunded = -1,
+    Unpaid = 0,
+    Paid = 1
+}
+
+public enum KitchenStatus
+{
+    Cancelled = -1,
+    Pending = 0,
+    Cooking = 1, 
+    Ready = 2,
+    Served = 3
+}
+
+public enum OrderType
+{
+    DineIn = 0,
+    TakeAway = 1
 }

@@ -1,4 +1,5 @@
 using CSW306.Application.DTO.Upload;
+using CSW306.Application.DTO.Response;
 using CSW306.Application.Interfaces.IServices;
 using CSW306.Application.Utils;
 using CSW306.Domain.Entities;
@@ -85,6 +86,45 @@ namespace CSW306_ProjectAPI.Controllers
             if (!order.Success)
                 return NotFound(order.Message);
 
+            return Ok(order);
+        }
+
+        [HttpPatch("{id}/payment-status")]
+        [Authorize(Roles = "Manager,Cashier")]
+        public async Task<ActionResult<TemplateApi<OrderResponseDTO>>> UpdatePaymentStatus(int id, [FromBody] UpdatePaymentStatusDTO request)
+        {
+            var order = await _orderService.UpdatePaymentStatusAsync(id, request);
+
+            if (!order.Success)
+                return BadRequest(order.Message);
+
+            await _hubContext.Clients.All.SendAsync("OrderListUpdated");
+            return Ok(order);
+        }
+
+        [HttpPatch("{id}/kitchen-status")]
+        [Authorize(Roles = "Manager,Chef")]
+        public async Task<ActionResult<TemplateApi<OrderResponseDTO>>> UpdateKitchenStatus(int id, [FromBody] UpdateKitchenStatusDTO request)
+        {
+            var order = await _orderService.UpdateKitchenStatusAsync(id, request);
+
+            if (!order.Success)
+                return BadRequest(order.Message);
+
+            await _hubContext.Clients.All.SendAsync("OrderListUpdated");
+            return Ok(order);
+        }
+
+        [HttpPatch("{id}/complete")]
+        [Authorize(Roles = "Manager,Cashier")]
+        public async Task<ActionResult<TemplateApi<OrderResponseDTO>>> CompleteOrder(int id)
+        {
+            var order = await _orderService.CompleteOrderAsync(id);
+
+            if (!order.Success)
+                return BadRequest(order.Message);
+
+            await _hubContext.Clients.All.SendAsync("OrderListUpdated");
             return Ok(order);
         }
     }

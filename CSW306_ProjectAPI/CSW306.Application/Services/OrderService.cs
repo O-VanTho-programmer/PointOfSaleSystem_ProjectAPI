@@ -1,4 +1,5 @@
 using CSW306.Application.DTO.Upload;
+using CSW306.Application.DTO.Response;
 using CSW306.Application.Interfaces;
 using CSW306.Application.Interfaces.IServices;
 using CSW306.Application.Utils;
@@ -14,12 +15,14 @@ namespace CSW306.Application.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRedisCacheService _redisCacheService;
+        private readonly ICurrentUserProvider _currentUserProvider;
         private const string OrdersCacheSetKey = "orders:cachedKeys";
 
-        public OrderService(IUnitOfWork unitOfWork, IRedisCacheService redisCacheService)
+        public OrderService(IUnitOfWork unitOfWork, IRedisCacheService redisCacheService, ICurrentUserProvider currentUserProvider)
         {
             _unitOfWork = unitOfWork;
             _redisCacheService = redisCacheService;
+            _currentUserProvider = currentUserProvider;
         }
 
         public async Task<TemplateApi<OrderResponseDTO>> GetOrderAsync(int id)
@@ -42,32 +45,7 @@ namespace CSW306.Application.Services
                     return new TemplateApi<OrderResponseDTO>(null, null, "Order not found.", false, 0, 0, 0, 0);
                 }
 
-                var res = new OrderResponseDTO
-                {
-                    OrderId = order.OrderId,
-                    Status = order.Status,
-                    DiscountId = order.DiscountId,
-                    UsserId = order.UserId,
-                    CreatedDate = order.CreatedDate,
-                    TableNumber = order.TableNumber,
-                    OrderType = order.OrderType,
-                    OrderItems = order.OrderItems?.Select(oi => new OrderItemResponseDTO
-                    {
-                        ItemId = oi.ItemId,
-                        OrderId = oi.OrderId,
-                        ItemName = oi.Item?.Name,
-                        Quantity = oi.Quantity,
-                        PriceAtOrder = oi.PriceAtOrder,
-                        Item = oi.Item == null ? null : new ItemResponseDTO
-                        {
-                            ItemId = oi.Item.ItemId,
-                            Name = oi.Item.Name,
-                            IsSoldOut = oi.Item.IsSoldOut,
-                            Price = oi.Item.Price,
-                            CategoryId = oi.Item.CategoryId
-                        }
-                    }).ToList() ?? new List<OrderItemResponseDTO>()
-                };
+                var res = MapOrderToResponseDTO(order);
 
                 await _redisCacheService.SetAsync(cacheKey, res, TimeSpan.FromMinutes(5));
                 await _redisCacheService.SetAddAsync(OrdersCacheSetKey, cacheKey);
@@ -109,32 +87,7 @@ namespace CSW306.Application.Services
 
                 var countRecord = await _unitOfWork.Orders.GetTotalOrdersCountAsync(startDate, endDate, status);
 
-                var res = orders.Select(o => new OrderResponseDTO
-                {
-                    OrderId = o.OrderId,
-                    DiscountId = o.DiscountId,
-                    UsserId = o.UserId,
-                    Status = o.Status,
-                    CreatedDate = o.CreatedDate,
-                    TableNumber = o.TableNumber,
-                    OrderType = o.OrderType,
-                    OrderItems = o.OrderItems?.Select(oi => new OrderItemResponseDTO
-                    {
-                        ItemId = oi.ItemId,
-                        OrderId = oi.OrderId,
-                        ItemName= oi.Item?.Name,
-                        Quantity = oi.Quantity,
-                        PriceAtOrder = oi.PriceAtOrder,
-                        Item = oi.Item == null ? null : new ItemResponseDTO
-                        {
-                            ItemId = oi.Item.ItemId,
-                            Name = oi.Item.Name,
-                            IsSoldOut = oi.Item.IsSoldOut,
-                            Price = oi.Item.Price,
-                            CategoryId = oi.Item.CategoryId
-                        }
-                    }).ToList() ?? new List<OrderItemResponseDTO>()
-                });
+                var res = orders.Select(o => MapOrderToResponseDTO(o));
 
                 var response = new Pagination().HandlePagedRespond(pageNumber, pageSize, res, countRecord);
 
@@ -176,32 +129,7 @@ namespace CSW306.Application.Services
                 var orders = await _unitOfWork.Orders.GetByDateRange(start_date, end_date);
                 var countRecord = orders.Count();
 
-                var res = orders.Select(o => new OrderResponseDTO
-                {
-                    OrderId = o.OrderId,
-                    DiscountId = o.DiscountId,
-                    UsserId = o.UserId,
-                    Status = o.Status,
-                    CreatedDate = o.CreatedDate,
-                    TableNumber = o.TableNumber,
-                    OrderType = o.OrderType,
-                    OrderItems = o.OrderItems?.Select(oi => new OrderItemResponseDTO
-                    {
-                        ItemId = oi.ItemId,
-                        OrderId = oi.OrderId,
-                        ItemName = oi.Item?.Name,
-                        Quantity = oi.Quantity,
-                        PriceAtOrder = oi.PriceAtOrder,
-                        Item = oi.Item == null ? null : new ItemResponseDTO
-                        {
-                            ItemId = oi.Item.ItemId,
-                            Name = oi.Item.Name,
-                            IsSoldOut = oi.Item.IsSoldOut,
-                            Price = oi.Item.Price,
-                            CategoryId = oi.Item.CategoryId
-                        }
-                    }).ToList() ?? new List<OrderItemResponseDTO>()
-                });
+                var res = orders.Select(o => MapOrderToResponseDTO(o));
 
                 var response = new Pagination().HandleGetAllRespond(1, countRecord, res, countRecord);
 
@@ -262,7 +190,9 @@ namespace CSW306.Application.Services
 
                 var order = new Orders
                 {
-                    Status = dto.Status,
+                    Status = OrderStatus.Active,  // Always start as Active
+                    PaymentStatus = PaymentStatus.Unpaid,  // Always start as Unpaid
+                    KitchenStatus = KitchenStatus.Pending,  // Always start as Pending
                     DiscountId = dto.DiscountId,
                     UserId = dto.UserId,
                     CreatedDate = DateTime.UtcNow,
@@ -283,71 +213,51 @@ namespace CSW306.Application.Services
                         await _redisCacheService.RemoveAsync(k);
                         await _redisCacheService.SetRemoveAsync(OrdersCacheSetKey, k);
                     }
-
-                    // Remove per-item cache for the created order id
                     await _redisCacheService.RemoveAsync($"order:{order.OrderId}");
                 }
                 catch { /* ignore redis errors */ }
 
-                var resDto = new OrderResponseDTO
-                {
-                    OrderId = order.OrderId,
-                    Status = order.Status,
-                    DiscountId = order.DiscountId,
-                    UsserId = order.UserId,
-                    CreatedDate = order.CreatedDate,
-                    TableNumber = order.TableNumber,
-                    OrderType = order.OrderType,
-                    OrderItems = order.OrderItems.Select(oi => new OrderItemResponseDTO
-                    {
-                        ItemId = oi.ItemId,
-                        OrderId = oi.OrderId,
-                        Quantity = oi.Quantity,
-                        PriceAtOrder = oi.PriceAtOrder
-                    }).ToList()
-                };
+                var resDto = MapOrderToResponseDTO(order);
 
-                Users? currentUser = null;
+                // Activity log
                 try
                 {
-                    currentUser = await _unitOfWork.Users.GetByIdAsync(order.UserId);
+                    var performerId = _currentUserProvider?.GetCurrentUserId();
+                    Users? performer = null;
+                    if (performerId.HasValue)
+                    {
+                        performer = await _unitOfWork.Users.GetByIdAsync(performerId.Value);
+                    }
+
+                    var performerDescriptor = performer != null
+                        ? $"{performer.Role ?? "Staff"} {performer.Name}"
+                        : (performerId.HasValue ? $"User #{performerId.Value}" : "System");
+
+                    var itemWord = order.OrderItems.Count == 1 ? "item" : "items";
+                    var orderTypeDesc = order.OrderType == OrderType.DineIn ? "Dine-In" : "Take-Away";
+
+                    var createDetails = $"{performerDescriptor} created Order #{order.OrderId} ({orderTypeDesc}) with {order.OrderItems.Count} {itemWord}. Initial statuses - Order: Active, Payment: Unpaid, Kitchen: Pending.";
+
+                    await _unitOfWork.ActivityLogs.AddAsync(new ActivityLog
+                    {
+                        Action = "CreateOrder",
+                        EntityName = "Order",
+                        EntityId = order.OrderId,
+                        UserId = performerId ?? 0,
+                        Details = createDetails,
+                        Timestamp = DateTimeOffset.UtcNow
+                    });
+
+                    await _unitOfWork.SaveChangesAsync();
                 }
-                catch { /* ignore */ }
-
-                string userDescriptor;
-
-                if (currentUser != null && !string.IsNullOrWhiteSpace(currentUser.Name))
-                {
-                    var role = string.IsNullOrWhiteSpace(currentUser.Role) ? "Staff" : currentUser.Role;
-                    userDescriptor = $"{role} {currentUser.Name}"; 
-                }
-                else
-                {
-                    userDescriptor = $"Staff #{order.UserId}"; 
-                }
-
-                string itemWord = order.OrderItems.Count == 1 ? "item" : "items";
-
-                var createDetails = $"{userDescriptor} created Order #{order.OrderId} for Table {order.TableNumber} with {order.OrderItems.Count} {itemWord}.";
-   
-                await _unitOfWork.ActivityLogs.AddAsync(new ActivityLog
-                {
-                    Action = "CreateOrder",
-                    EntityName = "Order",
-                    EntityId = order.OrderId,
-                    UserId = order.UserId,
-                    Details = createDetails,
-                    Timestamp = DateTimeOffset.UtcNow
-                });
-
-                await _unitOfWork.SaveChangesAsync();
+                catch { /* ignore logging failures */ }
 
                 return pagination.HandleGetByIdRespond(resDto);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                return new TemplateApi<OrderResponseDTO>(null, null, "An unexpected error occurred while creating the order on the server.", false, 0, 0, 0, 0);
+                return new TemplateApi<OrderResponseDTO>(null, null, "An unexpected error occurred while creating the order.", false, 0, 0, 0, 0);
             }
         }
 
@@ -359,7 +269,7 @@ namespace CSW306.Application.Services
                 var order = await _unitOfWork.Orders.GetOrderByIdWithDetailsAsync(id);
                 if (order == null)
                 {
-                    return new TemplateApi<OrderResponseDTO>(null, null, "Order not found", false, 0, 0, 0, 0);
+                    return new TemplateApi<OrderResponseDTO>(null, null, "Order not found.", false, 0, 0, 0, 0);
                 }
 
                 var oldStatus = order.Status;
@@ -367,72 +277,39 @@ namespace CSW306.Application.Services
                 await _unitOfWork.Orders.UpdateAsync(order);
                 await _unitOfWork.SaveChangesAsync();
 
-                // Invalidate cached order keys
+                InvalidateOrderCache(order.OrderId);
+
+                // Activity log
                 try
                 {
-                    var keys = await _redisCacheService.SetMembersAsync(OrdersCacheSetKey);
-                    foreach (var k in keys)
+                    var performerId = _currentUserProvider?.GetCurrentUserId();
+                    Users? performer = null;
+                    if (performerId.HasValue)
                     {
-                        await _redisCacheService.RemoveAsync(k);
-                        await _redisCacheService.SetRemoveAsync(OrdersCacheSetKey, k);
+                        performer = await _unitOfWork.Users.GetByIdAsync(performerId.Value);
                     }
 
-                    await _redisCacheService.RemoveAsync($"order:{order.OrderId}");
-                }
-                catch { }
+                    var performerDescriptor = performer != null
+                        ? $"{performer.Role ?? "Staff"} {performer.Name}"
+                        : (performerId.HasValue ? $"User #{performerId.Value}" : "System");
 
-                // Build user descriptor
-                Users? currentUser = null;
-                try
-                {
-                    currentUser = await _unitOfWork.Users.GetByIdAsync(order.UserId);
-                }
-                catch { }
+                    var updateDetails = $"{performerDescriptor} updated Order #{order.OrderId} status: {oldStatus} => {order.Status}.";
 
-                var userDescriptor = currentUser != null
-                    ? $"{currentUser.UserId} ({currentUser.Name}, {currentUser.Role ?? "Unknown"})"
-                    : order.UserId.ToString();
-
-                var updateDetails = $"{userDescriptor} changed order {order.OrderId} status from {oldStatus} to {order.Status}.";
-
-                await _unitOfWork.ActivityLogs.AddAsync(new ActivityLog
-                {
-                    Action = "UpdateOrderStatus",
-                    EntityName = "Order",
-                    EntityId = order.OrderId,
-                    UserId = order.UserId,
-                    Details = updateDetails,
-                    Timestamp = DateTimeOffset.UtcNow
-                });
-
-                await _unitOfWork.SaveChangesAsync();
-
-                var resDto = new OrderResponseDTO
-                {
-                    OrderId = order.OrderId,
-                    Status = order.Status,
-                    DiscountId = order.DiscountId,
-                    UsserId = order.UserId,
-                    CreatedDate = order.CreatedDate,
-                    TableNumber = order.TableNumber,
-                    OrderType = order.OrderType,
-                    OrderItems = order.OrderItems?.Select(oi => new OrderItemResponseDTO
+                    await _unitOfWork.ActivityLogs.AddAsync(new ActivityLog
                     {
-                        ItemId = oi.ItemId,
-                        OrderId = oi.OrderId,
-                        Quantity = oi.Quantity,
-                        PriceAtOrder = oi.PriceAtOrder,
-                        Item = oi.Item == null ? null : new ItemResponseDTO
-                        {
-                            ItemId = oi.Item.ItemId,
-                            Name = oi.Item.Name,
-                            IsSoldOut = oi.Item.IsSoldOut,
-                            Price = oi.Item.Price,
-                            CategoryId = oi.Item.CategoryId
-                        }
-                    }).ToList() ?? new List<OrderItemResponseDTO>()
-                };
+                        Action = "UpdateOrderStatus",
+                        EntityName = "Order",
+                        EntityId = order.OrderId,
+                        UserId = performerId ?? 0,
+                        Details = updateDetails,
+                        Timestamp = DateTimeOffset.UtcNow
+                    });
 
+                    await _unitOfWork.SaveChangesAsync();
+                }
+                catch { /* ignore logging failures */ }
+
+                var resDto = MapOrderToResponseDTO(order);
                 return pagination.HandleGetByIdRespond(resDto);
             }
             catch (Exception ex)
@@ -440,6 +317,252 @@ namespace CSW306.Application.Services
                 Console.WriteLine(ex);
                 return new TemplateApi<OrderResponseDTO>(null, null, "An unexpected error occurred while updating the order status.", false, 0, 0, 0, 0);
             }
+        }
+
+        public async Task<TemplateApi<OrderResponseDTO>> UpdatePaymentStatusAsync(int id, UpdatePaymentStatusDTO request)
+        {
+            var pagination = new Pagination();
+            try
+            {
+                var order = await _unitOfWork.Orders.GetOrderByIdWithDetailsAsync(id);
+                if (order == null)
+                {
+                    return new TemplateApi<OrderResponseDTO>(null, null, "Order not found.", false, 0, 0, 0, 0);
+                }
+
+                var oldPaymentStatus = order.PaymentStatus;
+                order.PaymentStatus = request.PaymentStatus;
+
+                // Business rule: If TakeAway order just got paid, move kitchen status to Pending (ready for kitchen)
+                if (request.PaymentStatus == PaymentStatus.Paid && order.OrderType == OrderType.TakeAway)
+                {
+                    order.KitchenStatus = KitchenStatus.Pending;
+                }
+
+                await _unitOfWork.Orders.UpdateAsync(order);
+                await _unitOfWork.SaveChangesAsync();
+
+                InvalidateOrderCache(order.OrderId);
+
+                // Activity log
+                try
+                {
+                    var performerId = _currentUserProvider?.GetCurrentUserId();
+                    Users? performer = null;
+                    if (performerId.HasValue)
+                    {
+                        performer = await _unitOfWork.Users.GetByIdAsync(performerId.Value);
+                    }
+
+                    var performerDescriptor = performer != null
+                        ? $"{performer.Role ?? "Staff"} {performer.Name}"
+                        : (performerId.HasValue ? $"User #{performerId.Value}" : "System");
+
+                    var kitchenUpdate = order.OrderType == OrderType.TakeAway && request.PaymentStatus == PaymentStatus.Paid 
+                        ? $"; Kitchen status set to Pending for cooking."
+                        : string.Empty;
+
+                    var updateDetails = $"{performerDescriptor} updated Order #{order.OrderId} payment status: {oldPaymentStatus} => {order.PaymentStatus}{kitchenUpdate}";
+
+                    await _unitOfWork.ActivityLogs.AddAsync(new ActivityLog
+                    {
+                        Action = "UpdatePaymentStatus",
+                        EntityName = "Order",
+                        EntityId = order.OrderId,
+                        UserId = performerId ?? 0,
+                        Details = updateDetails,
+                        Timestamp = DateTimeOffset.UtcNow
+                    });
+
+                    await _unitOfWork.SaveChangesAsync();
+                }
+                catch { /* ignore logging failures */ }
+
+                var resDto = MapOrderToResponseDTO(order);
+                return pagination.HandleGetByIdRespond(resDto);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return new TemplateApi<OrderResponseDTO>(null, null, "An unexpected error occurred while updating the payment status.", false, 0, 0, 0, 0);
+            }
+        }
+
+        public async Task<TemplateApi<OrderResponseDTO>> UpdateKitchenStatusAsync(int id, UpdateKitchenStatusDTO request)
+        {
+            var pagination = new Pagination();
+            try
+            {
+                var order = await _unitOfWork.Orders.GetOrderByIdWithDetailsAsync(id);
+                if (order == null)
+                {
+                    return new TemplateApi<OrderResponseDTO>(null, null, "Order not found.", false, 0, 0, 0, 0);
+                }
+
+                var oldKitchenStatus = order.KitchenStatus;
+                order.KitchenStatus = request.KitchenStatus;
+                await _unitOfWork.Orders.UpdateAsync(order);
+                await _unitOfWork.SaveChangesAsync();
+
+                InvalidateOrderCache(order.OrderId);
+
+                // Activity log
+                try
+                {
+                    var performerId = _currentUserProvider?.GetCurrentUserId();
+                    Users? performer = null;
+                    if (performerId.HasValue)
+                    {
+                        performer = await _unitOfWork.Users.GetByIdAsync(performerId.Value);
+                    }
+
+                    var performerDescriptor = performer != null
+                        ? $"{performer.Role ?? "Staff"} {performer.Name}"
+                        : (performerId.HasValue ? $"User #{performerId.Value}" : "System");
+
+                    var updateDetails = $"{performerDescriptor} updated Order #{order.OrderId} kitchen status: {oldKitchenStatus} => {order.KitchenStatus}.";
+
+                    await _unitOfWork.ActivityLogs.AddAsync(new ActivityLog
+                    {
+                        Action = "UpdateKitchenStatus",
+                        EntityName = "Order",
+                        EntityId = order.OrderId,
+                        UserId = performerId ?? 0,
+                        Details = updateDetails,
+                        Timestamp = DateTimeOffset.UtcNow
+                    });
+
+                    await _unitOfWork.SaveChangesAsync();
+                }
+                catch { /* ignore logging failures */ }
+
+                var resDto = MapOrderToResponseDTO(order);
+                return pagination.HandleGetByIdRespond(resDto);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return new TemplateApi<OrderResponseDTO>(null, null, "An unexpected error occurred while updating the kitchen status.", false, 0, 0, 0, 0);
+            }
+        }
+
+        public async Task<TemplateApi<OrderResponseDTO>> CompleteOrderAsync(int id)
+        {
+            var pagination = new Pagination();
+            try
+            {
+                var order = await _unitOfWork.Orders.GetOrderByIdWithDetailsAsync(id);
+                if (order == null)
+                {
+                    return new TemplateApi<OrderResponseDTO>(null, null, "Order not found.", false, 0, 0, 0, 0);
+                }
+
+                // Business rule: Only complete if payment is done and kitchen is served/ready
+                if (order.PaymentStatus != PaymentStatus.Paid)
+                {
+                    return new TemplateApi<OrderResponseDTO>(null, null, $"Cannot complete order. Payment status is {order.PaymentStatus}. Must be Paid.", false, 0, 0, 0, 0);
+                }
+
+                var validKitchenStatuses = new[] { KitchenStatus.Served, KitchenStatus.Ready };
+                if (!validKitchenStatuses.Contains(order.KitchenStatus))
+                {
+                    return new TemplateApi<OrderResponseDTO>(null, null, $"Cannot complete order. Kitchen status is {order.KitchenStatus}. Must be Served or Ready.", false, 0, 0, 0, 0);
+                }
+
+                var oldStatus = order.Status;
+                order.Status = OrderStatus.Completed;
+                await _unitOfWork.Orders.UpdateAsync(order);
+                await _unitOfWork.SaveChangesAsync();
+
+                InvalidateOrderCache(order.OrderId);
+
+                // Activity log
+                try
+                {
+                    var performerId = _currentUserProvider?.GetCurrentUserId();
+                    Users? performer = null;
+                    if (performerId.HasValue)
+                    {
+                        performer = await _unitOfWork.Users.GetByIdAsync(performerId.Value);
+                    }
+
+                    var performerDescriptor = performer != null
+                        ? $"{performer.Role ?? "Staff"} {performer.Name}"
+                        : (performerId.HasValue ? $"User #{performerId.Value}" : "System");
+
+                    var completeDetails = $"{performerDescriptor} completed Order #{order.OrderId}. Final statuses - Order: {order.Status}, Payment: {order.PaymentStatus}, Kitchen: {order.KitchenStatus}.";
+
+                    await _unitOfWork.ActivityLogs.AddAsync(new ActivityLog
+                    {
+                        Action = "CompleteOrder",
+                        EntityName = "Order",
+                        EntityId = order.OrderId,
+                        UserId = performerId ?? 0,
+                        Details = completeDetails,
+                        Timestamp = DateTimeOffset.UtcNow
+                    });
+
+                    await _unitOfWork.SaveChangesAsync();
+                }
+                catch { /* ignore logging failures */ }
+
+                var resDto = MapOrderToResponseDTO(order);
+                return pagination.HandleGetByIdRespond(resDto);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return new TemplateApi<OrderResponseDTO>(null, null, "An unexpected error occurred while completing the order.", false, 0, 0, 0, 0);
+            }
+        }
+
+        // Helper method to map Orders entity to OrderResponseDTO
+        private OrderResponseDTO MapOrderToResponseDTO(Orders order)
+        {
+            return new OrderResponseDTO
+            {
+                OrderId = order.OrderId,
+                Status = order.Status,
+                PaymentStatus = order.PaymentStatus,
+                KitchenStatus = order.KitchenStatus,
+                DiscountId = order.DiscountId,
+                UsserId = order.UserId,
+                CreatedDate = order.CreatedDate,
+                TableNumber = order.TableNumber,
+                OrderType = order.OrderType,
+                OrderItems = order.OrderItems?.Select(oi => new OrderItemResponseDTO
+                {
+                    ItemId = oi.ItemId,
+                    OrderId = oi.OrderId,
+                    ItemName = oi.Item?.Name,
+                    Quantity = oi.Quantity,
+                    PriceAtOrder = oi.PriceAtOrder,
+                    Item = oi.Item == null ? null : new ItemResponseDTO
+                    {
+                        ItemId = oi.Item.ItemId,
+                        Name = oi.Item.Name,
+                        IsSoldOut = oi.Item.IsSoldOut,
+                        Price = oi.Item.Price,
+                        CategoryId = oi.Item.CategoryId
+                    }
+                }).ToList() ?? new List<OrderItemResponseDTO>()
+            };
+        }
+
+        // Helper method to invalidate cache
+        private async void InvalidateOrderCache(int orderId)
+        {
+            try
+            {
+                var keys = await _redisCacheService.SetMembersAsync(OrdersCacheSetKey);
+                foreach (var k in keys)
+                {
+                    await _redisCacheService.RemoveAsync(k);
+                    await _redisCacheService.SetRemoveAsync(OrdersCacheSetKey, k);
+                }
+                await _redisCacheService.RemoveAsync($"order:{orderId}");
+            }
+            catch { /* ignore redis errors */ }
         }
     }
 }

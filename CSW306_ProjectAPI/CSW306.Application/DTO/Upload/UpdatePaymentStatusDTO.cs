@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSW306.Application.DTO.Upload
 {
-    public class UpdateStatusOrderDTO
+    public class UpdatePaymentStatusDTO
     {
         [Required]
-        public OrderStatus Status { get; set; }
+        public PaymentStatus PaymentStatus { get; set; }
     }
 }

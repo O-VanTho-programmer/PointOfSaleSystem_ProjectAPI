@@ -39,7 +39,8 @@ namespace CSW306.Infrastructure.Repositories
 
             if (status.HasValue)
             {
-                query = query.Where(o => o.Status == status.Value);
+                var statusEnum = (OrderStatus)status.Value;
+                query = query.Where(o => o.Status == statusEnum);
             }
 
             return await query
@@ -64,7 +65,10 @@ namespace CSW306.Infrastructure.Repositories
 
             var query = _dbSet.Where(o => o.CreatedDate >= startDate && o.CreatedDate <= endDate);
             if (status.HasValue)
-                query = query.Where(o => o.Status == status.Value);
+            {
+                var statusEnum = (OrderStatus)status.Value;
+                query = query.Where(o => o.Status == statusEnum);
+            }
 
             return await query.CountAsync();
         }

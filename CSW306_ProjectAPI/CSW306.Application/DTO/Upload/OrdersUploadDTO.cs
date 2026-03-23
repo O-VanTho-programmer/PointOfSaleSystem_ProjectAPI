@@ -1,3 +1,4 @@
+using CSW306.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
 
 namespace CSW306.Application.DTO.Upload
@@ -5,7 +6,7 @@ namespace CSW306.Application.DTO.Upload
     public class OrdersUploadDTO
     {
         [Required]
-        public int Status { get; set; }
+        public OrderStatus Status { get; set; }
 
         public int? DiscountId { get; set; }
 
@@ -17,7 +18,10 @@ namespace CSW306.Application.DTO.Upload
 
         public int? TableNumber { get; set; }
 
-        //0: dine in, 1: take away, 2: delivery
-        public int? OrderType { get; set; }
+        [Required]
+        public OrderType OrderType { get; set; }
+
+        // PaymentStatus and KitchenStatus are managed by service logic
+        // Clients should not set these directly
     }
 }
