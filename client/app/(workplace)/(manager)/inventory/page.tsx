@@ -2,12 +2,16 @@
 
 import { useMemo, useState } from 'react';
 import { RoleGuard } from '@/components/RoleGuard';
-import { useItems } from '@/hooks/useItems';
+import { useItems, useDeleteItem } from '@/hooks/useItems';
 import { useCategories } from '@/hooks/useCategories';
 import { SkeletonRow } from '@/components/inventory/SkeletonRow';
 import { ItemRow } from '@/components/inventory/ItemRow';
 import { Pagination } from '@/components/inventory/Pagination';
 import { InventoryManage } from '@/components/inventory/InventoryManage';
+import { EditItemModal } from '@/components/inventory/EditItemModal';
+import { ConfirmModal } from '@/components/ui/ConfirmModal';
+import { Item } from '@/types/Item';
+import toast from 'react-hot-toast';
 
 const PAGE_SIZE = 8;
 
@@ -15,8 +19,13 @@ export default function InventoryPage() {
     const [page, setPage] = useState(1);
     const [isManageOpen, setIsManageOpen] = useState(false);
     const [categoryFilter, setCategoryFilter] = useState<number>(0);
+
+    const [editingItem, setEditingItem] = useState<Item | null>(null);
+    const [deletingItem, setDeletingItem] = useState<Item | null>(null);
+
     const { data, isLoading, isError, error } = useItems(page, PAGE_SIZE);
     const { data: categoriesData } = useCategories(1, 200);
+    const deleteItem = useDeleteItem();
 
     const items = data?.listPayload ?? [];
     const categories = categoriesData?.listPayload ?? [];
@@ -27,6 +36,29 @@ export default function InventoryPage() {
         if (!categoryFilter) return items;
         return items.filter(i => i.categoryId === categoryFilter);
     }, [items, categoryFilter]);
+
+    const handleEditItem = (item: Item) => {
+        setEditingItem(item);
+    };
+
+    const handleRemoveItem = (item: Item) => {
+        setDeletingItem(item);
+    };
+
+    const confirmDelete = () => {
+        if (!deletingItem) return;
+        deleteItem.mutate(deletingItem.itemId, {
+            onSuccess: (res) => {
+                if (res.success) {
+                    toast.success("Item removed successfully");
+                    setDeletingItem(null);
+                } else {
+                    toast.error(res.message ?? "Failed to delete item");
+                }
+            },
+            onError: () => toast.error("An error occurred")
+        });
+    };
 
     return (
         <RoleGuard allowedRoles={['Manager']}>
@@ -122,7 +154,10 @@ export default function InventoryPage() {
                                     </tr>
                                 ) : (
                                     filteredItems.map((item, i) => (
-                                        <ItemRow key={item.itemId} item={item} index={i} />
+                                        <ItemRow key={item.itemId} item={item} index={i}
+                                            onEdit={() => handleEditItem(item)}
+                                            onRemove={() => handleRemoveItem(item)}
+                                        />
                                     ))
                                 )}
                             </tbody>
@@ -138,6 +173,22 @@ export default function InventoryPage() {
                         />
                     )}
                 </div>
+
+                <EditItemModal
+                    isOpen={!!editingItem}
+                    onClose={() => setEditingItem(null)}
+                    item={editingItem}
+                />
+
+                <ConfirmModal
+                    isOpen={!!deletingItem}
+                    onClose={() => setDeletingItem(null)}
+                    onConfirm={confirmDelete}
+                    title="Remove Item"
+                    description={`Are you sure you want to remove "${deletingItem?.name}"? This action cannot be undone.`}
+                    confirmText="Remove"
+                    isLoading={deleteItem.isPending}
+                />
             </div>
         </RoleGuard>
     );

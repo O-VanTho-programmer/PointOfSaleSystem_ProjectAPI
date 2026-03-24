@@ -99,9 +99,8 @@ namespace CSW306.Application.Services
             {
                 try
                 {
-                    var performingUser = await _unitOfWork.Users.GetByIdAsync(performingUserId.Value);
-                    var performerName = performingUser?.Name ?? $"User #{performingUserId}";
-                    var performerRole = performingUser?.Role ?? "Staff";
+                    var performerName = _currentUserProvider?.GetCurrentUserName() ?? "System";
+                    var performerRole = _currentUserProvider?.GetCurrentUserRole() ?? "Staff";
 
                     var registrationDetails = $"{performerRole} {performerName} registered customer {newCustomer.Name} ({newCustomer.Phone}).";
 

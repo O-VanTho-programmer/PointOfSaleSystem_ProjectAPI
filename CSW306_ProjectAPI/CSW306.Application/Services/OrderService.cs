@@ -273,9 +273,26 @@ namespace CSW306.Application.Services
                 }
 
                 var oldStatus = order.Status;
+                var oldPaymentStatus = order.PaymentStatus;
+                var oldKitchenStatus = order.KitchenStatus;
+                
                 order.Status = request.Status;
+
+                if (request.Status == OrderStatus.Cancelled)
+                {
+                    if (order.PaymentStatus == PaymentStatus.Paid)
+                    {
+                        order.PaymentStatus = PaymentStatus.Refunded;
+                    }
+                    else
+                    {
+                        order.PaymentStatus = PaymentStatus.Voided;
+                    }
+
+                    order.KitchenStatus = KitchenStatus.Cancelled;
+                }
+
                 await _unitOfWork.Orders.UpdateAsync(order);
-                await _unitOfWork.SaveChangesAsync();
 
                 InvalidateOrderCache(order.OrderId);
 
@@ -283,17 +300,19 @@ namespace CSW306.Application.Services
                 try
                 {
                     var performerId = _currentUserProvider?.GetCurrentUserId();
-                    Users? performer = null;
-                    if (performerId.HasValue)
+                    var performerName = _currentUserProvider?.GetCurrentUserName() ?? "System";
+                    var performerRole = _currentUserProvider?.GetCurrentUserRole() ?? "Staff";
+                   
+                    var performerDescriptor = performerId.HasValue
+                        ? $"{performerRole} {performerName}"
+                        : "System";
+
+                    var updateDetails = $"{performerDescriptor} updated Order #{order.OrderId} status: {oldStatus} => {order.Status}";
+
+                    if (request.Status == OrderStatus.Cancelled)
                     {
-                        performer = await _unitOfWork.Users.GetByIdAsync(performerId.Value);
+                        updateDetails += $", payment status: {oldPaymentStatus} => {order.PaymentStatus}, kitchen status: {oldKitchenStatus} => {order.KitchenStatus}";
                     }
-
-                    var performerDescriptor = performer != null
-                        ? $"{performer.Role ?? "Staff"} {performer.Name}"
-                        : (performerId.HasValue ? $"User #{performerId.Value}" : "System");
-
-                    var updateDetails = $"{performerDescriptor} updated Order #{order.OrderId} status: {oldStatus} => {order.Status}.";
 
                     await _unitOfWork.ActivityLogs.AddAsync(new ActivityLog
                     {
@@ -348,15 +367,12 @@ namespace CSW306.Application.Services
                 try
                 {
                     var performerId = _currentUserProvider?.GetCurrentUserId();
-                    Users? performer = null;
-                    if (performerId.HasValue)
-                    {
-                        performer = await _unitOfWork.Users.GetByIdAsync(performerId.Value);
-                    }
+                    var performerName = _currentUserProvider?.GetCurrentUserName() ?? "System";
+                    var performerRole = _currentUserProvider?.GetCurrentUserRole() ?? "Staff";
 
-                    var performerDescriptor = performer != null
-                        ? $"{performer.Role ?? "Staff"} {performer.Name}"
-                        : (performerId.HasValue ? $"User #{performerId.Value}" : "System");
+                    var performerDescriptor = performerId.HasValue
+                        ? $"{performerRole} {performerName}"
+                        : "System";
 
                     var kitchenUpdate = order.OrderType == OrderType.TakeAway && request.PaymentStatus == PaymentStatus.Paid 
                         ? $"; Kitchen status set to Pending for cooking."
@@ -410,15 +426,12 @@ namespace CSW306.Application.Services
                 try
                 {
                     var performerId = _currentUserProvider?.GetCurrentUserId();
-                    Users? performer = null;
-                    if (performerId.HasValue)
-                    {
-                        performer = await _unitOfWork.Users.GetByIdAsync(performerId.Value);
-                    }
+                    var performerName = _currentUserProvider?.GetCurrentUserName() ?? "System";
+                    var performerRole = _currentUserProvider?.GetCurrentUserRole() ?? "Staff";
 
-                    var performerDescriptor = performer != null
-                        ? $"{performer.Role ?? "Staff"} {performer.Name}"
-                        : (performerId.HasValue ? $"User #{performerId.Value}" : "System");
+                    var performerDescriptor = performerId.HasValue
+                        ? $"{performerRole} {performerName}"
+                        : "System";
 
                     var updateDetails = $"{performerDescriptor} updated Order #{order.OrderId} kitchen status: {oldKitchenStatus} => {order.KitchenStatus}.";
 

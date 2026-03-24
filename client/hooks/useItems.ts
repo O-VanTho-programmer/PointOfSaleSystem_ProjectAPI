@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getItems, getItemById, createItem, updateItem } from '../services/item';
+import { getItems, getItemById, createItem, updateItem, deleteItem } from '../services/item';
 import { ItemUploadDTO } from '../types/Item';
 
 // ─── Query Keys ──────────────────────────────────
@@ -47,6 +47,17 @@ export const useUpdateItem = () => {
         onSuccess: (_data, variables) => {
             queryClient.invalidateQueries({ queryKey: itemKeys.lists() });
             queryClient.invalidateQueries({ queryKey: itemKeys.detail(variables.id) });
+        },
+    });
+};
+
+export const useDeleteItem = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (id: number) => deleteItem(id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: itemKeys.lists() });
         },
     });
 };

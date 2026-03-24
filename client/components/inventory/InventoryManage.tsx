@@ -119,6 +119,14 @@ export function InventoryManage({ isOpen, onClose }: InventoryManageProps) {
     [categoryForm, createCategory]
   );
 
+  const handleClose = useCallback(() => {
+    setItemForm(DEFAULT_ITEM_FORM);
+    setCategoryForm(DEFAULT_CATEGORY_FORM);
+    setSelectedImage(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+    onClose();
+  }, [onClose]);
+
   const fileInputRef = useRef<HTMLInputElement>(null); //
 
   const handleItemChange = useCallback(
@@ -166,7 +174,7 @@ export function InventoryManage({ isOpen, onClose }: InventoryManageProps) {
       <div
         className="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-[2px] transition-opacity"
         aria-hidden="true"
-        onClick={onClose}
+        onClick={handleClose}
       />
       <aside
         className="fixed right-0 top-0 z-50 flex h-full w-full max-w-md flex-col border-l border-slate-200 bg-white shadow-2xl sm:max-w-lg"
@@ -183,7 +191,7 @@ export function InventoryManage({ isOpen, onClose }: InventoryManageProps) {
             </h2>
             <button
               type="button"
-              onClick={onClose}
+              onClick={handleClose}
               className="rounded-lg p-2 text-slate-500 transition-colors hover:bg-slate-200/80 hover:text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400"
               aria-label="Close"
             >
@@ -448,7 +456,7 @@ export function InventoryManage({ isOpen, onClose }: InventoryManageProps) {
           <div className="mt-auto flex gap-3 pt-6">
             <button
               type="button"
-              onClick={onClose}
+              onClick={handleClose}
               className="flex-1 cursor-pointer rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
             >
               Cancel

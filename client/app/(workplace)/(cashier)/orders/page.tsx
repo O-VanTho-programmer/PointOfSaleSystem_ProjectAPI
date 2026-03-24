@@ -8,7 +8,9 @@ import { useOrders, useUpdateOrderStatus, useUpdatePaymentStatus, useCompleteOrd
 import DateRangePicker from '@/components/ui/DateRangePicker';
 import { Pagination } from '@/components/inventory/Pagination';
 import OrderCard from '@/components/order/OrderCard';
+import LoadingState from '@/components/ui/LoadingState';
 import { formatCurrency } from '@/utils/formatCurrency';
+import { usePosSignalR } from '@/hooks/usePosSignalR';
 
 export const ORDER_TYPE_LABELS: Record<number, string> = {
     [OrderType.DineIn]: 'Dine-In',
@@ -37,13 +39,15 @@ export const KITCHEN_STATUS_LABELS: Record<number, string> = {
 };
 
 export default function OrdersPage() {
+    usePosSignalR();
+
     const [pageNumber, setPageNumber] = useState(1);
-    const [pageSize, setPageSize] = useState(100);
+    const [pageSize, setPageSize] = useState(15);
     const [{ startDate, endDate }, setDateRange] = useState(getTodayDateRange());
 
     const [statusFilter, setStatusFilter] = useState<'All' | OrderStatus>('All');
 
-    const { data: ordersData } = useOrders(pageNumber, pageSize, startDate, endDate, statusFilter == "All" ? undefined : statusFilter);
+    const { data: ordersData, isLoading: isLoadingOrders, error: ordersError } = useOrders(pageNumber, pageSize, startDate, endDate, statusFilter == "All" ? undefined : statusFilter);
     const orders = ordersData?.listPayload ?? [];
 
     const [selectedOrder, setSelectedOrder] = useState<OrderResponseDTO | null>(null);
@@ -97,7 +101,7 @@ export default function OrdersPage() {
     };
 
     return (
-        <div className="flex h-full flex-col bg-slate-50 p-6 sm:p-8">
+        <div className="flex h-full flex-col bg-slate-50 p-6 sm:p-8 overflow-y-auto">
             <header className="mb-2 flex items-end justify-between">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight text-slate-900">Active Orders</h1>
@@ -174,16 +178,22 @@ export default function OrdersPage() {
 
             {/* Orders Grid */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {orders.map(order => (
-                    <OrderCard
-                        key={order.orderId}
-                        order={order}
-                        setSelectedOrder={setSelectedOrder}
-                        calculateTotal={calculateTotal}
-                    />
-                ))}
+                {isLoadingOrders && (
+                    <LoadingState message="Loading orders..." />
+                )}
 
-                {orders.length === 0 && (
+                {!isLoadingOrders && !ordersError && (
+                    orders.map(order => (
+                        <OrderCard
+                            key={order.orderId}
+                            order={order}
+                            setSelectedOrder={setSelectedOrder}
+                            calculateTotal={calculateTotal}
+                        />
+                    ))
+                )}
+
+                {!isLoadingOrders && !ordersError && orders.length === 0 && (
                     <div className="col-span-full flex h-64 flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-200 bg-white">
                         <span className="text-lg font-medium text-slate-400">
                             {statusFilter === 'All' ? 'No orders found for this date' : `No ${ORDER_STATUS_LABELS[statusFilter]?.toLowerCase()} orders`}
@@ -191,6 +201,13 @@ export default function OrdersPage() {
                     </div>
                 )}
             </div>
+
+            <Pagination
+                currentPage={pageNumber}
+                totalPages={ordersData?.totalPages ?? 0}
+                totalElement={ordersData?.totalElement ?? 0}
+                onPageChange={setPageNumber}
+            />
 
             {selectedOrder && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-sm transition-opacity">
