@@ -11,6 +11,7 @@ import OrderCard from '@/components/order/OrderCard';
 import LoadingState from '@/components/ui/LoadingState';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { usePosSignalR } from '@/hooks/usePosSignalR';
+import { ConfirmModal } from '@/components/ui/ConfirmModal';
 
 export const ORDER_TYPE_LABELS: Record<number, string> = {
     [OrderType.DineIn]: 'Dine-In',
@@ -51,6 +52,7 @@ export default function OrdersPage() {
     const orders = ordersData?.listPayload ?? [];
 
     const [selectedOrder, setSelectedOrder] = useState<OrderResponseDTO | null>(null);
+    const [isCancelConfirmOpen, setIsCancelConfirmOpen] = useState(false);
 
     const calculateTotal = (order: OrderResponseDTO) => {
         const subtotal = order.orderItems.reduce((sum, oi) => sum + (oi.priceAtOrder * oi.quantity), 0);
@@ -92,11 +94,16 @@ export default function OrdersPage() {
     };
 
     const handleCancelOrder = () => {
+        setIsCancelConfirmOpen(true);
+    };
+
+    const confirmCancelOrder = () => {
         if (!selectedOrder) return;
         updateOrderStatus.mutate({
             id: selectedOrder.orderId,
             dto: { status: OrderStatus.Cancelled }
         });
+        setIsCancelConfirmOpen(false);
         setSelectedOrder(null);
     };
 
@@ -202,12 +209,14 @@ export default function OrdersPage() {
                 )}
             </div>
 
-            <Pagination
-                currentPage={pageNumber}
-                totalPages={ordersData?.totalPages ?? 0}
-                totalElement={ordersData?.totalElement ?? 0}
-                onPageChange={setPageNumber}
-            />
+            <RoleGuard allowedRoles={['Manager']}>
+                <Pagination
+                    currentPage={pageNumber}
+                    totalPages={ordersData?.totalPages ?? 0}
+                    totalElement={ordersData?.totalElement ?? 0}
+                    onPageChange={setPageNumber}
+                />
+            </RoleGuard>
 
             {selectedOrder && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-sm transition-opacity">
@@ -323,6 +332,17 @@ export default function OrdersPage() {
                     </div>
                 </div>
             )}
+
+            <ConfirmModal
+                isOpen={isCancelConfirmOpen}
+                onClose={() => setIsCancelConfirmOpen(false)}
+                onConfirm={confirmCancelOrder}
+                title="Cancel Order"
+                description={`Are you sure you want to cancel order #${selectedOrder?.orderId}? This action cannot be undone.`}
+                confirmText="Yes, cancel order"
+                isDestructive={true}
+                isLoading={updateOrderStatus.isPending}
+            />
         </div>
     );
 }

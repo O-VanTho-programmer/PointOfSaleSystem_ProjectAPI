@@ -86,6 +86,8 @@ namespace CSW306_ProjectAPI.Controllers
             if (!order.Success)
                 return NotFound(order.Message);
 
+            await _hubContext.Clients.All.SendAsync("OrderListUpdated");
+
             return Ok(order);
         }
 

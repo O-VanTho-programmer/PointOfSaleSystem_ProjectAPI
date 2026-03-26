@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import * as signalR from '@microsoft/signalr';
 import { useQueryClient } from '@tanstack/react-query';
-import { orderKeys } from './useOrders'; 
+import { orderKeys } from './useOrders';
 
 export const usePosSignalR = () => {
     const [connection, setConnection] = useState<signalR.HubConnection | null>(null);
@@ -12,7 +12,7 @@ export const usePosSignalR = () => {
 
         const newConnection = new signalR.HubConnectionBuilder()
             .withUrl(`${baseUrl}/hubs/pos`, {
-                withCredentials: true 
+                withCredentials: true
             })
             .withAutomaticReconnect()
             .build();
@@ -25,19 +25,26 @@ export const usePosSignalR = () => {
     }, []);
 
     useEffect(() => {
-        if (connection) {
+        if (!connection) return;
+
+        const handleOrderUpdate = () => {
+            console.log('New order detected! Refreshing cache...');
+            queryClient.invalidateQueries({ queryKey: orderKeys.lists() });
+        };
+
+        connection.on('OrderListUpdated', handleOrderUpdate);
+
+        if (connection.state === signalR.HubConnectionState.Disconnected) {
             connection.start()
                 .then(() => {
                     console.log('Connected to POS SignalR Hub!');
-
-                    connection.on('OrderListUpdated', () => {
-                        console.log('New order detected! Refreshing cache...');
-                        
-                        queryClient.invalidateQueries({ queryKey: orderKeys.all });
-                    });
                 })
                 .catch(e => console.log('SignalR Connection Error: ', e));
         }
+
+        return () => {
+            connection.off('OrderListUpdated', handleOrderUpdate);
+        };
     }, [connection, queryClient]);
 
     return connection;
