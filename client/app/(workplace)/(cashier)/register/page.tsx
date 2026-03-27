@@ -11,6 +11,7 @@ import { useItems } from "@/hooks/useItems";
 import { Item } from "@/types/Item";
 import { useCategories } from "@/hooks/useCategories";
 import toast from "react-hot-toast";
+import { usePosSignalR } from "@/hooks/usePosSignalR";
 
 const ORDER_TYPE_OPTIONS: { value: OrderType; label: string }[] = [
     { value: OrderType.DineIn, label: 'Dine-In' },
@@ -18,6 +19,8 @@ const ORDER_TYPE_OPTIONS: { value: OrderType; label: string }[] = [
 ];
 
 export default function RegisterScreen() {
+    usePosSignalR();
+
     const [selectedCategory, setSelectedCategory] = useState<string>("All");
     const [searchQuery, setSearchQuery] = useState("");
 

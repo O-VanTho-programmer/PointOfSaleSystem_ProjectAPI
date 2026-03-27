@@ -41,7 +41,6 @@ namespace CSW306_ProjectAPI.Controllers
             return Ok(result);
         }
 
-        // Accept multipart/form-data with fields and an optional file named 'image'
         [HttpPost]
         [Authorize(Roles = "Manager")]
         public async Task<ActionResult> CreateItem([FromForm] CreateItemRequest request)

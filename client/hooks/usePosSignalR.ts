@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import * as signalR from '@microsoft/signalr';
 import { useQueryClient } from '@tanstack/react-query';
 import { orderKeys } from './useOrders';
+import { itemKeys } from './useItems';
+import { tableKeys } from './useTables';
 
 export const usePosSignalR = () => {
     const [connection, setConnection] = useState<signalR.HubConnection | null>(null);
@@ -28,8 +30,10 @@ export const usePosSignalR = () => {
         if (!connection) return;
 
         const handleOrderUpdate = () => {
-            console.log('New order detected! Refreshing cache...');
-            queryClient.invalidateQueries({ queryKey: orderKeys.lists() });
+            console.log('New update detected! Refreshing cache...');
+            queryClient.invalidateQueries({ queryKey: orderKeys.all });
+            queryClient.invalidateQueries({ queryKey: itemKeys.all });
+            queryClient.invalidateQueries({ queryKey: tableKeys.all });
         };
 
         connection.on('OrderListUpdated', handleOrderUpdate);

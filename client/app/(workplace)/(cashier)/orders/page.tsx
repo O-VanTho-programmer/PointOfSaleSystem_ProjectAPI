@@ -40,6 +40,7 @@ export const KITCHEN_STATUS_LABELS: Record<number, string> = {
 };
 
 export default function OrdersPage() {
+    
     usePosSignalR();
 
     const [pageNumber, setPageNumber] = useState(1);
