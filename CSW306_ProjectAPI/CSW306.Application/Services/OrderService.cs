@@ -181,6 +181,22 @@ namespace CSW306.Application.Services
                     return new TemplateApi<OrderResponseDTO>(null, null, $"The following items are currently sold out: {string.Join(", ", soldOutItems)}", false, 0, 0, 0, 0);
                 }
 
+                if (dto.TableNumber != null)
+                {
+                    int selectedTableNumber = dto.TableNumber.Value;
+                    var table = await _unitOfWork.Tables.GetByIdAsync(selectedTableNumber);
+
+                    if (table == null)
+                    {
+                        return new TemplateApi<OrderResponseDTO>(null, null, $"The table {selectedTableNumber} does not exist.", false, 0, 0, 0, 0);
+                    }
+
+                    if (table.Status.Equals("occupied", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return new TemplateApi<OrderResponseDTO>(null, null, $"The table {selectedTableNumber} is already occupied", false, 0, 0, 0, 0);
+                    }
+                }
+
                 var orderItems = dto.OrderItems.Select(i => new OrderItems
                 {
                     ItemId = i.ItemId,
