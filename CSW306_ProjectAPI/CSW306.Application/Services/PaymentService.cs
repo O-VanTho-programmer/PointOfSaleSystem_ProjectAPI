@@ -1,5 +1,7 @@
 using CSW306.Application.DTO;
+using CSW306.Application.DTO.Upload;
 using CSW306.Application.Interfaces;
+using CSW306.Application.Interfaces.IExternal;
 using CSW306.Application.Interfaces.IServices;
 using CSW306.Application.Utils;
 using CSW306.Domain.Entities;
@@ -7,16 +9,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace CSW306.Application.Services
 {
     public class PaymentService : IPaymentService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IQrPaymentService _qrPaymentService;
 
-        public PaymentService(IUnitOfWork unitOfWork)
+        public PaymentService(IUnitOfWork unitOfWork, IQrPaymentService qrPaymentService)
         {
             _unitOfWork = unitOfWork;
+            _qrPaymentService = qrPaymentService;
         }
 
         public async Task<TemplateApi<Payments>> GetAllPaymentsAsync()
@@ -214,6 +219,75 @@ namespace CSW306.Application.Services
             {
                 Console.WriteLine(ex);
                 return new TemplateApi<object>(null, null, "An unexpected error occurred while processing payment.", false, 0, 0, 0, 0);
+            }
+        }
+
+        public async Task<TemplateApi<string>> GeneratePaymentQrAsync(int orderId)
+        {
+            try
+            {
+                var order = await _unitOfWork.Orders.GetOrderByIdWithDetailsAsync(orderId);
+                if (order == null)
+                {
+                    return new TemplateApi<string>(null, null, "Order not found", false, 0, 0, 0, 0);
+                }
+
+                if (order.PaymentStatus == PaymentStatus.Paid)
+                {
+                    return new TemplateApi<string>(null, null, "Order is already paid", false, 0, 0, 0, 0);
+                }
+
+                decimal totalAmount = order.OrderItems.Sum(item => item.PriceAtOrder * item.Quantity);
+
+                var qrBase64 = await _qrPaymentService.GeneratePaymentQrAsync(orderId, totalAmount);
+
+                return new TemplateApi<string>(qrBase64, null, "QR Generated Successfully", true, 0, 0, 0, 0);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return new TemplateApi<string>(null, null, "Failed to generate QR code", false, 0, 0, 0, 0);
+            }
+        }
+
+        public async Task ProcessPaymentWebhookAsync(SePayWebhookDto payload)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(payload?.transferContent))
+                    return;
+
+                var match = Regex.Match(payload.transferContent, @"\d+");
+                if (!match.Success || !int.TryParse(match.Value, out int orderId))
+                {
+                    Console.WriteLine($"Could not extract OrderId from transferContent: {payload.transferContent}");
+                    return;
+                }
+
+                var order = await _unitOfWork.Orders.GetByIdAsync(orderId);
+                if (order == null)
+                {
+                    Console.WriteLine($"Order not found for Webhook update: {orderId}");
+                    return;
+                }
+
+                if (order.OrderType == OrderType.DineIn)
+                {
+                    order.PaymentStatus = PaymentStatus.Paid;
+                    order.Status = OrderStatus.Completed;
+                }
+                else if (order.OrderType == OrderType.TakeAway)
+                {
+                    order.PaymentStatus = PaymentStatus.Paid;
+                    order.KitchenStatus = KitchenStatus.Pending;
+                }
+
+                await _unitOfWork.Orders.UpdateAsync(order);
+                await _unitOfWork.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error processing payment webhook: {ex.Message}");
             }
         }
     }

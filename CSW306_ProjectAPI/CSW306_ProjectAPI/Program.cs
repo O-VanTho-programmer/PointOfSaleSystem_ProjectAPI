@@ -1,3 +1,4 @@
+using CSW306.Application.Interfaces.IExternal;
 using CSW306.Application.Interfaces.IServices;
 using CSW306.Application.Services;
 using CSW306.Infrastructure.Data;
@@ -52,13 +53,16 @@ builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IDiscountService, DiscountService>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<CSW306.Application.Interfaces.IPhotoService, CSW306.Infrastructure.Services.CloudinaryPhotoService>();
+builder.Services.AddScoped<IPhotoService, CSW306.Infrastructure.Services.CloudinaryPhotoService>();
 builder.Services.AddScoped<IActivityLogService, CSW306.Application.Services.ActivityLogService>();
 builder.Services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
     ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("RedisCache") ?? "localhost:6379,abortConnect=false"));
 
 builder.Services.AddSingleton<IRedisCacheService, RedisCacheService>();
+
+// Add this to your Program.cs
+builder.Services.AddHttpClient<IQrPaymentService, VietQrService>();
 
 // AuditLogService retained as no-op
 builder.Services.AddSingleton<AuditLogService>();

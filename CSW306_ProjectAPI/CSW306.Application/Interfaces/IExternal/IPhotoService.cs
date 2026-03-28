@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSW306.Application.Interfaces
+namespace CSW306.Application.Interfaces.IExternal
 {
     public interface IPhotoService
     {

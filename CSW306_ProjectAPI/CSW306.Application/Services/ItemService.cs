@@ -1,5 +1,6 @@
 ﻿using CSW306.Application.DTO.Upload;
 using CSW306.Application.Interfaces;
+using CSW306.Application.Interfaces.IExternal;
 using CSW306.Application.Interfaces.IServices;
 using CSW306.Application.Utils;
 using CSW306.Domain.Entities;

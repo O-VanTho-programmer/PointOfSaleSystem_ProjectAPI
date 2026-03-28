@@ -1,4 +1,5 @@
 using CSW306.Application.DTO;
+using CSW306.Application.DTO.Upload;
 using CSW306.Application.Utils;
 using CSW306.Domain.Entities;
 using System.Collections.Generic;
@@ -14,7 +15,9 @@ namespace CSW306.Application.Interfaces.IServices
         Task<TemplateApi<Payments>> UpdatePaymentAsync(int id, Payments updatedPayment);
         Task<TemplateApi<Payments>> DeletePaymentAsync(int id);
         
-        // Custom payload using anonymous object / dictionary or defining a new DTO (returning object)
         Task<TemplateApi<object>> ProcessPaymentAsync(int id);
+        Task<TemplateApi<string>> GeneratePaymentQrAsync(int order_id);
+        
+        Task ProcessPaymentWebhookAsync(SePayWebhookDto payload);
     }
 }

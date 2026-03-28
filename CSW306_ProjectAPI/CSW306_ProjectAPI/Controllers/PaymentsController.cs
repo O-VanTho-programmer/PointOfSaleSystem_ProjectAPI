@@ -1,7 +1,9 @@
 using CSW306.Application.DTO;
+using CSW306.Application.DTO.Upload;
 using CSW306.Application.Interfaces.IServices;
 using CSW306.Application.Utils;
 using CSW306.Domain.Entities;
+using CSW306.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -114,6 +116,26 @@ namespace CSW306_ProjectAPI.Controllers
             }
 
             return Ok(result);
+        }
+
+        [HttpGet("{id}/generate-qr")]
+        public async Task<IActionResult> GeneratePaymentQr(int order_id)
+        {
+            var response = await _paymentService.GeneratePaymentQrAsync(order_id);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
+        }
+
+        [HttpPost("webhook/sepay")]
+        public async Task<IActionResult> ProcessSepayWebhook([FromBody] SePayWebhookDto payload)
+        {
+            await _paymentService.ProcessPaymentWebhookAsync(payload);
+            return Ok(); 
         }
     }
 }

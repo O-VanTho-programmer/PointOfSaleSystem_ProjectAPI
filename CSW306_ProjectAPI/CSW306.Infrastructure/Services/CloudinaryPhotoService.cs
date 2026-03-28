@@ -1,6 +1,6 @@
 ﻿using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
-using CSW306.Application.Interfaces;
+using CSW306.Application.Interfaces.IExternal;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;

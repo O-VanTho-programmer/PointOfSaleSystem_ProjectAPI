@@ -42,6 +42,7 @@ public enum PaymentStatus
 
 public enum KitchenStatus
 {
+    Idle = -2,
     Cancelled = -1,
     Pending = 0,
     Cooking = 1, 
