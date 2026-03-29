@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { usePosStore } from '../store/posStore';
 import { OrderStatus, OrderType } from '../types/OrderDTO';
 import { RoleGuard } from './RoleGuard';
@@ -9,12 +9,17 @@ import { useAuthStore } from '@/store/authStore';
 import toast from 'react-hot-toast';
 import { UserRole } from '@/types/User';
 import { useRouter } from 'next/navigation';
+import { QRModal } from './payment/QRModal';
+import { useGeneratePaymentQr } from '@/hooks/usePayments';
 
 export function CartSidebar() {
     const { order, updateQuantity, clearOrder } = usePosStore();
     const { user } = useAuthStore();
-    console.log(user);
     const router = useRouter();
+
+    const [isQrModalOpen, setIsQrModalOpen] = useState(false);
+    const [currentOrderId, setCurrentOrderId] = useState<number>(0);
+    const [qrBase64, setQrBase64] = useState<string>('');
 
     const subtotal = useMemo(() => {
         return order.orderItems.reduce((sum: number, oi) => sum + oi.priceAtOrder * oi.quantity, 0);
@@ -29,8 +34,9 @@ export function CartSidebar() {
     };
 
     const createOrder = useCreateOrder();
+    const generatePaymentQr = useGeneratePaymentQr();
 
-    const handleSubmitOrder = (role: UserRole) => {
+    const handleSubmitOrder = () => {
         createOrder.mutateAsync({
             status: OrderStatus.Active,
             discountId: order.discountId,
@@ -43,12 +49,31 @@ export function CartSidebar() {
             tableNumber: order.tableNumber,
             orderType: order.orderType,
         }, {
-            onSuccess: () => {
-                clearOrder();
-                toast.success("Order created successfully");
+            onSuccess: async (data) => {
+                const createdOrder = data.payload;
+                if (!createdOrder) {
+                    toast.error("Failed to retrieve created order from server");
+                    return;
+                }
 
-                if (role === "Cashier" || role === "Manager") {
-                    // router.push("/");
+                if (order.orderType === OrderType.TakeAway) {
+                    // Start QR generation flow
+                    try {
+                        const qrResponse = await generatePaymentQr.mutateAsync(createdOrder.orderId);
+                        if (qrResponse.success && qrResponse.payload) {
+                            setCurrentOrderId(createdOrder.orderId);
+                            setQrBase64(qrResponse.payload);
+                            setIsQrModalOpen(true);
+                        } else {
+                            toast.error(qrResponse.message || "Failed to generate payment QR");
+                        }
+                    } catch (error) {
+                        console.error(error);
+                    }
+                } else {
+                    // Standard Dine-In flow
+                    clearOrder();
+                    toast.success("Order created successfully");
                 }
             },
             onError: (error) => {
@@ -57,6 +82,12 @@ export function CartSidebar() {
             }
         });
     }
+
+    const handleQrSuccess = () => {
+        setIsQrModalOpen(false);
+        clearOrder();
+        toast.success("Payment Received & Order Completed!", { duration: 4000 });
+    };
 
     return (
         <aside className="flex h-full w-full flex-col bg-white">
@@ -146,23 +177,20 @@ export function CartSidebar() {
                     </div>
                 </div>
 
-                <RoleGuard
-                    allowedRoles={['Manager', 'Cashier']}
-                    fallback={
-                        <button
-                            type="button"
-                            onClick={() => handleSubmitOrder(user?.role || "Waiter")}
-                            disabled={order.orderItems.length === 0 || (order.tableNumber === undefined && order.orderType === OrderType.DineIn)}
-                            className="flex w-full items-center justify-center rounded-xl bg-blue-600 p-4 font-bold text-white shadow-md transition-all hover:bg-blue-500 disabled:pointer-events-none disabled:opacity-50 touch-manipulation"
-                        >
-                            <span className="text-lg tracking-wide">SUBMIT ORDER</span>
-                        </button>
-                    }
-                >
+                {order.orderType === OrderType.DineIn ? (
                     <button
                         type="button"
-                        onClick={() => handleSubmitOrder(user?.role || "Cashier")}
+                        onClick={() => handleSubmitOrder()}
                         disabled={order.orderItems.length === 0 || (order.tableNumber === undefined && order.orderType === OrderType.DineIn)}
+                        className="flex w-full items-center justify-center rounded-xl bg-blue-600 p-4 font-bold text-white shadow-md transition-all hover:bg-blue-500 disabled:pointer-events-none disabled:opacity-50 touch-manipulation"
+                    >
+                        <span className="text-lg tracking-wide">SUBMIT ORDER</span>
+                    </button>
+                ) : (
+                    <button
+                        type="button"
+                        onClick={() => handleSubmitOrder()}
+                        disabled={order.orderItems.length === 0}
                         className="group flex w-full cursor-pointer items-center justify-between rounded-xl bg-slate-900 p-4 font-bold text-white shadow-md transition-all ease-out hover:-translate-y-1 hover:bg-emerald-600 hover:shadow-lg active:translate-y-0 active:bg-emerald-700 disabled:pointer-events-none disabled:opacity-50 touch-manipulation tap-highlight-transparent"
                     >
                         <span className="text-lg tracking-wide">PAY NOW</span>
@@ -170,8 +198,17 @@ export function CartSidebar() {
                             {formatCurrency(grandTotal)}
                         </span>
                     </button>
-                </RoleGuard>
+                )}
             </div>
+
+            {/* QR Payment Modal */}
+            <QRModal 
+                isOpen={isQrModalOpen}
+                onClose={() => setIsQrModalOpen(false)}
+                onSuccess={handleQrSuccess}
+                orderId={currentOrderId}
+                qrSvgBase64={qrBase64}
+            />
         </aside>
     );
 }

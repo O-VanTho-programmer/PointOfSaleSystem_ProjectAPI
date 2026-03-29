@@ -701,6 +701,22 @@
   },
   {
     "ContainingType": "CSW306_ProjectAPI.Controllers.PaymentsController",
+    "Method": "GeneratePaymentQr",
+    "RelativePath": "api/Payments/{id}/generate-qr",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CSW306_ProjectAPI.Controllers.PaymentsController",
     "Method": "AddPayment",
     "RelativePath": "api/Payments/add",
     "HttpMethod": "POST",
@@ -763,6 +779,22 @@
       {
         "Name": "id",
         "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CSW306_ProjectAPI.Controllers.PaymentsController",
+    "Method": "ProcessSepayWebhook",
+    "RelativePath": "api/Payments/webhook/sepay",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "payload",
+        "Type": "CSW306.Application.DTO.Upload.SePayWebhookDto",
         "IsRequired": true
       }
     ],

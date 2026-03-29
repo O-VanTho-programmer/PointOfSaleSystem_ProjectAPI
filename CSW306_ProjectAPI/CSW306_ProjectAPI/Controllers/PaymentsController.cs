@@ -119,9 +119,9 @@ namespace CSW306_ProjectAPI.Controllers
         }
 
         [HttpGet("{id}/generate-qr")]
-        public async Task<IActionResult> GeneratePaymentQr(int order_id)
+        public async Task<IActionResult> GeneratePaymentQr(int id)
         {
-            var response = await _paymentService.GeneratePaymentQrAsync(order_id);
+            var response = await _paymentService.GeneratePaymentQrAsync(id);
 
             if (!response.Success)
             {

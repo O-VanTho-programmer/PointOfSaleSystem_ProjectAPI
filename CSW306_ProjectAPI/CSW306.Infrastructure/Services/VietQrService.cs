@@ -1,5 +1,6 @@
 ﻿using CSW306.Application.DTO;
 using CSW306.Application.Interfaces.IExternal;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,11 @@ namespace CSW306.Infrastructure.Services
     public class VietQrService : IQrPaymentService
     {
         private readonly HttpClient _httpClient;
-
-        public VietQrService(HttpClient httpClient)
+        private readonly ILogger<VietQrService> _logger;
+        public VietQrService(HttpClient httpClient, ILogger<VietQrService> logger)
         {
             _httpClient = httpClient;
+            _logger = logger;
         }
 
         public async Task<string> GeneratePaymentQrAsync(int orderId, decimal amount)
@@ -28,20 +30,24 @@ namespace CSW306.Infrastructure.Services
             };
 
             var response = await _httpClient.PostAsJsonAsync("https://api.vietqr.io/v2/generate", requestPayload);
+            var content = await response.Content.ReadAsStringAsync();
 
-            if (response.IsSuccessStatusCode)
+            // 1. Log the raw JSON so you can see it in your terminal
+            _logger.LogWarning("========== VIETQR RAW RESPONSE ==========\n{Content}\n=========================================", content); if (response.IsSuccessStatusCode)
             {
-                var content = await response.Content.ReadAsStringAsync();
                 var result = JsonSerializer.Deserialize<VietQrResponseDto>(content);
 
-                // Return the Base64 image string (e.g., "data:image/png;base64,iVBORw0KGgo...")
-                if (result?.Data?.QrDataURL != null)
+                if (result != null && result.Code == "00" && result.Data?.QrDataURL != null)
                 {
                     return result.Data.QrDataURL;
                 }
+                else
+                {
+                   _logger.LogError("VietQR API rejected the request. Code: {Code}, Desc: {Desc}", result?.Code, result?.Desc);
+                   throw new Exception($"VietQR Error: {result?.Desc}. Code: {result?.Code}");
+                }
             }
 
-            // Fallback if the API fails
             throw new Exception("Failed to generate VietQR code.");
         }
     }

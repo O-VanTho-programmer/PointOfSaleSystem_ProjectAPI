@@ -12,6 +12,10 @@ import LoadingState from '@/components/ui/LoadingState';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { usePosSignalR } from '@/hooks/usePosSignalR';
 import { ConfirmModal } from '@/components/ui/ConfirmModal';
+import { useGeneratePaymentQr } from '@/hooks/usePayments';
+import { PaymentMethodModal } from '@/components/payment/PaymentMethodModal';
+import { QRModal } from '@/components/payment/QRModal';
+import toast from 'react-hot-toast';
 
 export const ORDER_TYPE_LABELS: Record<number, string> = {
     [OrderType.DineIn]: 'Dine-In',
@@ -40,7 +44,7 @@ export const KITCHEN_STATUS_LABELS: Record<number, string> = {
 };
 
 export default function OrdersPage() {
-    
+
     usePosSignalR();
 
     const [pageNumber, setPageNumber] = useState(1);
@@ -54,6 +58,11 @@ export default function OrdersPage() {
 
     const [selectedOrder, setSelectedOrder] = useState<OrderResponseDTO | null>(null);
     const [isCancelConfirmOpen, setIsCancelConfirmOpen] = useState(false);
+    
+    // Payment Modals State
+    const [isPaymentMethodModalOpen, setIsPaymentMethodModalOpen] = useState(false);
+    const [isQrModalOpen, setIsQrModalOpen] = useState(false);
+    const [qrBase64, setQrBase64] = useState<string>('');
 
     const calculateTotal = (order: OrderResponseDTO) => {
         const subtotal = order.orderItems.reduce((sum, oi) => sum + (oi.priceAtOrder * oi.quantity), 0);
@@ -64,14 +73,45 @@ export default function OrdersPage() {
     const updatePaymentStatus = useUpdatePaymentStatus();
     const updateKitchenStatus = useUpdateKitchenStatus();
     const completeOrder = useCompleteOrder();
+    const generatePaymentQr = useGeneratePaymentQr();
 
-    const handleMarkPaid = () => {
+    const handlePayOrder = () => {
+        if (!selectedOrder) return;
+        setIsPaymentMethodModalOpen(true);
+    };
+
+    const handleSelectCash = () => {
+        setIsPaymentMethodModalOpen(false);
         if (!selectedOrder) return;
         updatePaymentStatus.mutate({
             id: selectedOrder.orderId,
             dto: { paymentStatus: PaymentStatus.Paid }
         });
         setSelectedOrder(null);
+        toast.success("Cash payment verified and collected.");
+    };
+
+    const handleSelectBank = async () => {
+        setIsPaymentMethodModalOpen(false);
+        if (!selectedOrder) return;
+        
+        try {
+            const qrResponse = await generatePaymentQr.mutateAsync(selectedOrder.orderId);
+            if (qrResponse.success && qrResponse.payload) {
+                setQrBase64(qrResponse.payload);
+                setIsQrModalOpen(true);
+            } else {
+                toast.error(qrResponse.message || "Failed to generate QR code");
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const handleQrSuccess = () => {
+        setIsQrModalOpen(false);
+        setSelectedOrder(null);
+        toast.success("Bank Transfer Received!", { duration: 4000 });
     };
 
     const handleCompleteOrder = () => {
@@ -289,10 +329,10 @@ export default function OrdersPage() {
                                             {selectedOrder.paymentStatus !== PaymentStatus.Paid ? (
                                                 <button
                                                     type="button"
-                                                    onClick={handleMarkPaid}
+                                                    onClick={handlePayOrder}
                                                     className="flex-2 rounded-xl bg-slate-900 px-4 py-4 text-lg font-bold text-white shadow-md transition-transform hover:-translate-y-1 hover:bg-blue-600 hover:shadow-lg active:translate-y-0 active:bg-blue-700"
                                                 >
-                                                    Mark as Paid
+                                                    PAY ORDER
                                                 </button>
                                             ) : selectedOrder.orderType === OrderType.TakeAway ? (
                                                 <button
@@ -343,6 +383,21 @@ export default function OrdersPage() {
                 confirmText="Yes, cancel order"
                 isDestructive={true}
                 isLoading={updateOrderStatus.isPending}
+            />
+
+            <PaymentMethodModal 
+                isOpen={isPaymentMethodModalOpen}
+                onClose={() => setIsPaymentMethodModalOpen(false)}
+                onSelectCash={handleSelectCash}
+                onSelectBank={handleSelectBank}
+            />
+
+            <QRModal 
+                isOpen={isQrModalOpen}
+                onClose={() => setIsQrModalOpen(false)}
+                onSuccess={handleQrSuccess}
+                orderId={selectedOrder?.orderId || 0}
+                qrSvgBase64={qrBase64}
             />
         </div>
     );

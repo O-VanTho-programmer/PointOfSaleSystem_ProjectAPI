@@ -208,7 +208,7 @@ namespace CSW306.Application.Services
                 {
                     Status = OrderStatus.Active,  
                     PaymentStatus = PaymentStatus.Unpaid,  
-                    KitchenStatus = KitchenStatus.Pending, 
+                    KitchenStatus = dto.OrderType == OrderType.DineIn ? KitchenStatus.Pending : KitchenStatus.Idle, 
                     DiscountId = dto.DiscountId,
                     UserId = dto.UserId,
                     CreatedDate = DateTime.UtcNow,

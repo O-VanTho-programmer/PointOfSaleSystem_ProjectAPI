@@ -237,9 +237,18 @@ namespace CSW306.Application.Services
                     return new TemplateApi<string>(null, null, "Order is already paid", false, 0, 0, 0, 0);
                 }
 
-                decimal totalAmount = order.OrderItems.Sum(item => item.PriceAtOrder * item.Quantity);
+                decimal totalAmountUsd = order.OrderItems.Sum(item => item.PriceAtOrder * item.Quantity);
 
-                var qrBase64 = await _qrPaymentService.GeneratePaymentQrAsync(orderId, totalAmount);
+                const decimal UsdToVndRate = 25400m;
+                decimal vndTotal = totalAmountUsd * UsdToVndRate;
+                int finalVndAmount = Convert.ToInt32(Math.Round(vndTotal));
+
+                if (finalVndAmount <= 0)
+                {
+                    return new TemplateApi<string>(null, null, "Invalid order amount for QR generation", false, 0, 0, 0, 0);
+                }
+
+                var qrBase64 = await _qrPaymentService.GeneratePaymentQrAsync(orderId, finalVndAmount);
 
                 return new TemplateApi<string>(qrBase64, null, "QR Generated Successfully", true, 0, 0, 0, 0);
             }
