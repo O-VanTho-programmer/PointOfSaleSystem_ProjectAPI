@@ -31,3 +31,13 @@ export const assignItemToCategory = async (
     });
     return response.data;
 };
+
+export const updateCategory = async (id: number, dto: CategoryUploadDTO): Promise<TemplateApi<Category>> => {
+    const response = await apiClient.put<TemplateApi<Category>>(`/Categories/${id}`, dto);
+    return response.data;
+};
+
+export const deleteCategory = async (id: number): Promise<TemplateApi<Category>> => {
+    const response = await apiClient.delete<TemplateApi<Category>>(`/Categories/${id}`);
+    return response.data;
+};

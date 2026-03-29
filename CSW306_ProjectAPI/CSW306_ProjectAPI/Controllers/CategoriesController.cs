@@ -50,6 +50,24 @@ namespace CSW306_ProjectAPI.Controllers
             return Ok(category);
         }
 
+        [HttpPut("{id}")]
+        [Authorize(Roles = "Manager")]
+        public async Task<ActionResult<TemplateApi<Categories>>> UpdateCategory(int id, [FromBody] CategoryUploadDTO dto)
+        {
+            var result = await _categoryService.UpdateCategoryAsync(id, dto);
+            if (!result.Success) return NotFound(result);
+            return Ok(result);
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Manager")]
+        public async Task<ActionResult<TemplateApi<Categories>>> DeleteCategory(int id)
+        {
+            var result = await _categoryService.DeleteCategoryAsync(id);
+            if (!result.Success) return NotFound(result);
+            return Ok(result);
+        }
+
         [HttpPost("assign-item")]
         [Authorize(Roles = "Manager")]
         public async Task<ActionResult> AssginItemToCategory([FromBody] int ItemId, int CategoryId)

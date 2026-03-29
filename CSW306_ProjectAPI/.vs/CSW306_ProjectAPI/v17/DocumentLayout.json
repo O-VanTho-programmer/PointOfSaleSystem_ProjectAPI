@@ -58,8 +58,7 @@
               "RelativeToolTip": "CSW306.Application\\Services\\OrderService.cs",
               "ViewState": "AgIAAK0AAAAAAAAAAAAqwLAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-28T03:22:28.395Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-28T03:22:28.395Z"
             },
             {
               "$type": "Document",
@@ -71,8 +70,7 @@
               "RelativeToolTip": "CSW306_ProjectAPI\\Controllers\\OrdersController.cs",
               "ViewState": "AgIAAD0AAAAAAAAAAAAkwEQAAAA8AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-28T03:22:15.2Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-28T03:22:15.2Z"
             },
             {
               "$type": "Document",
@@ -84,8 +82,7 @@
               "RelativeToolTip": "CSW306.Application\\Interfaces\\IServices\\IPaymentService.cs",
               "ViewState": "AgIAAA0AAAAAAAAAAAA8wBUAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-28T01:38:57.476Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-28T01:38:57.476Z"
             },
             {
               "$type": "Document",
@@ -97,8 +94,7 @@
               "RelativeToolTip": "CSW306.Application\\Services\\PaymentService.cs",
               "ViewState": "AgIAAOAAAAAAAAAAAAAlwPoAAABNAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-28T01:33:26.135Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-28T01:33:26.135Z"
             },
             {
               "$type": "Document",
@@ -123,8 +119,7 @@
               "RelativeToolTip": "CSW306.Application\\Interfaces\\IExternal\\IQrPaymentService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAuwAoAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-28T00:55:11.847Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-28T00:55:11.847Z"
             }
           ]
         }

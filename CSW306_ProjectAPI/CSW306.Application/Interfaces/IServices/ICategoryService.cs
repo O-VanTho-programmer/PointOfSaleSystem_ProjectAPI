@@ -11,6 +11,8 @@ namespace CSW306.Application.Interfaces.IServices
         Task<TemplateApi<Categories>> GetCategoriesAsync(int? pageNumber, int? pageSize);
         Task<TemplateApi<Categories>> GetCategoryAsync(int id);
         Task<Categories> CreateCategoryAsync(CategoryUploadDTO dto);
+        Task<TemplateApi<Categories>> UpdateCategoryAsync(int id, CategoryUploadDTO dto);
+        Task<TemplateApi<Categories>> DeleteCategoryAsync(int id);
         Task<Items?> AssignItemToCategoryAsync(int itemId, int categoryId);
     }
 }

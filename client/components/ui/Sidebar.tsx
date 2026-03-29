@@ -14,7 +14,8 @@ import {
     HandPlatter,
     LogOut,
     UserCircle,
-    Utensils
+    Utensils,
+    Tags
 } from 'lucide-react';
 import { UserRole } from '@/types/User';
 import { useAuthStore } from '@/store/authStore';
@@ -41,6 +42,7 @@ const NAV_ITEMS: NavItem[] = [
     { label: 'Sales Reports', href: '/reports', icon: ClipboardList, allowedRoles: ['Manager'] },
     { label: 'Staffs', href: '/staffs', icon: Users, allowedRoles: ['Manager'] },
     { label: 'Inventory', href: '/inventory', icon: Package, allowedRoles: ['Manager'] },
+    { label: 'Categories', href: '/categories', icon: Tags, allowedRoles: ['Manager'] },
     { label: 'Settings', href: '/settings', icon: Settings, allowedRoles: ['Manager'] },
 ];
 

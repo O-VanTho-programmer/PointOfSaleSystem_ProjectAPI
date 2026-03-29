@@ -3,6 +3,8 @@ import {
     getCategories,
     getCategoryById,
     createCategory,
+    updateCategory,
+    deleteCategory,
     assignItemToCategory,
 } from '../services/category';
 import { CategoryUploadDTO } from '../types/Category';
@@ -50,6 +52,30 @@ export const useAssignItemToCategory = () => {
             assignItemToCategory(itemId, categoryId),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: categoryKeys.lists() });
+        },
+    });
+};
+
+export const useUpdateCategory = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: ({ id, dto }: { id: number; dto: CategoryUploadDTO }) => updateCategory(id, dto),
+        onSuccess: (_, variables) => {
+            queryClient.invalidateQueries({ queryKey: categoryKeys.lists() });
+            queryClient.invalidateQueries({ queryKey: categoryKeys.detail(variables.id) });
+        },
+    });
+};
+
+export const useDeleteCategory = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (id: number) => deleteCategory(id),
+        onSuccess: (_, id) => {
+            queryClient.invalidateQueries({ queryKey: categoryKeys.lists() });
+            queryClient.invalidateQueries({ queryKey: categoryKeys.detail(id) });
         },
     });
 };
