@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.application\\utils\\auditloghelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|solutionrelative:csw306.application\\utils\\auditloghelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306.Presentation.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306_projectapi\\controllers\\paymentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306.Presentation.csproj|solutionrelative:csw306_projectapi\\controllers\\paymentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -42,34 +46,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 3,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "PaymentsController.cs",
-              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\PaymentsController.cs",
-              "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Controllers\\PaymentsController.cs",
-              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\PaymentsController.cs",
-              "RelativeToolTip": "CSW306_ProjectAPI\\Controllers\\PaymentsController.cs",
-              "ViewState": "AgIAAH8AAAAAAAAAAAAuwIwAAAA8AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-29T09:48:33.385Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "PosSignalRService.cs",
-              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Services\\PosSignalRService.cs",
-              "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Services\\PosSignalRService.cs",
-              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Services\\PosSignalRService.cs",
-              "RelativeToolTip": "CSW306_ProjectAPI\\Services\\PosSignalRService.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAwAAAAzAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-29T09:40:30.554Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
@@ -84,20 +62,56 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "PaymentService.cs",
-              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Services\\PaymentService.cs",
-              "RelativeDocumentMoniker": "CSW306.Application\\Services\\PaymentService.cs",
-              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Services\\PaymentService.cs",
-              "RelativeToolTip": "CSW306.Application\\Services\\PaymentService.cs",
-              "ViewState": "AgIAAB4BAAAAAAAAAAAAACoBAAA/AAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "AuditLogHelper.cs",
+              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Utils\\AuditLogHelper.cs",
+              "RelativeDocumentMoniker": "CSW306.Application\\Utils\\AuditLogHelper.cs",
+              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Utils\\AuditLogHelper.cs",
+              "RelativeToolTip": "CSW306.Application\\Utils\\AuditLogHelper.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAA0AAABCAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-29T09:36:44.143Z",
+              "WhenOpened": "2026-03-29T10:00:38.426Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "PaymentsController.cs",
+              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\PaymentsController.cs",
+              "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Controllers\\PaymentsController.cs",
+              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\PaymentsController.cs",
+              "RelativeToolTip": "CSW306_ProjectAPI\\Controllers\\PaymentsController.cs",
+              "ViewState": "AgIAAH8AAAAAAAAAAAAuwIwAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-29T09:48:33.385Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "PosSignalRService.cs",
+              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Services\\PosSignalRService.cs",
+              "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Services\\PosSignalRService.cs",
+              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Services\\PosSignalRService.cs",
+              "RelativeToolTip": "CSW306_ProjectAPI\\Services\\PosSignalRService.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAwAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-29T09:40:30.554Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "PaymentService.cs",
+              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Services\\PaymentService.cs",
+              "RelativeDocumentMoniker": "CSW306.Application\\Services\\PaymentService.cs",
+              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Services\\PaymentService.cs",
+              "RelativeToolTip": "CSW306.Application\\Services\\PaymentService.cs",
+              "ViewState": "AgIAACIBAAAAAAAAAAAAADABAAA/AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-29T09:36:44.143Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Program.cs",
               "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Program.cs",
@@ -105,12 +119,11 @@
               "RelativeToolTip": "CSW306_ProjectAPI\\Program.cs",
               "ViewState": "AgIAAG0AAAAAAAAAAAAAAIAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-29T08:45:46.575Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-29T08:45:46.575Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "ISalesReportRepository.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Interfaces\\IRepositories\\ISalesReportRepository.cs",
               "RelativeDocumentMoniker": "CSW306.Application\\Interfaces\\IRepositories\\ISalesReportRepository.cs",
@@ -122,7 +135,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "SaleReportService.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Services\\SaleReportService.cs",
               "RelativeDocumentMoniker": "CSW306.Application\\Services\\SaleReportService.cs",
@@ -134,7 +147,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "ISaleReportService.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Interfaces\\IServices\\ISaleReportService.cs",
               "RelativeDocumentMoniker": "CSW306.Application\\Interfaces\\IServices\\ISaleReportService.cs",
@@ -146,7 +159,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "SaleReportDTO.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\DTO\\Response\\SaleReportDTO.cs",
               "RelativeDocumentMoniker": "CSW306.Application\\DTO\\Response\\SaleReportDTO.cs",

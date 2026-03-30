@@ -68,7 +68,7 @@
               "RelativeDocumentMoniker": "CSW306.Application\\Utils\\AuditLogHelper.cs",
               "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Utils\\AuditLogHelper.cs",
               "RelativeToolTip": "CSW306.Application\\Utils\\AuditLogHelper.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAxwA0AAABCAAAAAAAAAA==",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABoAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-29T10:00:38.426Z",
               "EditorCaption": ""
@@ -83,8 +83,7 @@
               "RelativeToolTip": "CSW306_ProjectAPI\\Controllers\\PaymentsController.cs",
               "ViewState": "AgIAAH8AAAAAAAAAAAAuwIwAAAA8AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-29T09:48:33.385Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-29T09:48:33.385Z"
             },
             {
               "$type": "Document",
@@ -96,8 +95,7 @@
               "RelativeToolTip": "CSW306_ProjectAPI\\Services\\PosSignalRService.cs",
               "ViewState": "AgIAAAMAAAAAAAAAAAAAAAwAAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-29T09:40:30.554Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-29T09:40:30.554Z"
             },
             {
               "$type": "Document",
@@ -109,8 +107,7 @@
               "RelativeToolTip": "CSW306.Application\\Services\\PaymentService.cs",
               "ViewState": "AgIAACIBAAAAAAAAAAAAADABAAA/AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-29T09:36:44.143Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-29T09:36:44.143Z"
             },
             {
               "$type": "Document",
@@ -122,8 +119,7 @@
               "RelativeToolTip": "CSW306_ProjectAPI\\Program.cs",
               "ViewState": "AgIAAG0AAAAAAAAAAAAAAIAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-29T08:45:46.575Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-29T08:45:46.575Z"
             },
             {
               "$type": "Document",

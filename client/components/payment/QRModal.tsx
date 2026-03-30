@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { getOrderById } from '@/services/order';
-import { orderKeys } from '@/hooks/useOrders';
+import { useOrder } from '@/hooks/useOrders';
 import { PaymentStatus } from '@/types/OrderDTO';
 import { CheckCircle2, Loader2, X } from 'lucide-react';
 
@@ -14,31 +12,24 @@ interface QRModalProps {
 }
 
 export function QRModal({ isOpen, onClose, onSuccess, orderId, qrSvgBase64 }: QRModalProps) {
-    const { data: orderData } = useQuery({
-        queryKey: orderKeys.detail(orderId),
-        queryFn: () => getOrderById(orderId),
-        enabled: isOpen && orderId > 0,
-        refetchInterval: 2000, 
-    });
-
+    const { data: orderData } = useOrder(orderId);
     const isPaid = orderData?.payload?.paymentStatus === PaymentStatus.Paid;
 
     useEffect(() => {
         if (isPaid) {
-            // Wait 2 seconds so the user can see the animated success mark
             const timer = setTimeout(() => {
                 onSuccess();
             }, 2000);
             return () => clearTimeout(timer);
         }
-    }, [isPaid, onSuccess]);
+    }, [isPaid]);
 
     if (!isOpen) return null;
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onClick={() => !isPaid && onClose()} />
-            
+
             <div className={`relative w-full max-w-sm overflow-hidden rounded-3xl bg-white shadow-2xl animate-in fade-in zoom-in-95 duration-300 ${isPaid ? 'border-4 border-emerald-500' : ''}`}>
                 <div className="flex items-center justify-between border-b border-slate-100 px-6 py-4">
                     <h3 className="text-lg font-bold text-slate-900">Scan to Pay</h3>
@@ -64,13 +55,13 @@ export function QRModal({ isOpen, onClose, onSuccess, orderId, qrSvgBase64 }: QR
                                 Awaiting payment via SePay webhook...
                             </p>
                             <div className="w-full h-auto bg-white rounded-xl shadow-inner border max-w-[240px] aspect-square flex items-center justify-center p-2">
-                                <img 
-                                    src={qrSvgBase64} 
-                                    alt="Payment QR Code" 
-                                    className="w-full h-full object-contain" 
+                                <img
+                                    src={qrSvgBase64}
+                                    alt="Payment QR Code"
+                                    className="w-full h-full object-contain"
                                 />
                             </div>
-                            
+
                             <div className="mt-8 flex items-center gap-2 text-sm font-semibold text-blue-600">
                                 <Loader2 className="h-4 w-4 animate-spin" />
                                 <span>Waiting for payment...</span>

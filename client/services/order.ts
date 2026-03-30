@@ -22,7 +22,9 @@ export const getOrders = async (
 };
 
 export const getOrderById = async (id: number): Promise<TemplateApi<OrderResponseDTO>> => {
-    const response = await apiClient.get<TemplateApi<OrderResponseDTO>>(`/Orders/${id}`);
+    const response = await apiClient.get<TemplateApi<OrderResponseDTO>>(`/Orders/${id}`, {
+        params: { _t: new Date().getTime() }
+    });
     return response.data;
 };
 

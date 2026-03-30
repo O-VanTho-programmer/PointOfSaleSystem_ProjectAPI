@@ -13,7 +13,6 @@ import { useGeneratePaymentQr } from '@/hooks/usePayments';
 export function CartSidebar() {
     const { order, updateQuantity, clearOrder } = usePosStore();
     const { user } = useAuthStore();
-    const router = useRouter();
 
     const [isQrModalOpen, setIsQrModalOpen] = useState(false);
     const [currentOrderId, setCurrentOrderId] = useState<number>(0);
