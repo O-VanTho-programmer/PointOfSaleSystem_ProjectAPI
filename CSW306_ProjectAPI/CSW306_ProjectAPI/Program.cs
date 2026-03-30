@@ -4,6 +4,7 @@ using CSW306.Application.Services;
 using CSW306.Infrastructure.Data;
 using CSW306.Infrastructure.Services;
 using CSW306.Presentation.Hubs;
+using CSW306.Presentation.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -42,7 +43,7 @@ builder.Services.AddScoped<CSW306.Application.Interfaces.IRepositories.IReservat
 builder.Services.AddScoped<CSW306.Application.Interfaces.IRepositories.IPaymentRepository, CSW306.Infrastructure.Repositories.PaymentRepository>();
 builder.Services.AddScoped<CSW306.Application.Interfaces.IRepositories.IDiscountRepository, CSW306.Infrastructure.Repositories.DiscountRepository>();
 builder.Services.AddScoped<CSW306.Application.Interfaces.IRepositories.IActivityLogRepository, CSW306.Infrastructure.Repositories.ActivityLogRepository>();
-
+builder.Services.AddScoped<CSW306.Application.Interfaces.IRepositories.ISalesReportRepository, CSW306.Infrastructure.Repositories.SalesReportRepository>();
 // Services
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IItemService, ItemService>();
@@ -55,7 +56,10 @@ builder.Services.AddScoped<IDiscountService, DiscountService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPhotoService, CSW306.Infrastructure.Services.CloudinaryPhotoService>();
 builder.Services.AddScoped<IActivityLogService, CSW306.Application.Services.ActivityLogService>();
+builder.Services.AddScoped<ISaleReportService, SaleReportService>();
+builder.Services.AddScoped<IPosSignalRService, PosSignalRService>();
 builder.Services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
+
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
     ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("RedisCache") ?? "localhost:6379,abortConnect=false"));
 

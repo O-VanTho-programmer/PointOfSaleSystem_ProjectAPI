@@ -3,11 +3,9 @@
 import React, { useMemo, useState } from 'react';
 import { usePosStore } from '../store/posStore';
 import { OrderStatus, OrderType } from '../types/OrderDTO';
-import { RoleGuard } from './RoleGuard';
 import { useCreateOrder } from '@/hooks/useOrders';
 import { useAuthStore } from '@/store/authStore';
 import toast from 'react-hot-toast';
-import { UserRole } from '@/types/User';
 import { useRouter } from 'next/navigation';
 import { QRModal } from './payment/QRModal';
 import { useGeneratePaymentQr } from '@/hooks/usePayments';

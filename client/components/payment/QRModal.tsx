@@ -14,7 +14,6 @@ interface QRModalProps {
 }
 
 export function QRModal({ isOpen, onClose, onSuccess, orderId, qrSvgBase64 }: QRModalProps) {
-    // Keep polling the order every 2 seconds while the modal is open
     const { data: orderData } = useQuery({
         queryKey: orderKeys.detail(orderId),
         queryFn: () => getOrderById(orderId),

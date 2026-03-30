@@ -2,6 +2,10 @@
 
 import { useState, useMemo } from 'react';
 import { RoleGuard } from '@/components/RoleGuard';
+import { useDashboardSalesReport } from '@/hooks/useSalesReport';
+import { TopSellerDto } from '@/types/SalesReport';
+import { formatCurrency } from '@/utils/formatCurrency';
+import BarChart from '@/components/report/BarChart';
 
 interface SalesMetric {
     label: string;
@@ -11,66 +15,68 @@ interface SalesMetric {
     icon: string;
 }
 
-const METRICS: SalesMetric[] = [
-    { label: 'Total Revenue', value: '$12,847.50', change: '+12.5%', positive: true, icon: '💰' },
-    { label: 'Orders Today', value: '148', change: '+8.2%', positive: true, icon: '🧾' },
-    { label: 'Avg. Order Value', value: '$86.80', change: '-2.1%', positive: false, icon: '📊' },
-    { label: 'Items Sold', value: '432', change: '+15.7%', positive: true, icon: '📦' },
-];
-
-interface TopItem {
-    rank: number;
-    name: string;
-    qty: number;
-    revenue: number;
-}
-
-const TOP_ITEMS: TopItem[] = [
-    { rank: 1, name: 'Double Smash Burger', qty: 64, revenue: 831.36 },
-    { rank: 2, name: 'Classic Cheeseburger', qty: 58, revenue: 521.42 },
-    { rank: 3, name: 'Crispy Chicken Sandwich', qty: 45, revenue: 494.55 },
-    { rank: 4, name: 'Truffle Parm Fries', qty: 38, revenue: 227.62 },
-    { rank: 5, name: 'Vanilla Bean Shake', qty: 32, revenue: 175.68 },
-];
-
-const HOURLY_DATA = [
-    { hour: '8AM', orders: 4 }, { hour: '9AM', orders: 8 }, { hour: '10AM', orders: 12 },
-    { hour: '11AM', orders: 22 }, { hour: '12PM', orders: 35 }, { hour: '1PM', orders: 28 },
-    { hour: '2PM', orders: 18 }, { hour: '3PM', orders: 10 }, { hour: '4PM', orders: 8 },
-    { hour: '5PM', orders: 15 }, { hour: '6PM', orders: 30 }, { hour: '7PM', orders: 38 },
-    { hour: '8PM', orders: 25 }, { hour: '9PM', orders: 12 },
-];
-
-function formatCurrency(val: number) {
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val);
-}
-
-function BarChart({ data }: { data: typeof HOURLY_DATA }) {
-    const max = useMemo(() => Math.max(...data.map(d => d.orders)), [data]);
-
-    return (
-        <div className="flex items-end gap-1.5 h-40" role="img" aria-label="Hourly orders chart">
-            {data.map((d) => {
-                const heightPct = max > 0 ? (d.orders / max) * 100 : 0;
-                return (
-                    <div key={d.hour} className="group flex flex-1 flex-col items-center gap-1.5">
-                        <span className="text-[10px] font-bold text-slate-500 opacity-0 transition-opacity group-hover:opacity-100">
-                            {d.orders}
-                        </span>
-                        <div
-                            className="w-full rounded-t-md bg-emerald-400 transition-all duration-300 group-hover:bg-emerald-500"
-                            style={{ height: `${heightPct}%`, minHeight: d.orders > 0 ? '4px' : '0px' }}
-                        />
-                        <span className="text-[9px] font-medium text-slate-400">{d.hour}</span>
-                    </div>
-                );
-            })}
-        </div>
-    );
-}
-
 export default function SalesReportsPage() {
     const [period, setPeriod] = useState<'today' | 'week' | 'month'>('today');
+
+    const getDatesForPeriod = (p: 'today' | 'week' | 'month') => {
+        const end = new Date();
+        const start = new Date();
+        start.setHours(0, 0, 0, 0);
+        end.setHours(23, 59, 59, 999);
+
+        if (p === 'week') {
+            start.setDate(start.getDate() - 7);
+        } else if (p === 'month') {
+            start.setDate(start.getDate() - 30);
+        }
+
+        return {
+            startDate: start.toISOString(),
+            endDate: end.toISOString()
+        };
+    };
+
+    const { startDate, endDate } = getDatesForPeriod(period);
+
+    const { data: reportData, isLoading, isError } = useDashboardSalesReport(startDate, endDate);
+
+    const metricsData = reportData?.payload?.metrics;
+    const topSellers = reportData?.payload?.topSellers || [];
+    const hourlyData = reportData?.payload?.ordersChart || [];
+
+    const METRICS: SalesMetric[] = useMemo(() => {
+        if (!metricsData) return [];
+        return [
+            {
+                label: 'Total Revenue',
+                value: formatCurrency(metricsData.totalRevenue),
+                change: `${metricsData.revenueTrend >= 0 ? '+' : ''}${metricsData.revenueTrend.toFixed(1)}%`,
+                positive: metricsData.revenueTrend >= 0,
+                icon: '💰'
+            },
+            {
+                label: 'Orders',
+                value: metricsData.totalOrders.toString(),
+                change: `${metricsData.ordersTrend >= 0 ? '+' : ''}${metricsData.ordersTrend.toFixed(1)}%`,
+                positive: metricsData.ordersTrend >= 0,
+                icon: '🧾'
+            },
+            {
+                label: 'Avg. Order',
+                value: formatCurrency(metricsData.averageOrderValue),
+                change: '',
+                positive: true,
+                icon: '📊'
+            },
+            {
+                label: 'Items Sold',
+                value: metricsData.itemsSold.toString(),
+                change: '',
+                positive: true,
+                icon: '📦'
+            },
+        ];
+    }, [metricsData]);
 
     return (
         <RoleGuard allowedRoles={['Manager']}>
@@ -90,9 +96,10 @@ export default function SalesReportsPage() {
                             <button
                                 key={p}
                                 onClick={() => setPeriod(p)}
-                                className={`rounded-md px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all ${period === p
-                                        ? 'bg-white text-slate-900 shadow-sm'
-                                        : 'text-slate-500 hover:text-slate-700'
+                                disabled={isLoading}
+                                className={`rounded-md px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all disabled:opacity-50 ${period === p
+                                    ? 'bg-white text-slate-900 shadow-sm'
+                                    : 'text-slate-500 hover:text-slate-700'
                                     }`}
                             >
                                 {p}
@@ -101,56 +108,89 @@ export default function SalesReportsPage() {
                     </div>
                 </header>
 
-                {/* Metric Cards */}
-                <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-                    {METRICS.map(m => (
-                        <div key={m.label} className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition-shadow hover:shadow-md">
-                            <div className="flex items-center justify-between">
-                                <span className="text-2xl">{m.icon}</span>
-                                <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold ${m.positive ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-500'
-                                    }`}>
-                                    {m.change}
-                                </span>
-                            </div>
-                            <div>
-                                <p className="font-mono text-2xl font-black text-slate-900">{m.value}</p>
-                                <p className="mt-0.5 text-xs font-medium text-slate-400 uppercase tracking-wider">{m.label}</p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-
-                {/* Charts Row */}
-                <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
-                    {/* Hourly Bar Chart */}
-                    <div className="lg:col-span-3 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-                        <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-slate-500">Orders by Hour</h3>
-                        <BarChart data={HOURLY_DATA} />
+                {isLoading && (
+                    <div className="flex-1 flex items-center justify-center min-h-[400px]">
+                        <div className="h-8 w-8 animate-spin rounded-full border-4 border-slate-200 border-t-slate-800" />
                     </div>
+                )}
 
-                    {/* Top Items */}
-                    <div className="lg:col-span-2 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-                        <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-slate-500">Top Sellers</h3>
-                        <div className="space-y-3">
-                            {TOP_ITEMS.map(item => (
-                                <div key={item.rank} className="flex items-center gap-3">
-                                    <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg font-mono text-xs font-black ${item.rank === 1 ? 'bg-amber-100 text-amber-700' :
-                                            item.rank === 2 ? 'bg-slate-100 text-slate-600' :
-                                                item.rank === 3 ? 'bg-orange-100 text-orange-700' :
-                                                    'bg-slate-50 text-slate-400'
-                                        }`}>
-                                        {item.rank}
-                                    </span>
-                                    <div className="flex-1 min-w-0">
-                                        <p className="text-sm font-semibold text-slate-800 truncate">{item.name}</p>
-                                        <p className="text-xs text-slate-400">{item.qty} sold</p>
+                {isError && (
+                    <div className="rounded-lg bg-red-50 p-4 border border-red-200 text-red-600">
+                        Failed to load sales report. Please try again later.
+                    </div>
+                )}
+
+                {!isLoading && !isError && reportData && (
+                    <>
+                        {/* Metric Cards */}
+                        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+                            {METRICS.map(m => (
+                                <div key={m.label} className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition-shadow hover:shadow-md">
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-2xl">{m.icon}</span>
+                                        {m.change && (
+                                            <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold ${m.positive ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-500'}`}>
+                                                {m.change}
+                                            </span>
+                                        )}
                                     </div>
-                                    <span className="font-mono text-sm font-bold text-emerald-600">{formatCurrency(item.revenue)}</span>
+                                    <div>
+                                        <p className="font-mono text-2xl font-black text-slate-900">{m.value}</p>
+                                        <p className="mt-0.5 text-xs font-medium text-slate-400 uppercase tracking-wider">{m.label}</p>
+                                    </div>
                                 </div>
                             ))}
                         </div>
-                    </div>
-                </div>
+
+                        {/* Charts Row */}
+                        <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
+                            {/* Hourly Bar Chart */}
+                            <div className="lg:col-span-3 rounded-xl border border-slate-200 bg-white p-5 shadow-sm overflow-hidden flex flex-col">
+                                <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-slate-500 shrink-0">
+                                    {period === 'today' ? 'Orders by Hour' : 'Orders Over Time'}
+                                </h3>
+                                <div className="flex-1 min-h-[200px] flex items-end">
+                                    {hourlyData.length > 0 ? (
+                                        <BarChart data={hourlyData} />
+                                    ) : (
+                                        <div className="w-full flex items-center justify-center text-slate-400 text-sm h-full">
+                                            No data for this period
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Top Items */}
+                            <div className="lg:col-span-2 rounded-xl border border-slate-200 bg-white p-5 shadow-sm flex flex-col max-h-[400px]">
+                                <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-slate-500 shrink-0">Top Sellers</h3>
+                                <div className="space-y-3 overflow-y-auto flex-1 pr-1">
+                                    {topSellers.length > 0 ? (
+                                        topSellers.map((item: TopSellerDto, idx: number) => (
+                                            <div key={item.itemName} className="flex items-center gap-3">
+                                                <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg font-mono text-xs font-black ${idx === 0 ? 'bg-amber-100 text-amber-700' :
+                                                    idx === 1 ? 'bg-slate-100 text-slate-600' :
+                                                        idx === 2 ? 'bg-orange-100 text-orange-700' :
+                                                            'bg-slate-50 text-slate-400'
+                                                    }`}>
+                                                    {idx + 1}
+                                                </span>
+                                                <div className="flex-1 min-w-0">
+                                                    <p className="text-sm font-semibold text-slate-800 truncate" title={item.itemName}>{item.itemName}</p>
+                                                    <p className="text-xs text-slate-400">{item.quantitySold} sold</p>
+                                                </div>
+                                                <span className="font-mono text-sm font-bold text-emerald-600">{formatCurrency(item.totalRevenue)}</span>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <div className="text-center text-slate-400 text-sm py-8">
+                                            No sales data available
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                )}
             </div>
         </RoleGuard>
     );

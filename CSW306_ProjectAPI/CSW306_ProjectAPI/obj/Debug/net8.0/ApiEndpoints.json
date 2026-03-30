@@ -968,6 +968,37 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "CSW306_ProjectAPI.Controllers.SalesReportsController",
+    "Method": "GetDashboardSaleReport",
+    "RelativePath": "api/SalesReports/dashboard",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "startDate",
+        "Type": "System.Nullable\u00601[[System.DateTime, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "endDate",
+        "Type": "System.Nullable\u00601[[System.DateTime, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "CSW306.Application.Utils.TemplateApi\u00601[[CSW306.Application.DTO.Response.SaleReportDTO, CSW306.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "CSW306_ProjectAPI.Controllers.TableController",
     "Method": "Get",
     "RelativePath": "api/Table",

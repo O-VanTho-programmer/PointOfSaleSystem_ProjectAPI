@@ -37,6 +37,9 @@ export const usePosSignalR = () => {
         };
 
         connection.on('OrderListUpdated', handleOrderUpdate);
+        connection.on('PaymentReceived', (orderId: number) => {
+            queryClient.invalidateQueries({ queryKey: orderKeys.detail(orderId) });
+        });
 
         if (connection.state === signalR.HubConnectionState.Disconnected) {
             connection.start()
@@ -48,6 +51,7 @@ export const usePosSignalR = () => {
 
         return () => {
             connection.off('OrderListUpdated', handleOrderUpdate);
+            connection.off('PaymentReceived');
         };
     }, [connection, queryClient]);
 

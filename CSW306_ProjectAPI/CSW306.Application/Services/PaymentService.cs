@@ -17,11 +17,15 @@ namespace CSW306.Application.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IQrPaymentService _qrPaymentService;
+        private readonly IPosSignalRService _signalRService;
+        private readonly IRedisCacheService _redisCacheService;
 
-        public PaymentService(IUnitOfWork unitOfWork, IQrPaymentService qrPaymentService)
+        public PaymentService(IUnitOfWork unitOfWork, IQrPaymentService qrPaymentService, IPosSignalRService signalRService, IRedisCacheService redisCacheService)
         {
             _unitOfWork = unitOfWork;
             _qrPaymentService = qrPaymentService;
+            _signalRService = signalRService;
+            _redisCacheService = redisCacheService;
         }
 
         public async Task<TemplateApi<Payments>> GetAllPaymentsAsync()
@@ -206,6 +210,8 @@ namespace CSW306.Application.Services
                 await _unitOfWork.Payments.UpdateAsync(payment);
                 await _unitOfWork.SaveChangesAsync();
 
+                await OrderCacheHelper.InvalidateOrderCacheAsync(_redisCacheService, order.OrderId);
+
                 return new TemplateApi<object>(new
                 {
                     TotalQuantity = totalQuantity,
@@ -293,11 +299,16 @@ namespace CSW306.Application.Services
 
                 await _unitOfWork.Orders.UpdateAsync(order);
                 await _unitOfWork.SaveChangesAsync();
+
+                await OrderCacheHelper.InvalidateOrderCacheAsync(_redisCacheService, orderId);
+
+                await _signalRService.NotifyPaymentSuccessAsync(orderId);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error processing payment webhook: {ex.Message}");
             }
         }
+
     }
 }

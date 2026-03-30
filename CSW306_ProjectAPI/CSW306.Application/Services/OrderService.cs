@@ -221,17 +221,7 @@ namespace CSW306.Application.Services
                 await _unitOfWork.SaveChangesAsync();
 
                 // Invalidate cached order keys
-                try
-                {
-                    var keys = await _redisCacheService.SetMembersAsync(OrdersCacheSetKey);
-                    foreach (var k in keys)
-                    {
-                        await _redisCacheService.RemoveAsync(k);
-                        await _redisCacheService.SetRemoveAsync(OrdersCacheSetKey, k);
-                    }
-                    await _redisCacheService.RemoveAsync($"order:{order.OrderId}");
-                }
-                catch { /* ignore redis errors */ }
+                await OrderCacheHelper.InvalidateOrderCacheAsync(_redisCacheService, order.OrderId);
 
                 var resDto = MapOrderToResponseDTO(order);
 
@@ -310,7 +300,7 @@ namespace CSW306.Application.Services
 
                 await _unitOfWork.Orders.UpdateAsync(order);
 
-                InvalidateOrderCache(order.OrderId);
+                await OrderCacheHelper.InvalidateOrderCacheAsync(_redisCacheService, order.OrderId);
 
                 // Activity log
                 try
@@ -377,7 +367,7 @@ namespace CSW306.Application.Services
                 await _unitOfWork.Orders.UpdateAsync(order);
                 await _unitOfWork.SaveChangesAsync();
 
-                InvalidateOrderCache(order.OrderId);
+                await OrderCacheHelper.InvalidateOrderCacheAsync(_redisCacheService, order.OrderId);
 
                 // Activity log
                 try
@@ -436,7 +426,7 @@ namespace CSW306.Application.Services
                 await _unitOfWork.Orders.UpdateAsync(order);
                 await _unitOfWork.SaveChangesAsync();
 
-                InvalidateOrderCache(order.OrderId);
+                await OrderCacheHelper.InvalidateOrderCacheAsync(_redisCacheService, order.OrderId);
 
                 // Activity log
                 try
@@ -503,7 +493,7 @@ namespace CSW306.Application.Services
                 await _unitOfWork.Orders.UpdateAsync(order);
                 await _unitOfWork.SaveChangesAsync();
 
-                InvalidateOrderCache(order.OrderId);
+                await OrderCacheHelper.InvalidateOrderCacheAsync(_redisCacheService, order.OrderId);
 
                 // Activity log
                 try
@@ -578,20 +568,5 @@ namespace CSW306.Application.Services
             };
         }
 
-        // Helper method to invalidate cache
-        private async void InvalidateOrderCache(int orderId)
-        {
-            try
-            {
-                var keys = await _redisCacheService.SetMembersAsync(OrdersCacheSetKey);
-                foreach (var k in keys)
-                {
-                    await _redisCacheService.RemoveAsync(k);
-                    await _redisCacheService.SetRemoveAsync(OrdersCacheSetKey, k);
-                }
-                await _redisCacheService.RemoveAsync($"order:{orderId}");
-            }
-            catch { /* ignore redis errors */ }
-        }
     }
 }

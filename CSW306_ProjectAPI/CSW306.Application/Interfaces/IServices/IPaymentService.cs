@@ -14,10 +14,8 @@ namespace CSW306.Application.Interfaces.IServices
         Task<TemplateApi<Payments>> CreatePaymentAsync(PaymentResponseDTO paymentRes);
         Task<TemplateApi<Payments>> UpdatePaymentAsync(int id, Payments updatedPayment);
         Task<TemplateApi<Payments>> DeletePaymentAsync(int id);
-        
         Task<TemplateApi<object>> ProcessPaymentAsync(int id);
         Task<TemplateApi<string>> GeneratePaymentQrAsync(int order_id);
-        
         Task ProcessPaymentWebhookAsync(SePayWebhookDto payload);
     }
 }

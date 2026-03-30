@@ -4,8 +4,10 @@ using CSW306.Application.Interfaces.IServices;
 using CSW306.Application.Utils;
 using CSW306.Domain.Entities;
 using CSW306.Infrastructure.Services;
+using CSW306.Presentation.Hubs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -16,10 +18,12 @@ namespace CSW306_ProjectAPI.Controllers
     public class PaymentsController : ControllerBase
     {
         private readonly IPaymentService _paymentService;
+        private readonly IHubContext<PosHub> _hubContext;
 
-        public PaymentsController(IPaymentService paymentService)
+        public PaymentsController(IPaymentService paymentService, IHubContext<PosHub> hubContext)
         {
             _paymentService = paymentService;
+            _hubContext = hubContext;
         }
 
         [HttpGet]
@@ -135,6 +139,7 @@ namespace CSW306_ProjectAPI.Controllers
         public async Task<IActionResult> ProcessSepayWebhook([FromBody] SePayWebhookDto payload)
         {
             await _paymentService.ProcessPaymentWebhookAsync(payload);
+
             return Ok(); 
         }
     }
