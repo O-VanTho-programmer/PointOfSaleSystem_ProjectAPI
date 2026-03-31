@@ -1,12 +1,12 @@
 export const getTodayDateRange = () => {
     const today = new Date();
-    const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, '0');
-    const dd = String(today.getDate()).padStart(2, '0');
-    
+    // Create boundaries for the local day
+    const start = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0, 0);
+    const end = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59, 999);
+    // Transmit to backend in UTC
     return {
-        startDate: `${yyyy}-${mm}-${dd}T00:00:00.000`,
-        endDate: `${yyyy}-${mm}-${dd}T23:59:59.999`
+        startDate: start.toISOString(),
+        endDate: end.toISOString()
     };
 };
 
@@ -23,9 +23,9 @@ export const parseServerDate = (serverDateStr: string | Date | undefined): Date 
     if (serverDateStr.endsWith('Z') || /[+-]\d{2}:\d{2}$/.test(serverDateStr)) {
         return new Date(serverDateStr);
     }
-    
-    // Server is assumed to be running in GMT+7 based on current setup
-    return new Date(`${serverDateStr}+07:00`);
+
+    // Since backend uses DateTime.UtcNow for saving to Db, missing identifiers should default to UTC
+    return new Date(`${serverDateStr}Z`);
 };
 
 export const formatServerDateTime = (serverDateStr: string | undefined): string => {
