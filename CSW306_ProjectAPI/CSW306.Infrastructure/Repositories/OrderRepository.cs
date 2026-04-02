@@ -72,5 +72,13 @@ namespace CSW306.Infrastructure.Repositories
 
             return await query.CountAsync();
         }
+
+        public async Task<IEnumerable<Orders>> GetAbandonedTakeawayOrdersAsync(DateTime curOffTime)
+        {
+            return await _dbSet.Where(o => o.OrderType == OrderType.TakeAway 
+                                        && o.Status == OrderStatus.Pending
+                                        && o.PaymentStatus == PaymentStatus.Unpaid
+                                        && o.CreatedDate <= curOffTime).ToListAsync();
+        }
     }
 }

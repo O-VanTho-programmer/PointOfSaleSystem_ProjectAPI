@@ -285,15 +285,15 @@ namespace CSW306.Application.Services
                     Console.WriteLine($"Order not found for Webhook update: {orderId}");
                     return;
                 }
+                order.PaymentStatus = PaymentStatus.Paid;
 
                 if (order.OrderType == OrderType.DineIn)
                 {
-                    order.PaymentStatus = PaymentStatus.Paid;
                     order.Status = OrderStatus.Completed;
                 }
                 else if (order.OrderType == OrderType.TakeAway)
                 {
-                    order.PaymentStatus = PaymentStatus.Paid;
+                    order.Status = OrderStatus.Active;
                     order.KitchenStatus = KitchenStatus.Pending;
                 }
 

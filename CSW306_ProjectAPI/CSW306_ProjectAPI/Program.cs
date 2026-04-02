@@ -1,6 +1,7 @@
 using CSW306.Application.Interfaces.IExternal;
 using CSW306.Application.Interfaces.IServices;
 using CSW306.Application.Services;
+using CSW306.Infrastructure.BackgroundServices;
 using CSW306.Infrastructure.Data;
 using CSW306.Infrastructure.Services;
 using CSW306.Presentation.Hubs;
@@ -86,6 +87,9 @@ builder.Services.AddDbContext<CSW306_ProjectAPIContext>((sp, options) =>
 
 // register interceptor as singleton
 builder.Services.AddSingleton<AuditSaveChangesInterceptor>();
+
+// Background Services
+builder.Services.AddHostedService<OrderCleanupSweeper>();
 
 //Load JWT setting
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");

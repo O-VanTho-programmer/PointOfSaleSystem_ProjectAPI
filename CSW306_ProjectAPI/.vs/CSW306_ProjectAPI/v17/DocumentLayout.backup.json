@@ -3,16 +3,24 @@
   "WorkspaceRootPath": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.application\\utils\\templateapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|solutionrelative:csw306.application\\utils\\templateapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.application\\services\\salereportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|solutionrelative:csw306.application\\services\\salereportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306.Presentation.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306_projectapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306.Presentation.csproj|solutionrelative:csw306_projectapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.application\\utils\\auditloghelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|solutionrelative:csw306.application\\utils\\auditloghelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306.Presentation.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306_projectapi\\controllers\\paymentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306.Presentation.csproj|solutionrelative:csw306_projectapi\\controllers\\paymentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306.Presentation.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306_projectapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306.Presentation.csproj|solutionrelative:csw306_projectapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.application\\services\\paymentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -33,10 +41,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.application\\interfaces\\iservices\\isalereportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|solutionrelative:csw306.application\\interfaces\\iservices\\isalereportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.application\\services\\salereportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|solutionrelative:csw306.application\\services\\salereportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -63,19 +67,32 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "TemplateApi.cs",
+              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Utils\\TemplateApi.cs",
+              "RelativeDocumentMoniker": "CSW306.Application\\Utils\\TemplateApi.cs",
+              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Utils\\TemplateApi.cs",
+              "RelativeToolTip": "CSW306.Application\\Utils\\TemplateApi.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAzwAIAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-01T01:22:52.672Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "AuditLogHelper.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Utils\\AuditLogHelper.cs",
               "RelativeDocumentMoniker": "CSW306.Application\\Utils\\AuditLogHelper.cs",
               "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Utils\\AuditLogHelper.cs",
               "RelativeToolTip": "CSW306.Application\\Utils\\AuditLogHelper.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAABoAAAANAAAAAAAAAA==",
+              "ViewState": "AgIAABQAAAAAAAAAAAAAwA8AAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-29T10:00:38.426Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "PaymentsController.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Controllers\\PaymentsController.cs",
               "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Controllers\\PaymentsController.cs",
@@ -87,7 +104,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "PosSignalRService.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Services\\PosSignalRService.cs",
               "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Services\\PosSignalRService.cs",
@@ -99,7 +116,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "PaymentService.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Services\\PaymentService.cs",
               "RelativeDocumentMoniker": "CSW306.Application\\Services\\PaymentService.cs",
@@ -117,13 +134,14 @@
               "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Program.cs",
               "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Program.cs",
               "RelativeToolTip": "CSW306_ProjectAPI\\Program.cs",
-              "ViewState": "AgIAAG0AAAAAAAAAAAAAAIAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAFcAAAAAAAAAAAAWwGAAAAACAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-29T08:45:46.575Z"
+              "WhenOpened": "2026-03-29T08:45:46.575Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "ISalesReportRepository.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Interfaces\\IRepositories\\ISalesReportRepository.cs",
               "RelativeDocumentMoniker": "CSW306.Application\\Interfaces\\IRepositories\\ISalesReportRepository.cs",
@@ -135,7 +153,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 1,
               "Title": "SaleReportService.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Services\\SaleReportService.cs",
               "RelativeDocumentMoniker": "CSW306.Application\\Services\\SaleReportService.cs",
@@ -143,11 +161,12 @@
               "RelativeToolTip": "CSW306.Application\\Services\\SaleReportService.cs",
               "ViewState": "AgIAAAMAAAAAAAAAAAAAAAcAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-29T05:30:38.215Z"
+              "WhenOpened": "2026-03-29T05:30:38.215Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 9,
               "Title": "ISaleReportService.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Interfaces\\IServices\\ISaleReportService.cs",
               "RelativeDocumentMoniker": "CSW306.Application\\Interfaces\\IServices\\ISaleReportService.cs",
@@ -159,7 +178,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "SaleReportDTO.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\DTO\\Response\\SaleReportDTO.cs",
               "RelativeDocumentMoniker": "CSW306.Application\\DTO\\Response\\SaleReportDTO.cs",

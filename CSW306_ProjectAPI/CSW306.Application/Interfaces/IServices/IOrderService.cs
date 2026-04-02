@@ -18,5 +18,6 @@ namespace CSW306.Application.Interfaces.IServices
         Task<TemplateApi<OrderResponseDTO>> UpdatePaymentStatusAsync(int id, UpdatePaymentStatusDTO request);
         Task<TemplateApi<OrderResponseDTO>> UpdateKitchenStatusAsync(int id, UpdateKitchenStatusDTO request);
         Task<TemplateApi<OrderResponseDTO>> CompleteOrderAsync(int id);
+        Task CancelAbandonedTakeawayOrdersAsync();
     }
 }

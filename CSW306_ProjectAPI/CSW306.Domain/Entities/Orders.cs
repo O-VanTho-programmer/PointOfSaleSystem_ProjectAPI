@@ -26,7 +26,8 @@ namespace CSW306.Domain.Entities
 }
 
 public enum OrderStatus
-{
+{ 
+    Pending = -2,
     Cancelled = -1,
     Active = 0,
     Completed = 1

@@ -181,8 +181,13 @@ namespace CSW306.Application.Services
                     return new TemplateApi<OrderResponseDTO>(null, null, $"The following items are currently sold out: {string.Join(", ", soldOutItems)}", false, 0, 0, 0, 0);
                 }
 
-                if (dto.TableNumber != null)
+                if (dto.OrderType == OrderType.DineIn)
                 {
+                    if(dto.TableNumber == null)
+                    {
+                        return new TemplateApi<OrderResponseDTO>(null, null, $"The table must be selected.", false, 0, 0, 0, 0);
+                    }
+
                     int selectedTableNumber = dto.TableNumber.Value;
                     var table = await _unitOfWork.Tables.GetByIdAsync(selectedTableNumber);
 
@@ -206,7 +211,7 @@ namespace CSW306.Application.Services
 
                 var order = new Orders
                 {
-                    Status = OrderStatus.Active,  
+                    Status = dto.OrderType == OrderType.DineIn ? OrderStatus.Active : OrderStatus.Pending,  
                     PaymentStatus = PaymentStatus.Unpaid,  
                     KitchenStatus = dto.OrderType == OrderType.DineIn ? KitchenStatus.Pending : KitchenStatus.Idle, 
                     DiscountId = dto.DiscountId,
@@ -568,5 +573,24 @@ namespace CSW306.Application.Services
             };
         }
 
+        public async Task CancelAbandonedTakeawayOrdersAsync()
+        {
+            DateTime cutOffTime = DateTime.UtcNow.AddMinutes(-15);
+            var abandonedTakeawayOrders = await _unitOfWork.Orders.GetAbandonedTakeawayOrdersAsync(cutOffTime);
+
+            if (!abandonedTakeawayOrders.Any())
+            {
+                return;
+            }
+
+            foreach(var order in abandonedTakeawayOrders)
+            {
+                order.Status = OrderStatus.Cancelled;
+                order.PaymentStatus = PaymentStatus.Voided;
+                order.KitchenStatus = KitchenStatus.Cancelled;
+            }
+
+            await _unitOfWork.SaveChangesAsync();
+        }
     }
 }
