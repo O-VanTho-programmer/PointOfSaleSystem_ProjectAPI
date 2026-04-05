@@ -1,7 +1,7 @@
 import { KITCHEN_STATUS_LABELS, ORDER_TYPE_LABELS, PAYMENT_STATUS_LABELS } from "@/app/(workplace)/(cashier)/orders/page";
 import { OrderResponseDTO, PaymentStatus, KitchenStatus, OrderStatus } from "@/types/OrderDTO";
 import { formatServerTimeOnly } from "@/utils/dateHelper";
-import { formatCurrency } from "@/utils/formatCurrency";
+import { formatUSD } from "@/utils/formatCurrency";
 
 interface OrderCardProps {
     order: OrderResponseDTO;
@@ -71,7 +71,7 @@ export default function OrderCard({ order, setSelectedOrder, calculateTotal }: O
 
             <div className="mt-6 flex w-full items-end justify-between border-t border-slate-100 pt-4">
                 <span className="text-sm text-slate-500">{order.orderItems.length} items</span>
-                <span className="font-mono text-xl font-bold text-emerald-600">{formatCurrency(calculateTotal(order))}</span>
+                <span className="font-mono text-xl font-bold text-emerald-600">{formatUSD(calculateTotal(order))}</span>
             </div>
         </button>
     )

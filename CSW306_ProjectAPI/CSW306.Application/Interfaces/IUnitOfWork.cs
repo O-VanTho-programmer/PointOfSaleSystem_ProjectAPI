@@ -17,6 +17,7 @@ namespace CSW306.Application.Interfaces
         IUserRepository Users { get; }
         IActivityLogRepository ActivityLogs { get; }
         ISalesReportRepository SalesReports { get; }
+        IPaymentTransactionRepository PaymentTransaction { get; }
         Task<int> SaveChangesAsync();
     }
 }

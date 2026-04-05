@@ -9,6 +9,7 @@ import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { QRModal } from './payment/QRModal';
 import { useGeneratePaymentQr } from '@/hooks/usePayments';
+import { formatUSD, formatVND } from '@/utils/formatCurrency';
 
 export function CartSidebar() {
     const { order, updateQuantity, clearOrder } = usePosStore();
@@ -25,10 +26,6 @@ export function CartSidebar() {
     const taxRate = 0.10;
     const tax = subtotal * taxRate;
     const grandTotal = subtotal + tax;
-
-    const formatCurrency = (value: number) => {
-        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
-    };
 
     const createOrder = useCreateOrder();
     const generatePaymentQr = useGeneratePaymentQr();
@@ -121,11 +118,11 @@ export function CartSidebar() {
                                     <div className="flex-1">
                                         <h3 className="font-bold leading-tight text-slate-900">Item #{oi.itemId}</h3>
                                         <p className="mt-0.5 font-mono text-sm font-medium text-slate-500">
-                                            {formatCurrency(oi.priceAtOrder)}
+                                            {formatUSD(oi.priceAtOrder)}
                                         </p>
                                     </div>
                                     <div className="font-mono text-base font-bold text-slate-900">
-                                        {formatCurrency(oi.priceAtOrder * oi.quantity)}
+                                        {formatUSD(oi.priceAtOrder * oi.quantity)}
                                     </div>
                                 </div>
 
@@ -162,15 +159,18 @@ export function CartSidebar() {
                 <div className="flex flex-col gap-2 pb-4">
                     <div className="flex justify-between text-sm font-medium text-slate-500">
                         <span>Subtotal</span>
-                        <span className="font-mono text-slate-700">{formatCurrency(subtotal)}</span>
+                        <span className="font-mono text-slate-700">{formatUSD(subtotal)}</span>
                     </div>
                     <div className="flex justify-between text-sm font-medium text-slate-500">
                         <span>Tax (10%)</span>
-                        <span className="font-mono text-slate-700">{formatCurrency(tax)}</span>
+                        <span className="font-mono text-slate-700">{formatUSD(tax)}</span>
                     </div>
-                    <div className="mt-2 flex justify-between border-t border-slate-200 pt-2 text-xl font-bold text-slate-900">
+                    <div className="mt-2 flex items-center justify-between border-t border-slate-200 pt-2 text-xl font-bold text-slate-900">
                         <span>Total</span>
-                        <span className="font-mono text-emerald-600">{formatCurrency(grandTotal)}</span>
+                        <div className="flex flex-col items-end">
+                            <span className="font-mono text-emerald-600">{formatUSD(grandTotal)}</span>
+                            <span className="font-mono text-sm text-slate-400">{formatVND(grandTotal)}</span>
+                        </div>
                     </div>
                 </div>
 
@@ -192,14 +192,14 @@ export function CartSidebar() {
                     >
                         <span className="text-lg tracking-wide">PAY NOW</span>
                         <span className="rounded-md bg-white/20 px-3 py-1 cursor-pointer font-mono text-lg transition-colors group-hover:bg-white/30">
-                            {formatCurrency(grandTotal)}
+                            {formatUSD(grandTotal)}
                         </span>
                     </button>
                 )}
             </div>
 
             {/* QR Payment Modal */}
-            <QRModal 
+            <QRModal
                 isOpen={isQrModalOpen}
                 onClose={() => setIsQrModalOpen(false)}
                 onSuccess={handleQrSuccess}

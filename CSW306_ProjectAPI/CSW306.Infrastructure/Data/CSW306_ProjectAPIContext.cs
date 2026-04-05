@@ -46,6 +46,9 @@ namespace CSW306.Infrastructure.Data
             modelBuilder.Entity<Payments>()
                 .Property(p => p.CreatedDate)
                 .HasColumnType("timestamp with time zone");
+            modelBuilder.Entity<PaymentTransaction>()
+                .Property(p => p.CreatedDate)
+                .HasColumnType("timestamp with time zone");
         }
     }
 }

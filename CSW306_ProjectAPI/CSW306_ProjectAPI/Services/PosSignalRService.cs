@@ -1,4 +1,4 @@
-﻿using CSW306.Application.Interfaces.IExternal;
+using CSW306.Application.Interfaces.IExternal;
 using CSW306.Presentation.Hubs;
 using Microsoft.AspNetCore.SignalR;
 
@@ -13,6 +13,11 @@ namespace CSW306.Presentation.Services
         public async Task NotifyPaymentSuccessAsync(int orderId)
         {
             await _hubContext.Clients.All.SendAsync("PaymentReceived", orderId);
+        }
+
+        public async Task NotifyPaymentUnderPaidAsync(int orderId, decimal amountPaid, decimal expectedAmount)
+        {
+            await _hubContext.Clients.All.SendAsync("PaymentUnderPaid", orderId, amountPaid, expectedAmount);
         }
     }
 }

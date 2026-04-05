@@ -21,6 +21,7 @@ namespace CSW306.Infrastructure.Repositories
         public IUserRepository Users { get; private set; }
         public IActivityLogRepository ActivityLogs { get; private set; }
         public ISalesReportRepository SalesReports { get; private set; }
+        public IPaymentTransactionRepository PaymentTransaction {  get; private set; }
         public UnitOfWork(CSW306_ProjectAPIContext context)
         {
             _context = context;
@@ -35,6 +36,7 @@ namespace CSW306.Infrastructure.Repositories
             Users = new UserRepository(context);
             ActivityLogs = new ActivityLogRepository(context);
             SalesReports = new SalesReportRepository(context);
+            PaymentTransaction = new PaymentTransactionRepository(context);
         }       
 
         public async Task<int> SaveChangesAsync()

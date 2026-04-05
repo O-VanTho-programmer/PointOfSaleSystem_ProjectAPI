@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 import { RoleGuard } from '@/components/RoleGuard';
 import { useDashboardSalesReport } from '@/hooks/useSalesReport';
 import { TopSellerDto } from '@/types/SalesReport';
-import { formatCurrency } from '@/utils/formatCurrency';
+import { formatUSD } from '@/utils/formatCurrency';
 import BarChart from '@/components/report/BarChart';
 
 interface SalesMetric {
@@ -49,7 +49,7 @@ export default function SalesReportsPage() {
         return [
             {
                 label: 'Total Revenue',
-                value: formatCurrency(metricsData.totalRevenue),
+                value: formatUSD(metricsData.totalRevenue),
                 change: `${metricsData.revenueTrend >= 0 ? '+' : ''}${metricsData.revenueTrend.toFixed(1)}%`,
                 positive: metricsData.revenueTrend >= 0,
                 icon: '💰'
@@ -63,7 +63,7 @@ export default function SalesReportsPage() {
             },
             {
                 label: 'Avg. Order',
-                value: formatCurrency(metricsData.averageOrderValue),
+                value: formatUSD(metricsData.averageOrderValue),
                 change: '',
                 positive: true,
                 icon: '📊'
@@ -178,7 +178,7 @@ export default function SalesReportsPage() {
                                                     <p className="text-sm font-semibold text-slate-800 truncate" title={item.itemName}>{item.itemName}</p>
                                                     <p className="text-xs text-slate-400">{item.quantitySold} sold</p>
                                                 </div>
-                                                <span className="font-mono text-sm font-bold text-emerald-600">{formatCurrency(item.totalRevenue)}</span>
+                                                <span className="font-mono text-sm font-bold text-emerald-600">{formatUSD(item.totalRevenue)}</span>
                                             </div>
                                         ))
                                     ) : (

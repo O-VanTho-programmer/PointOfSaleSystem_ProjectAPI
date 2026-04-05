@@ -5,11 +5,12 @@ using CSW306.Application.Interfaces.IExternal;
 using CSW306.Application.Interfaces.IServices;
 using CSW306.Application.Utils;
 using CSW306.Domain.Entities;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace CSW306.Application.Services
 {
@@ -19,13 +20,15 @@ namespace CSW306.Application.Services
         private readonly IQrPaymentService _qrPaymentService;
         private readonly IPosSignalRService _signalRService;
         private readonly IRedisCacheService _redisCacheService;
+        private readonly ILogger<PaymentService> _logger;
 
-        public PaymentService(IUnitOfWork unitOfWork, IQrPaymentService qrPaymentService, IPosSignalRService signalRService, IRedisCacheService redisCacheService)
+        public PaymentService(IUnitOfWork unitOfWork, IQrPaymentService qrPaymentService, IPosSignalRService signalRService, IRedisCacheService redisCacheService, ILogger<PaymentService> logger)
         {
             _unitOfWork = unitOfWork;
             _qrPaymentService = qrPaymentService;
             _signalRService = signalRService;
             _redisCacheService = redisCacheService;
+            _logger = logger;
         }
 
         public async Task<TemplateApi<Payments>> GetAllPaymentsAsync()
@@ -275,16 +278,72 @@ namespace CSW306.Application.Services
                 var match = Regex.Match(payload.transferContent, @"\d+");
                 if (!match.Success || !int.TryParse(match.Value, out int orderId))
                 {
-                    Console.WriteLine($"Could not extract OrderId from transferContent: {payload.transferContent}");
+                    _logger.LogInformation($"Could not extract OrderId from transferContent: {payload.transferContent}");
                     return;
                 }
 
-                var order = await _unitOfWork.Orders.GetByIdAsync(orderId);
+                var order = await _unitOfWork.Orders.GetOrderByIdWithDetailsAsync(orderId);
                 if (order == null)
                 {
-                    Console.WriteLine($"Order not found for Webhook update: {orderId}");
+                    _logger.LogInformation($"Order not found for Webhook update: {orderId}");
                     return;
                 }
+
+                var transaction = await _unitOfWork.PaymentTransaction.GetPaymentTransactionByReferenceCodeAsync(payload.referenceCode);
+
+                if (transaction != null)
+                {
+                    _logger.LogInformation($"This payment transaction has been success: {transaction.PaymentTransactionId}");
+                    return;
+                }
+
+                await _unitOfWork.PaymentTransaction.AddAsync(new PaymentTransaction
+                {
+                    OrderId = orderId,
+                    Amount = payload.transferAmount,
+                    Gateway = payload.gateway,
+                    ReferenceCode = payload.referenceCode,
+                });
+
+                if(order.PaymentStatus == PaymentStatus.Paid)
+                {
+                    _logger.LogInformation($"Order has been paid: {orderId}");
+                    return;
+                }
+
+                // Amount Verfication (Prevents under-payment)---------------------
+
+                decimal expectedAmount = order.OrderItems.Sum(i => i.PriceAtOrder * i.Quantity);
+                //// If using the USD to VND conversion we discussed, apply the UsdToVndRate here!
+
+                //if (payload.transferAmount < expectedAmount)
+                //{
+                //    _logger.LogWarning("Partial payment received for Order {OrderId}. Expected {Expected}, got {Actual}.", orderId, expectedAmount, payload.transferAmount);
+                //    return;
+                //}
+                //--------
+
+                var allTransactions = await _unitOfWork.PaymentTransaction.GetByOrderIdAsync(orderId);
+                decimal accumulateAmount = payload.transferAmount;
+                
+                foreach (var trans in allTransactions) { 
+                    accumulateAmount += trans.Amount;
+                }
+
+                decimal EXCHANGE_STATE = 25400;
+
+                accumulateAmount /= EXCHANGE_STATE;
+
+                _logger.LogWarning($"expectedAmount: {expectedAmount}");
+                _logger.LogWarning($"accumulateAmount: {accumulateAmount}");
+                if (expectedAmount > accumulateAmount)
+                {
+                    _logger.LogWarning($"Partial payment received for Order {orderId}. Expected {expectedAmount}, accumulated {accumulateAmount}, lack of {expectedAmount - accumulateAmount}");
+                    await _unitOfWork.SaveChangesAsync();
+                    await _signalRService.NotifyPaymentUnderPaidAsync(orderId, accumulateAmount, expectedAmount);
+                    return;
+                }
+
                 order.PaymentStatus = PaymentStatus.Paid;
 
                 if (order.OrderType == OrderType.DineIn)

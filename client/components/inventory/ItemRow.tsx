@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { MoreVertical, Pencil, Trash2 } from 'lucide-react';
 import { Item } from '../../types/Item';
+import { formatUSD } from '@/utils/formatCurrency';
 
 const STATUS_CONFIG = {
     inStock: { label: 'In Stock', dot: 'bg-emerald-400', bg: 'bg-emerald-400/10', text: 'text-emerald-700' },
@@ -14,10 +15,6 @@ function getStockStatus(qty: number) {
     if (qty <= 0) return STATUS_CONFIG.outOfStock;
     if (qty <= 10) return STATUS_CONFIG.lowStock;
     return STATUS_CONFIG.inStock;
-}
-
-function formatCurrency(value: number) {
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
 }
 
 interface ItemRowProps {
@@ -75,7 +72,7 @@ export function ItemRow({ item, index, onEdit, onRemove }: ItemRowProps) {
                 {item.quantityInStock}
             </td>
             <td className="px-5 py-4 font-mono text-sm font-medium text-slate-800 tabular-nums">
-                {formatCurrency(item.price)}
+                {formatUSD(item.price)}
             </td>
             <td className="px-5 py-4">
                 <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium ${status.bg} ${status.text}`}>

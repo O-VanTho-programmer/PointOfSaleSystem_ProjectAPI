@@ -9,7 +9,7 @@ import DateRangePicker from '@/components/ui/DateRangePicker';
 import { Pagination } from '@/components/inventory/Pagination';
 import OrderCard from '@/components/order/OrderCard';
 import LoadingState from '@/components/ui/LoadingState';
-import { formatCurrency } from '@/utils/formatCurrency';
+import { formatUSD } from '@/utils/formatCurrency';
 import { usePosSignalR } from '@/hooks/usePosSignalR';
 import { ConfirmModal } from '@/components/ui/ConfirmModal';
 import { useGeneratePaymentQr } from '@/hooks/usePayments';
@@ -58,7 +58,7 @@ export default function OrdersPage() {
 
     const [selectedOrder, setSelectedOrder] = useState<OrderResponseDTO | null>(null);
     const [isCancelConfirmOpen, setIsCancelConfirmOpen] = useState(false);
-    
+
     // Payment Modals State
     const [isPaymentMethodModalOpen, setIsPaymentMethodModalOpen] = useState(false);
     const [isQrModalOpen, setIsQrModalOpen] = useState(false);
@@ -94,7 +94,7 @@ export default function OrdersPage() {
     const handleSelectBank = async () => {
         setIsPaymentMethodModalOpen(false);
         if (!selectedOrder) return;
-        
+
         try {
             const qrResponse = await generatePaymentQr.mutateAsync(selectedOrder.orderId);
             if (qrResponse.success && qrResponse.payload) {
@@ -311,7 +311,7 @@ export default function OrdersPage() {
                                 </div>
                                 <div className="flex justify-between p-4">
                                     <span className="text-sm font-medium text-slate-500">Total</span>
-                                    <span className="font-mono text-xl font-bold text-slate-900">{formatCurrency(calculateTotal(selectedOrder))}</span>
+                                    <span className="font-mono text-xl font-bold text-slate-900">{formatUSD(calculateTotal(selectedOrder))}</span>
                                 </div>
                             </div>
 
@@ -385,14 +385,14 @@ export default function OrdersPage() {
                 isLoading={updateOrderStatus.isPending}
             />
 
-            <PaymentMethodModal 
+            <PaymentMethodModal
                 isOpen={isPaymentMethodModalOpen}
                 onClose={() => setIsPaymentMethodModalOpen(false)}
                 onSelectCash={handleSelectCash}
                 onSelectBank={handleSelectBank}
             />
 
-            <QRModal 
+            <QRModal
                 isOpen={isQrModalOpen}
                 onClose={() => setIsQrModalOpen(false)}
                 onSuccess={handleQrSuccess}
