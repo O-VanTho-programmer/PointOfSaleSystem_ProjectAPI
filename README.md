@@ -1,174 +1,323 @@
-# Point Of Sale System (Project .NET API)
-### Description
-The Restaurant Management API offers features for ordering food, booking tables, and making payments. With structured endpoints, users can view the menu, order meals, confirm orders, reserve tables, and pay securely.
+# Point of Sale System — Restaurant Management Platform
 
-## Tech Stack
-- ASP.NET CORE Web API 8
-- Entity Framework Core
-- SQL Server
-- JWT Authentication
-- Swagger (OpenAPI)
+A full-stack **Point of Sale (POS) system** built for restaurant operations. It supports real-time order management, kitchen display, table reservations, payment processing, and a manager analytics dashboard — all powered by a clean ASP.NET Core API backend and a modern Next.js frontend.
 
-## Project Architecture
+> **Course:** CSW306 – Backend Development
+> **Major:** Software Engineering
+> **Contributors:** Ong Van Tho · Pham Tran Gia Hung · Ly Dat
 
-The project follows a layered architecture to ensure separation of concerns:
-- Controllers: Handle HTTP requests and responses
-- DTOs: Define data contracts between client and server
-- Models (Entities): Represent database tables
-- Data Access: Entity Framework Core with SQL Server
-    
+---
+
 ## System Design
 
 ### Use Case Diagram
-The following use case diagram illustrates the main interactions between users and the system, including authentication, product management, and order processing.
-
 ![Use Case Diagram](doc/usecase_diagram.jpg)
 
 ### Class Diagram
-The class diagram describes the system structure, including entities, relationships, and core business logic.
-
 ![Class Diagram](doc/class_diagram.jpg)
 
+---
+
+## Architecture
+
+The system follows **Clean Architecture** with a strict separation of concerns across four layers:
+
+```
+CSW306_ProjectAPI/
+├── CSW306.Domain/           # Entities, enums, domain logic
+├── CSW306.Application/      # Interfaces, DTOs, service contracts
+├── CSW306.Infrastructure/   # EF Core, Redis, Cloudinary, repositories
+└── CSW306_ProjectAPI/       # ASP.NET Core controllers, SignalR hubs, middleware
+```
+
+The **Next.js** frontend lives in the `client/` directory and communicates with the API via Axios and SignalR.
+
+---
+
+## Tech Stack
+
+### Backend
+| Layer | Technology |
+|-------|-----------|
+| Framework | ASP.NET Core 8 Web API |
+| ORM | Entity Framework Core |
+| Database | PostgreSQL |
+| Cache | Redis (StackExchange.Redis) |
+| Real-time | SignalR (`/hubs/pos`) |
+| Auth | JWT Bearer Tokens |
+| File Storage | Cloudinary |
+| API Docs | Swagger / OpenAPI |
+| Containerization | Docker |
+
+### Frontend
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 16 (App Router) |
+| Language | TypeScript |
+| UI | Tailwind CSS v4 · Lucide Icons |
+| State | Zustand |
+| Server State | TanStack React Query v5 |
+| Real-time | Microsoft SignalR Client |
+| HTTP Client | Axios |
+| Notifications | React Hot Toast |
+
+---
+
 ## Features
-- User authentication with JWT
-- Role-based access control (Admin, Chef, Cashier, Customer)
-- Table Reservation
-- Product Management
-- Order Management
 
-## API Endpoints
-### Auth
-| Method | Endpoint        | Description |
-|------|-----------------|-------------|
-| POST | /api/Auths/customer/register | Register as customer |
-| POST | /api/Auths/employee/register | Register staff |
-| POST | /api/Auths/login | User login |
+### 👤 Authentication & Authorization
+- JWT-based authentication with configurable expiry
+- Role-based access control: **Admin**, **Cashier**, **Chef**, **Customer**
+- Separate registration flows for customers and staff
 
-### User
-| Method | Endpoint        | Description |
-|------|-----------------|-------------|
-| GET | /api/User | Get all users |
-| POST | /api/User | Create user |
+### 🛒 Order Management
+- Create and manage orders in real time
+- Order status lifecycle: Pending → Confirmed → Preparing → Ready → Completed
+- Automatic order cleanup via background sweeper service
+- Date-range filtering for order history
+
+### 💳 Payment Processing
+- QR code payment via VietQR integration
+- Payment transaction logging to prevent double-charging
+- Partial payment detection with real-time UI warnings (SignalR)
+- Discount application on orders
+
+### 🍳 Kitchen Display System (KDS)
+- Live order queue for kitchen staff
+- Real-time updates pushed via SignalR hub
+
+### 🪑 Table & Reservation Management
+- Full CRUD for restaurant tables
+- Reservation management with status lifecycle
+
+### 📦 Inventory & Menu Management
+- Item and category management
+- Image upload to Cloudinary
+- Assign items to categories
+
+### 📊 Manager Dashboard
+- Sales reports with dynamic date-range filtering
+- Hourly sales metrics aggregation
+- Staff management
+- Activity logs with Redis write-back caching strategy
+
+---
+
+## API Reference
+
+### Authentication
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/Auths/customer/register` | Register as a customer |
+| `POST` | `/api/Auths/employee/register` | Register as a staff member |
+| `POST` | `/api/Auths/login` | Login and receive JWT token |
+
+### Users
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/User` | Get all users |
+| `POST` | `/api/User` | Create a user |
 
 ### Items
-| Method | Endpoint        | Description |
-|------|-----------------|-------------|
-| GET | /api/Items | Get all items |
-| POST | /api/Items | Create item |
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/Items` | Get all menu items |
+| `POST` | `/api/Items` | Create a menu item |
 
 ### Categories
-| Method | Endpoint        | Description |
-|------|-----------------|-------------|
-| GET | /api/Categories | Get all categories |
-| GET | /api/Categories/{id} | Get a category by id |
-| POST | /api/Categories | Create category |
-| POST | /api/Categories/assign-item | Assign an item to a category |
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/Categories` | Get all categories |
+| `GET` | `/api/Categories/{id}` | Get a category by ID |
+| `POST` | `/api/Categories` | Create a category |
+| `POST` | `/api/Categories/assign-item` | Assign an item to a category |
 
 ### Orders
-| Method | Endpoint        | Description |
-|------|-----------------|-------------|
-| GET | /api/Orders | Get all items |
-| GET | /api/Orders/{id} | Get an order by id |
-| GET | /api/Orders/filter_by_date_range | Get a orders filtered from date range |
-| POST | /api/Orders | Create order |
-| PATCH | /api/Orders/{id} | Adjust order status |
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/Orders` | Get all orders |
+| `GET` | `/api/Orders/{id}` | Get an order by ID |
+| `GET` | `/api/Orders/filter_by_date_range` | Filter orders by date range |
+| `POST` | `/api/Orders` | Create a new order |
+| `PATCH` | `/api/Orders/{id}` | Update order status |
 
-### Table
-| Method | Endpoint        | Description |
-|------|-----------------|-------------|
-| GET | /api/Table | Get all tables |
-| GET | /api/Table/{id} | Get a table by id |
-| POST | /api/Table | Create table |
-| PUT | /api/Table/{id} | Update table status by id |
-| DELETE | /api/Table/{id} | Delete table by id |
+### Tables
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/Table` | Get all tables |
+| `GET` | `/api/Table/{id}` | Get a table by ID |
+| `POST` | `/api/Table` | Create a table |
+| `PUT` | `/api/Table/{id}` | Update table status |
+| `DELETE` | `/api/Table/{id}` | Delete a table |
 
-### Reservation
-| Method | Endpoint        | Description |
-|------|-----------------|-------------|
-| GET | /api/Reservation | Get all made reservations |
-| GET | /api/Reservation/{id} | Get a reservation by id |
-| POST | /api/Reservation | Create reservation |
-| PUT | /api/Reservation/{id} | Update reservation status by id |
-| DELETE | /api/Reservation/{id} | Delete reservation by id |
+### Reservations
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/Reservation` | Get all reservations |
+| `GET` | `/api/Reservation/{id}` | Get a reservation by ID |
+| `POST` | `/api/Reservation` | Create a reservation |
+| `PUT` | `/api/Reservation/{id}` | Update reservation status |
+| `DELETE` | `/api/Reservation/{id}` | Delete a reservation |
 
 ### Discounts
-| Method | Endpoint        | Description |
-|------|-----------------|-------------|
-| GET | /api/Discounts | Get all discounts |
-| GET | /api/Discounts/{id} | Get a discounts by id |
-| POST | /api/Discounts/add | Create discount |
-| POST | /api/Discounts/apply/{id} | Apply a discount to an order |
-| PUT | /api/Discounts/edit/{id} | Update discount by id |
-| DELETE | /api/Discounts/delete/{id} | Delete discount by id |
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/Discounts` | Get all discounts |
+| `GET` | `/api/Discounts/{id}` | Get a discount by ID |
+| `POST` | `/api/Discounts/add` | Create a discount |
+| `POST` | `/api/Discounts/apply/{id}` | Apply a discount to an order |
+| `PUT` | `/api/Discounts/edit/{id}` | Update a discount |
+| `DELETE` | `/api/Discounts/delete/{id}` | Delete a discount |
 
 ### Payments
-| Method | Endpoint        | Description |
-|------|-----------------|-------------|
-| GET | /api/Payments | Get all payments |
-| GET | /api/Payments/{id} | Get a discounts by id |
-| POST | /api/Payments/add | Create payment |
-| POST | /api/Payments/pay/{id} | Process a payment |
-| PUT | /api/Payments/edit/{id} | Update payment by id |
-| DELETE | /api/Payments/delete/{id} | Delete payment by id |
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/Payments` | Get all payments |
+| `GET` | `/api/Payments/{id}` | Get a payment by ID |
+| `POST` | `/api/Payments/add` | Create a payment record |
+| `POST` | `/api/Payments/pay/{id}` | Process a payment |
+| `PUT` | `/api/Payments/edit/{id}` | Update a payment |
+| `DELETE` | `/api/Payments/delete/{id}` | Delete a payment |
 
-## Use Case to API Mapping
+### Sales Reports
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/SalesReports` | Get aggregated sales reports |
 
-| Use Case | Endpoint |
-|--------|----------|
-| Customer Registration | POST /api/Auths/customer/register |
-| Create Order | POST /api/Orders |
-| Reserve Table | POST /api/Reservation |
-| Process Payment | POST /api/Payments/pay/{id} |
+### Activity Logs
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/ActivityLogs` | Get audit/activity logs |
 
-## How to Run Locally
+### Real-time (SignalR)
+| Hub | Endpoint |
+|-----|----------|
+| POS Hub | `/hubs/pos` |
+
+---
+
+## Getting Started
 
 ### Prerequisites
-- .NET SDK 8.0
-- SQL Server
-- SQL Server Management Studio (SSMS)
-- Visual Studio or VS Code
 
-### Installation
+**Backend:**
+- [.NET SDK 8.0](https://dotnet.microsoft.com/download)
+- PostgreSQL (or connection string for a hosted instance)
+- Redis (local or hosted)
+- Visual Studio 2022 / VS Code / Rider
+
+**Frontend:**
+- Node.js 18+
+- npm or yarn
+
+---
+
+### Backend Setup
+
+**1. Clone the repository**
 ```bash
 git clone https://github.com/O-VanTho-programmer/PointOfSaleSystem_ProjectAPI.git
 cd CSW306_ProjectAPI/CSW306_ProjectAPI
-dotnet restore
-dotnet run
 ```
 
-### Restore Database from Backup
-1. Open **SQL Server Management Studio (SSMS)**
-2. Right-click **Databases** → **Restore Database**
-3. Select **Device** → **Browse**
-4. Choose the file:  
-   `CSW306_ProjectAPI.bak`
-5. Set the database name (e.g. `CSW306_ProjectAPI`)
-6. Click **OK**
-
-After restoring, update the connection string in `appsettings.json`.
-
+**2. Configure `appsettings.json`**
 ```json
 {
   "ConnectionStrings": {
-    "DBConnection": "Server=.;Database=CSW306_ProjectAPI;Trusted_Connection=True;TrustServerCertificate=True;"
+    "DBConnection": "Host=localhost;Database=CSW306_ProjectAPI;Username=postgres;Password=yourpassword",
+    "RedisCache": "localhost:6379"
   },
+  "JwtSettings": {
+    "SecretKey": "your-strong-secret-key-at-least-32-chars",
+    "Issuer": "PointOfSale.AuthServer",
+    "Audience": "PointOfSale.Client",
+    "ExpiryMinutes": 60
+  },
+  "CloudinarySettings": {
+    "CloudName": "your-cloud-name",
+    "ApiKey": "your-api-key",
+    "ApiSecret": "your-api-secret"
+  }
 }
 ```
 
-### Security Configuration (JWT)
-
-Update `appsettings.json` with your own secret key:
-
-```json
-"JwtSettings": {
-  "SecretKey": "your-strong-secret-key",
-  "Issuer": "PointOfSale.AuthServer",
-  "Audience": "PointOfSale.Client",
-  "ExpiryMinutes": 60
-}
+**3. Apply database migrations & run**
+```bash
+dotnet restore
+dotnet ef database update
+dotnet run
 ```
 
-## Author
-- Contributors: Ong Van Tho, Pham Tran Gia Hung, Ly Dat
-- Course: CSW306 – Backend
-- Major: Software Engineering
+The API will be available at `https://localhost:5000` with Swagger UI at `/swagger`.
+
+---
+
+### Frontend Setup
+
+```bash
+cd client
+npm install
+```
+
+Create a `.env.local` file:
+```env
+NEXT_PUBLIC_API_URL=https://localhost:5000
+NEXT_PUBLIC_SIGNALR_HUB_URL=https://localhost:5000/hubs/pos
+```
+
+Start the development server:
+```bash
+npm run dev
+```
+
+The frontend will be available at `http://localhost:3000`.
+
+---
+
+### 🐳 Docker (Backend)
+
+```bash
+cd CSW306_ProjectAPI
+docker build -t pos-api .
+docker run -p 8080:8080 pos-api
+```
+
+---
+
+## 🗂️ Use Case to API Mapping
+
+| Use Case | Role | Endpoint |
+|----------|------|----------|
+| Customer Registration | Public | `POST /api/Auths/customer/register` |
+| Staff Login | All Staff | `POST /api/Auths/login` |
+| Browse Menu | Cashier / Customer | `GET /api/Items` |
+| Create Order | Cashier | `POST /api/Orders` |
+| Update Order Status | Chef / Cashier | `PATCH /api/Orders/{id}` |
+| Process Payment | Cashier | `POST /api/Payments/pay/{id}` |
+| Reserve a Table | Cashier / Customer | `POST /api/Reservation` |
+| View Sales Report | Manager | `GET /api/SalesReports` |
+| Manage Inventory | Manager / Admin | `POST /api/Items` |
+
+---
+
+## 📁 Project Structure
+
+```
+.
+├── CSW306_ProjectAPI/        # .NET Solution
+│   ├── CSW306.Domain/        # Entities & enums
+│   ├── CSW306.Application/   # Interfaces, services, DTOs
+│   ├── CSW306.Infrastructure/# EF Core, Redis, Cloudinary
+│   └── CSW306_ProjectAPI/    # Web API (controllers, hubs)
+├── client/                   # Next.js frontend
+│   ├── app/                  # App Router pages
+│   │   ├── (cashier)/        # Cashier views (orders, register)
+│   │   ├── (kitchen)/        # Kitchen Display System
+│   │   └── (manager)/        # Manager dashboard
+│   ├── components/           # Reusable UI components
+│   ├── hooks/                # Custom React hooks (SignalR, queries)
+│   ├── services/             # Axios API service layer
+│   ├── store/                # Zustand global state
+│   └── types/                # TypeScript type definitions
+└── doc/                      # System diagrams
+```
