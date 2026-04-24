@@ -4,6 +4,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import { orderKeys } from './useOrders';
 import { itemKeys } from './useItems';
 import { tableKeys } from './useTables';
+import Cookies from 'js-cookie';
+import toast from 'react-hot-toast';
 
 export interface UnderPaidPayload {
     orderId: number;
@@ -14,7 +16,7 @@ export interface UnderPaidPayload {
 export const usePosSignalR = (onUnderPaid?: (payload: UnderPaidPayload) => void) => {
     const [connection, setConnection] = useState<signalR.HubConnection | null>(null);
     const queryClient = useQueryClient();
-    
+
     const onUnderPaidRef = useRef(onUnderPaid);
     useEffect(() => {
         onUnderPaidRef.current = onUnderPaid;
@@ -25,7 +27,8 @@ export const usePosSignalR = (onUnderPaid?: (payload: UnderPaidPayload) => void)
 
         const newConnection = new signalR.HubConnectionBuilder()
             .withUrl(`${baseUrl}/hubs/pos`, {
-                withCredentials: true
+                withCredentials: true,
+                accessTokenFactory: () => Cookies.get('pos_auth_token') || ''
             })
             .withAutomaticReconnect()
             .build();
@@ -53,11 +56,25 @@ export const usePosSignalR = (onUnderPaid?: (payload: UnderPaidPayload) => void)
             onUnderPaidRef.current?.({ orderId, amountPaid, expectedAmount });
         };
 
-        connection.on('OrderListUpdated', handleOrderUpdate);
-        connection.on('PaymentReceived', (orderId: number) => {
+        const handlePaymentReceived = (orderId: number) => {
             queryClient.invalidateQueries({ queryKey: orderKeys.detail(orderId) });
-        });
+        }
+
+        const handleOrderReady = (orderId: number) => {
+            queryClient.invalidateQueries({ queryKey: orderKeys.detail(orderId) });
+            toast.success('Order ready');
+            
+            const audio = new Audio('/sounds/notification.mp3');
+
+            audio.play().catch(error => {
+                console.error("Audio playback failed. User must interact with the page first.", error);
+            });
+        }
+
+        connection.on('OrderListUpdated', handleOrderUpdate);
+        connection.on('PaymentReceived', handlePaymentReceived);
         connection.on('PaymentUnderPaid', handleUnderPaid);
+        connection.on('OrderReady', handleOrderReady);
 
         if (connection.state === signalR.HubConnectionState.Disconnected) {
             connection.start()
@@ -69,8 +86,9 @@ export const usePosSignalR = (onUnderPaid?: (payload: UnderPaidPayload) => void)
 
         return () => {
             connection.off('OrderListUpdated', handleOrderUpdate);
-            connection.off('PaymentReceived');
+            connection.off('PaymentReceived', handlePaymentReceived);
             connection.off('PaymentUnderPaid', handleUnderPaid);
+            connection.off('OrderReady', handleOrderReady);
         };
     }, [connection, queryClient]);
 

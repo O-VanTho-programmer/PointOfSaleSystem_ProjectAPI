@@ -1,6 +1,7 @@
-using CSW306.Application.DTO.Upload;
 using CSW306.Application.DTO.Response;
+using CSW306.Application.DTO.Upload;
 using CSW306.Application.Interfaces;
+using CSW306.Application.Interfaces.IExternal;
 using CSW306.Application.Interfaces.IServices;
 using CSW306.Application.Utils;
 using CSW306.Domain.Entities;
@@ -16,10 +17,12 @@ namespace CSW306.Application.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRedisCacheService _redisCacheService;
         private readonly ICurrentUserProvider _currentUserProvider;
+        private readonly IPosSignalRService _signalRService;
         private const string OrdersCacheSetKey = "orders:cachedKeys";
 
-        public OrderService(IUnitOfWork unitOfWork, IRedisCacheService redisCacheService, ICurrentUserProvider currentUserProvider)
+        public OrderService(IUnitOfWork unitOfWork, IRedisCacheService redisCacheService, ICurrentUserProvider currentUserProvider, IPosSignalRService signalRService)
         {
+            _signalRService = signalRService;
             _unitOfWork = unitOfWork;
             _redisCacheService = redisCacheService;
             _currentUserProvider = currentUserProvider;
@@ -427,6 +430,12 @@ namespace CSW306.Application.Services
                 }
 
                 var oldKitchenStatus = order.KitchenStatus;
+
+                if(request.KitchenStatus == KitchenStatus.Ready)
+                {
+                    await _signalRService.NotifiReadyOrderAsync(order.OrderId, order.UserId);
+                }
+
                 order.KitchenStatus = request.KitchenStatus;
                 await _unitOfWork.Orders.UpdateAsync(order);
                 await _unitOfWork.SaveChangesAsync();

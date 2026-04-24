@@ -10,6 +10,12 @@ namespace CSW306.Presentation.Services
         public PosSignalRService(IHubContext<PosHub> hubContext) {
             _hubContext = hubContext;
         }
+
+        public async Task NotifiReadyOrderAsync(int orderId, int userId)
+        {
+            await _hubContext.Clients.User(userId.ToString()).SendAsync("OrderReady", orderId);
+        }
+
         public async Task NotifyPaymentSuccessAsync(int orderId)
         {
             await _hubContext.Clients.All.SendAsync("PaymentReceived", orderId);
