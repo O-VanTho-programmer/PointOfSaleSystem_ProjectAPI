@@ -26,6 +26,7 @@ export enum KitchenStatus {
 
 export interface OrderResponseDTO {
     orderId: number;
+    orderNumber: number;
     status: OrderStatus;
     paymentStatus: PaymentStatus;
     kitchenStatus: KitchenStatus;

@@ -5,6 +5,7 @@ namespace CSW306.Application.DTO.Response
     public class OrderResponseDTO
     {
         public int OrderId { get; set; }
+        public int OrderNumber { get; set; }
         public OrderStatus Status { get; set; }
         public PaymentStatus PaymentStatus { get; set; }
         public KitchenStatus KitchenStatus { get; set; }

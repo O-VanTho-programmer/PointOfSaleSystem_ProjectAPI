@@ -124,7 +124,7 @@ export default function KitchenDisplaySystemPage() {
                                     {/* Ticket Header */}
                                     <div className={`flex items-center justify-between border-b p-4 ${colors.borderB} ${colors.bg}`}>
                                         <div className="flex items-center gap-3">
-                                            <span className="font-mono text-2xl font-black text-white">#{order.orderId}</span>
+                                            <span className="font-mono text-2xl font-black text-white">#{order.orderNumber}</span>
                                             <span className={`rounded px-2 py-0.5 text-xs font-bold uppercase tracking-wide ${colors.badge}`}>
                                                 {KITCHEN_STATUS_LABELS[order.kitchenStatus]}
                                             </span>

@@ -8,6 +8,7 @@ using CSW306.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CSW306.Application.Services
@@ -19,6 +20,7 @@ namespace CSW306.Application.Services
         private readonly ICurrentUserProvider _currentUserProvider;
         private readonly IPosSignalRService _signalRService;
         private const string OrdersCacheSetKey = "orders:cachedKeys";
+        private static readonly SemaphoreSlim _orderNumberLock = new SemaphoreSlim(1, 1);
 
         public OrderService(IUnitOfWork unitOfWork, IRedisCacheService redisCacheService, ICurrentUserProvider currentUserProvider, IPosSignalRService signalRService)
         {
@@ -212,21 +214,34 @@ namespace CSW306.Application.Services
                     PriceAtOrder = existingItems[i.ItemId].Price
                 }).ToList();
 
-                var order = new Orders
-                {
-                    Status = dto.OrderType == OrderType.DineIn ? OrderStatus.Active : OrderStatus.Pending,  
-                    PaymentStatus = PaymentStatus.Unpaid,  
-                    KitchenStatus = dto.OrderType == OrderType.DineIn ? KitchenStatus.Pending : KitchenStatus.Idle, 
-                    DiscountId = dto.DiscountId,
-                    UserId = dto.UserId,
-                    CreatedDate = DateTime.UtcNow,
-                    TableNumber = dto.TableNumber,
-                    OrderType = dto.OrderType,
-                    OrderItems = orderItems
-                };
+                Orders order = null;
 
-                await _unitOfWork.Orders.AddAsync(order);
-                await _unitOfWork.SaveChangesAsync();
+                await _orderNumberLock.WaitAsync();
+                try
+                {
+                    var maxOrderNumberToday = await _unitOfWork.Orders.GetMaxOrderNumberTodayAsync();
+
+                    order = new Orders
+                    {
+                        Status = dto.OrderType == OrderType.DineIn ? OrderStatus.Active : OrderStatus.Pending,  
+                        PaymentStatus = PaymentStatus.Unpaid,  
+                        KitchenStatus = dto.OrderType == OrderType.DineIn ? KitchenStatus.Pending : KitchenStatus.Idle, 
+                        DiscountId = dto.DiscountId,
+                        UserId = dto.UserId,
+                        CreatedDate = DateTime.UtcNow,
+                        TableNumber = dto.TableNumber,
+                        OrderType = dto.OrderType,
+                        OrderItems = orderItems,
+                        OrderNumber = maxOrderNumberToday + 1
+                    };
+
+                    await _unitOfWork.Orders.AddAsync(order);
+                    await _unitOfWork.SaveChangesAsync();
+                }
+                finally
+                {
+                    _orderNumberLock.Release();
+                }
 
                 // Invalidate cached order keys
                 await OrderCacheHelper.InvalidateOrderCacheAsync(_redisCacheService, order.OrderId);
@@ -555,6 +570,7 @@ namespace CSW306.Application.Services
             return new OrderResponseDTO
             {
                 OrderId = order.OrderId,
+                OrderNumber = order.OrderNumber,
                 Status = order.Status,
                 PaymentStatus = order.PaymentStatus,
                 KitchenStatus = order.KitchenStatus,

@@ -64,7 +64,7 @@ export default function PickupScreen() {
                                 {/* Ticket Header */}
                                 <div className="flex items-center justify-between border-b border-emerald-100 bg-emerald-50/50 p-4">
                                     <div className="flex items-center gap-3">
-                                        <span className="font-mono text-2xl font-black text-slate-900">#{order.orderId}</span>
+                                        <span className="font-mono text-2xl font-black text-slate-900">#{order.orderNumber}</span>
                                     </div>
                                     <span className="font-mono text-sm font-medium text-emerald-600 bg-emerald-100 px-2 py-1 rounded-md">
                                         {formatTimeAgo(order.createdDate)}

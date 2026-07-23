@@ -3,24 +3,24 @@
   "WorkspaceRootPath": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306.Presentation.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306_projectapi\\services\\possignalrservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306.Presentation.csproj|solutionrelative:csw306_projectapi\\services\\possignalrservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.application\\interfaces\\iexternal\\ipossignalrservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|solutionrelative:csw306.application\\interfaces\\iexternal\\ipossignalrservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{302717DE-A0C4-4FDC-8475-998219D7FC6A}|CSW306.Domain\\CSW306.Domain.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.domain\\entities\\orders.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{302717DE-A0C4-4FDC-8475-998219D7FC6A}|CSW306.Domain\\CSW306.Domain.csproj|solutionrelative:csw306.domain\\entities\\orders.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.application\\services\\orderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|solutionrelative:csw306.application\\services\\orderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{302717DE-A0C4-4FDC-8475-998219D7FC6A}|CSW306.Domain\\CSW306.Domain.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.domain\\entities\\orders.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{302717DE-A0C4-4FDC-8475-998219D7FC6A}|CSW306.Domain\\CSW306.Domain.csproj|solutionrelative:csw306.domain\\entities\\orders.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{94B7448C-A1E7-4CC1-866C-6478A869BA8E}|CSW306.Infrastructure\\CSW306.Infrastructure.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.infrastructure\\repositories\\orderrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{94B7448C-A1E7-4CC1-866C-6478A869BA8E}|CSW306.Infrastructure\\CSW306.Infrastructure.csproj|solutionrelative:csw306.infrastructure\\repositories\\orderrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306.application\\services\\paymentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4D687B65-8D06-49FC-A927-F7BD2DCA4843}|CSW306.Application\\CSW306.Application.csproj|solutionrelative:csw306.application\\services\\paymentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306.Presentation.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306_projectapi\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306.Presentation.csproj|solutionrelative:csw306_projectapi\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306.Presentation.csproj|d:\\myprogramme\\reactjswithtypescript\\csw306_projectapi\\csw306_projectapi\\csw306_projectapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1859261B-2D04-4783-AC8E-086DCB1C1D87}|CSW306_ProjectAPI\\CSW306.Presentation.csproj|solutionrelative:csw306_projectapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,7 +30,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -47,63 +47,67 @@
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "Orders.cs",
-              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Domain\\Entities\\Orders.cs",
-              "RelativeDocumentMoniker": "CSW306.Domain\\Entities\\Orders.cs",
-              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Domain\\Entities\\Orders.cs",
-              "RelativeToolTip": "CSW306.Domain\\Entities\\Orders.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAASAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-22T16:13:41.295Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "IPosSignalRService.cs",
-              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Interfaces\\IExternal\\IPosSignalRService.cs",
-              "RelativeDocumentMoniker": "CSW306.Application\\Interfaces\\IExternal\\IPosSignalRService.cs",
-              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Interfaces\\IExternal\\IPosSignalRService.cs",
-              "RelativeToolTip": "CSW306.Application\\Interfaces\\IExternal\\IPosSignalRService.cs",
-              "ViewState": "AgIAAAIAAAAAAAAAAAASwAoAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-22T15:47:47.501Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "PosSignalRService.cs",
-              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Services\\PosSignalRService.cs",
-              "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Services\\PosSignalRService.cs",
-              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Services\\PosSignalRService.cs",
-              "RelativeToolTip": "CSW306_ProjectAPI\\Services\\PosSignalRService.cs",
-              "ViewState": "AgIAABAAAAAAAAAAAAAgwBEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-22T15:47:58.585Z",
+              "Title": "appsettings.Development.json",
+              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\appsettings.Development.json",
+              "RelativeDocumentMoniker": "CSW306_ProjectAPI\\appsettings.Development.json",
+              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\appsettings.Development.json",
+              "RelativeToolTip": "CSW306_ProjectAPI\\appsettings.Development.json",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAA8AAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-07-22T05:55:51.697Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "PaymentService.cs",
-              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Services\\PaymentService.cs",
-              "RelativeDocumentMoniker": "CSW306.Application\\Services\\PaymentService.cs",
-              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Services\\PaymentService.cs",
-              "RelativeToolTip": "CSW306.Application\\Services\\PaymentService.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAuwBMAAAA9AAAAAAAAAA==",
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Program.cs",
+              "RelativeDocumentMoniker": "CSW306_ProjectAPI\\Program.cs",
+              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\Program.cs",
+              "RelativeToolTip": "CSW306_ProjectAPI\\Program.cs",
+              "ViewState": "AgIAAKUAAAAAAAAAAAAAAIoAAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-22T15:43:30.659Z"
+              "WhenOpened": "2026-07-22T05:46:56.32Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "OrderRepository.cs",
+              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Infrastructure\\Repositories\\OrderRepository.cs",
+              "RelativeDocumentMoniker": "CSW306.Infrastructure\\Repositories\\OrderRepository.cs",
+              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Infrastructure\\Repositories\\OrderRepository.cs",
+              "RelativeToolTip": "CSW306.Infrastructure\\Repositories\\OrderRepository.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABsAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-24T01:14:54.902Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Orders.cs",
+              "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Domain\\Entities\\Orders.cs",
+              "RelativeDocumentMoniker": "CSW306.Domain\\Entities\\Orders.cs",
+              "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Domain\\Entities\\Orders.cs",
+              "RelativeToolTip": "CSW306.Domain\\Entities\\Orders.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAwAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-22T16:13:41.295Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "OrderService.cs",
               "DocumentMoniker": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Services\\OrderService.cs",
               "RelativeDocumentMoniker": "CSW306.Application\\Services\\OrderService.cs",
               "ToolTip": "D:\\MyProgramme\\ReactJSWithTypeScript\\CSW306_ProjectAPI\\CSW306_ProjectAPI\\CSW306.Application\\Services\\OrderService.cs",
               "RelativeToolTip": "CSW306.Application\\Services\\OrderService.cs",
-              "ViewState": "AgIAAKkBAAAAAAAAAAAhwLMBAAA/AAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-22T15:32:16.095Z"
+              "WhenOpened": "2026-04-22T15:32:16.095Z",
+              "EditorCaption": ""
             }
           ]
         }

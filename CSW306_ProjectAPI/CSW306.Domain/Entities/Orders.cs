@@ -9,6 +9,8 @@ namespace CSW306.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Required]
         public int OrderId { get; set; }
+        [Required]
+        public int OrderNumber { get; set; }
         public int? DiscountId { get; set; }
         public int UserId { get; set; }
         [Required]

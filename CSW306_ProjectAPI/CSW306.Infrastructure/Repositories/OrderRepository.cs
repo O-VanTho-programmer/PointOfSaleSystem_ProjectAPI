@@ -80,5 +80,16 @@ namespace CSW306.Infrastructure.Repositories
                                         && o.PaymentStatus == PaymentStatus.Unpaid
                                         && o.CreatedDate <= curOffTime).ToListAsync();
         }
+
+        public async Task<int> GetMaxOrderNumberTodayAsync()
+        {
+            var today = DateTime.UtcNow.Date;
+            var tomorrow = today.AddDays(1);
+
+            return await _dbSet
+                .Where(o => o.CreatedDate >= today && o.CreatedDate < tomorrow)
+                .Select(o => (int?)o.OrderNumber)
+                .MaxAsync() ?? 0;
+        }
     }
 }

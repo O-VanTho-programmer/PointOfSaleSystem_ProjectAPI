@@ -268,7 +268,7 @@ export default function OrdersPage() {
                             }`}></div>
                         <div className="p-6 sm:p-8">
                             <div className="flex items-center justify-between">
-                                <h2 className="font-serif text-3xl font-bold text-slate-900">Order #{selectedOrder.orderId}</h2>
+                                <h2 className="font-serif text-3xl font-bold text-slate-900">Order #{selectedOrder.orderNumber}</h2>
                                 <button
                                     onClick={() => setSelectedOrder(null)}
                                     className="rounded-full p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
@@ -379,7 +379,7 @@ export default function OrdersPage() {
                 onClose={() => setIsCancelConfirmOpen(false)}
                 onConfirm={confirmCancelOrder}
                 title="Cancel Order"
-                description={`Are you sure you want to cancel order #${selectedOrder?.orderId}? This action cannot be undone.`}
+                description={`Are you sure you want to cancel order #${selectedOrder?.orderNumber}? This action cannot be undone.`}
                 confirmText="Yes, cancel order"
                 isDestructive={true}
                 isLoading={updateOrderStatus.isPending}
