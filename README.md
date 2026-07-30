@@ -8,6 +8,19 @@ A full-stack **Point of Sale (POS) system** built for restaurant operations. It 
 
 ---
 
+## 🔑 Demo & Test Accounts
+
+You can try the system using these pre-configured accounts (log in using **Phone** and **Password**):
+
+| Role | Name | Phone (Username) | Password | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| **Manager** | Admin | `123456789` | `123456` | Access to the reports, dashboard, catalog, inventory, and staff configurations. |
+| **Cashier** | Cashier | `1234567891` | `123456` | Access to creating orders, table statuses, payment processing, and cancellations. |
+| **Chef** | Chef | `1234567892` | `123456` | Access to the Kitchen Display System (KDS) live ticket queue. |
+| **Waiter** | Waiter | `1234567893` | `123456` | Access to the pickup/ready boards to mark orders as served. |
+
+---
+
 ## System Design
 
 ### Use Case Diagram
