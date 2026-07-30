@@ -178,22 +178,44 @@ export function CartSidebar() {
                     <button
                         type="button"
                         onClick={() => handleSubmitOrder()}
-                        disabled={order.orderItems.length === 0 || (order.tableNumber === undefined && order.orderType === OrderType.DineIn)}
+                        disabled={order.orderItems.length === 0 || (order.tableNumber === undefined && order.orderType === OrderType.DineIn) || createOrder.isPending || generatePaymentQr.isPending}
                         className="flex w-full items-center justify-center rounded-xl bg-blue-600 p-4 font-bold text-white shadow-md transition-all hover:bg-blue-500 disabled:pointer-events-none disabled:opacity-50 touch-manipulation"
                     >
-                        <span className="text-lg tracking-wide">SUBMIT ORDER</span>
+                        {createOrder.isPending || generatePaymentQr.isPending ? (
+                            <div className="flex items-center gap-2">
+                                <svg className="h-5 w-5 animate-spin text-white" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                                </svg>
+                                <span className="text-lg tracking-wide">PROCESSING...</span>
+                            </div>
+                        ) : (
+                            <span className="text-lg tracking-wide">SUBMIT ORDER</span>
+                        )}
                     </button>
                 ) : (
                     <button
                         type="button"
                         onClick={() => handleSubmitOrder()}
-                        disabled={order.orderItems.length === 0}
+                        disabled={order.orderItems.length === 0 || createOrder.isPending || generatePaymentQr.isPending}
                         className="group flex w-full cursor-pointer items-center justify-between rounded-xl bg-slate-900 p-4 font-bold text-white shadow-md transition-all ease-out hover:-translate-y-1 hover:bg-emerald-600 hover:shadow-lg active:translate-y-0 active:bg-emerald-700 disabled:pointer-events-none disabled:opacity-50 touch-manipulation tap-highlight-transparent"
                     >
-                        <span className="text-lg tracking-wide">PAY NOW</span>
-                        <span className="rounded-md bg-white/20 px-3 py-1 cursor-pointer font-mono text-lg transition-colors group-hover:bg-white/30">
-                            {formatUSD(grandTotal)}
-                        </span>
+                        {createOrder.isPending || generatePaymentQr.isPending ? (
+                            <div className="flex w-full items-center justify-center gap-2">
+                                <svg className="h-5 w-5 animate-spin text-white" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                                </svg>
+                                <span className="text-lg tracking-wide">PROCESSING...</span>
+                            </div>
+                        ) : (
+                            <>
+                                <span className="text-lg tracking-wide">PAY NOW</span>
+                                <span className="rounded-md bg-white/20 px-3 py-1 cursor-pointer font-mono text-lg transition-colors group-hover:bg-white/30">
+                                    {formatUSD(grandTotal)}
+                                </span>
+                            </>
+                        )}
                     </button>
                 )}
             </div>

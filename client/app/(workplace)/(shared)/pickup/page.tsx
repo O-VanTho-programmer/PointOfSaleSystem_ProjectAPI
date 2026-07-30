@@ -56,56 +56,67 @@ export default function PickupScreen() {
                 {/* Ticket Kanban Grid */}
                 <div className="flex-1 overflow-y-auto pb-8 pr-2" style={{ contentVisibility: 'auto' }}>
                     <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-start">
-                        {visibleOrders.map(order => (
-                            <article
-                                key={order.orderId}
-                                className="flex flex-col overflow-hidden rounded-2xl border-2 border-emerald-200 bg-white shadow-sm hover:shadow-md transition-shadow"
-                            >
-                                {/* Ticket Header */}
-                                <div className="flex items-center justify-between border-b border-emerald-100 bg-emerald-50/50 p-4">
-                                    <div className="flex items-center gap-3">
-                                        <span className="font-mono text-2xl font-black text-slate-900">#{order.orderNumber}</span>
+                        {visibleOrders.map(order => {
+                            const isThisTicketPending = updateKitchenStatus.isPending && updateKitchenStatus.variables?.id === order.orderId;
+                            return (
+                                <article
+                                    key={order.orderId}
+                                    className="flex flex-col overflow-hidden rounded-2xl border-2 border-emerald-200 bg-white shadow-sm hover:shadow-md transition-shadow"
+                                >
+                                    {/* Ticket Header */}
+                                    <div className="flex items-center justify-between border-b border-emerald-100 bg-emerald-50/50 p-4">
+                                        <div className="flex items-center gap-3">
+                                            <span className="font-mono text-2xl font-black text-slate-900">#{order.orderNumber}</span>
+                                        </div>
+                                        <span className="font-mono text-sm font-medium text-emerald-600 bg-emerald-100 px-2 py-1 rounded-md">
+                                            {formatTimeAgo(order.createdDate)}
+                                        </span>
                                     </div>
-                                    <span className="font-mono text-sm font-medium text-emerald-600 bg-emerald-100 px-2 py-1 rounded-md">
-                                        {formatTimeAgo(order.createdDate)}
-                                    </span>
-                                </div>
 
-                                {/* Table Number Callout */}
-                                <div className="flex items-center justify-center bg-slate-900 py-3 text-white">
-                                    <span className="text-xl font-bold tracking-widest uppercase">
-                                        Table {order.tableNumber || '?'}
-                                    </span>
-                                </div>
+                                    {/* Table Number Callout */}
+                                    <div className="flex items-center justify-center bg-slate-900 py-3 text-white">
+                                        <span className="text-xl font-bold tracking-widest uppercase">
+                                            Table {order.tableNumber || '?'}
+                                        </span>
+                                    </div>
 
-                                {/* Items List */}
-                                <div className="flex-1 p-4 bg-white">
-                                    <ul className="space-y-3">
-                                        {order.orderItems.map((oi, idx) => (
-                                            <li key={idx} className="flex items-start gap-3">
-                                                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-slate-100 font-mono text-sm font-bold text-slate-700">
-                                                    {oi.quantity}x
-                                                </span>
-                                                <span className="mt-0.5 font-medium leading-snug text-slate-800">
-                                                    {oi.itemName}
-                                                </span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
+                                    {/* Items List */}
+                                    <div className="flex-1 p-4 bg-white">
+                                        <ul className="space-y-3">
+                                            {order.orderItems.map((oi, idx) => (
+                                                <li key={idx} className="flex items-start gap-3">
+                                                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-slate-100 font-mono text-sm font-bold text-slate-700">
+                                                        {oi.quantity}x
+                                                    </span>
+                                                    <span className="mt-0.5 font-medium leading-snug text-slate-800">
+                                                        {oi.itemName}
+                                                    </span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
 
-                                {/* Action Button */}
-                                <div className="p-4 pt-0 mt-2 bg-white">
-                                    <button
-                                        onClick={() => handleMarkServed(order.orderId)}
-                                        className="w-full flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-4 text-lg font-black tracking-wide text-white shadow-sm transition-transform hover:-translate-y-1 hover:bg-emerald-500 hover:shadow-md active:translate-y-0 active:bg-emerald-700 touch-manipulation tap-highlight-transparent"
-                                    >
-                                        <HandPlatter className="h-6 w-6" />
-                                        MARK AS SERVED
-                                    </button>
-                                </div>
-                            </article>
-                        ))}
+                                    {/* Action Button */}
+                                    <div className="p-4 pt-0 mt-2 bg-white">
+                                        <button
+                                            disabled={isThisTicketPending}
+                                            onClick={() => handleMarkServed(order.orderId)}
+                                            className="w-full flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-4 text-lg font-black tracking-wide text-white shadow-sm transition-transform hover:-translate-y-1 hover:bg-emerald-500 hover:shadow-md active:translate-y-0 active:bg-emerald-700 disabled:opacity-50 disabled:pointer-events-none touch-manipulation tap-highlight-transparent"
+                                        >
+                                            {isThisTicketPending ? (
+                                                <svg className="h-5 w-5 animate-spin text-white" fill="none" viewBox="0 0 24 24">
+                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                                                </svg>
+                                            ) : (
+                                                <HandPlatter className="h-6 w-6" />
+                                            )}
+                                            {isThisTicketPending ? 'SERVING...' : 'MARK AS SERVED'}
+                                        </button>
+                                    </div>
+                                </article>
+                            );
+                        })}
 
                         {visibleOrders.length === 0 && (
                             <div className="col-span-full flex h-64 flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50/50">

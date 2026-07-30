@@ -80,25 +80,33 @@ export default function OrdersPage() {
         setIsPaymentMethodModalOpen(true);
     };
 
-    const handleSelectCash = () => {
-        setIsPaymentMethodModalOpen(false);
+    const isHandoverPending = updateKitchenStatus.isPending || completeOrder.isPending;
+    const isCompletePending = completeOrder.isPending;
+    const isPaymentPending = updatePaymentStatus.isPending || generatePaymentQr.isPending;
+
+    const handleSelectCash = async () => {
         if (!selectedOrder) return;
-        updatePaymentStatus.mutate({
-            id: selectedOrder.orderId,
-            dto: { paymentStatus: PaymentStatus.Paid }
-        });
-        setSelectedOrder(null);
-        toast.success("Cash payment verified and collected.");
+        try {
+            await updatePaymentStatus.mutateAsync({
+                id: selectedOrder.orderId,
+                dto: { paymentStatus: PaymentStatus.Paid }
+            });
+            setIsPaymentMethodModalOpen(false);
+            setSelectedOrder(null);
+            toast.success("Cash payment verified and collected.");
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     const handleSelectBank = async () => {
-        setIsPaymentMethodModalOpen(false);
         if (!selectedOrder) return;
 
         try {
             const qrResponse = await generatePaymentQr.mutateAsync(selectedOrder.orderId);
             if (qrResponse.success && qrResponse.payload) {
                 setQrBase64(qrResponse.payload);
+                setIsPaymentMethodModalOpen(false);
                 setIsQrModalOpen(true);
             } else {
                 toast.error(qrResponse.message || "Failed to generate QR code");
@@ -114,24 +122,31 @@ export default function OrdersPage() {
         toast.success("Bank Transfer Received!", { duration: 4000 });
     };
 
-    const handleCompleteOrder = () => {
+    const handleCompleteOrder = async () => {
         if (!selectedOrder) return;
-        completeOrder.mutate(selectedOrder.orderId);
-        setSelectedOrder(null);
+        try {
+            await completeOrder.mutateAsync(selectedOrder.orderId);
+            setSelectedOrder(null);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     // Mark served and complete order
     const handleHandoverToCustomer = async () => {
         if (!selectedOrder) return;
 
-        await updateKitchenStatus.mutateAsync({
-            id: selectedOrder.orderId,
-            dto: { kitchenStatus: KitchenStatus.Served }
-        });
+        try {
+            await updateKitchenStatus.mutateAsync({
+                id: selectedOrder.orderId,
+                dto: { kitchenStatus: KitchenStatus.Served }
+            });
 
-        await completeOrder.mutateAsync(selectedOrder.orderId);
-
-        setSelectedOrder(null);
+            await completeOrder.mutateAsync(selectedOrder.orderId);
+            setSelectedOrder(null);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     const handleCancelOrder = () => {
@@ -321,7 +336,8 @@ export default function OrdersPage() {
                                         <button
                                             type="button"
                                             onClick={handleCancelOrder}
-                                            className="flex-1 rounded-xl bg-white px-4 py-4 font-bold text-red-600 ring-1 ring-inset ring-slate-200 transition-colors hover:bg-red-50 active:bg-red-100"
+                                            disabled={isHandoverPending || isCompletePending || isPaymentPending}
+                                            className="flex-1 rounded-xl bg-white px-4 py-4 font-bold text-red-600 ring-1 ring-inset ring-slate-200 transition-colors hover:bg-red-50 active:bg-red-100 disabled:opacity-50 disabled:pointer-events-none"
                                         >
                                             Cancel Order
                                         </button>
@@ -330,7 +346,8 @@ export default function OrdersPage() {
                                                 <button
                                                     type="button"
                                                     onClick={handlePayOrder}
-                                                    className="flex-2 rounded-xl bg-slate-900 px-4 py-4 text-lg font-bold text-white shadow-md transition-transform hover:-translate-y-1 hover:bg-blue-600 hover:shadow-lg active:translate-y-0 active:bg-blue-700"
+                                                    disabled={isPaymentPending}
+                                                    className="flex-2 rounded-xl bg-slate-900 px-4 py-4 text-lg font-bold text-white shadow-md transition-transform hover:-translate-y-1 hover:bg-blue-600 hover:shadow-lg active:translate-y-0 active:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
                                                 >
                                                     PAY ORDER
                                                 </button>
@@ -338,22 +355,35 @@ export default function OrdersPage() {
                                                 <button
                                                     type="button"
                                                     onClick={handleHandoverToCustomer}
-                                                    disabled={selectedOrder.kitchenStatus !== KitchenStatus.Ready}
-                                                    className="flex-2 rounded-xl bg-emerald-600 px-4 py-4 text-lg font-bold text-white shadow-md transition-transform hover:-translate-y-1 hover:bg-emerald-500 hover:shadow-lg active:translate-y-0 active:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:bg-emerald-600"
+                                                    disabled={selectedOrder.kitchenStatus !== KitchenStatus.Ready || isHandoverPending}
+                                                    className="flex-2 flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-4 text-lg font-bold text-white shadow-md transition-transform hover:-translate-y-1 hover:bg-emerald-500 hover:shadow-lg active:translate-y-0 active:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:bg-emerald-600"
                                                 >
-                                                    Handed to Customer
+                                                    {isHandoverPending ? (
+                                                        <svg className="h-5 w-5 animate-spin text-white" fill="none" viewBox="0 0 24 24">
+                                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                                                        </svg>
+                                                    ) : null}
+                                                    {isHandoverPending ? 'PROCESSING...' : 'Handed to Customer'}
                                                 </button>
                                             ) : (
                                                 <button
                                                     type="button"
                                                     onClick={handleCompleteOrder}
                                                     disabled={
-                                                        selectedOrder.kitchenStatus !== KitchenStatus.Served &&
-                                                        selectedOrder.kitchenStatus !== KitchenStatus.Ready
+                                                        (selectedOrder.kitchenStatus !== KitchenStatus.Served &&
+                                                        selectedOrder.kitchenStatus !== KitchenStatus.Ready) ||
+                                                        isCompletePending
                                                     }
-                                                    className="flex-2 rounded-xl bg-emerald-600 px-4 py-4 text-lg font-bold text-white shadow-md transition-transform hover:-translate-y-1 hover:bg-emerald-500 hover:shadow-lg active:translate-y-0 active:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:bg-emerald-600"
+                                                    className="flex-2 flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-4 text-lg font-bold text-white shadow-md transition-transform hover:-translate-y-1 hover:bg-emerald-500 hover:shadow-lg active:translate-y-0 active:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:bg-emerald-600"
                                                 >
-                                                    Complete Order
+                                                    {isCompletePending ? (
+                                                        <svg className="h-5 w-5 animate-spin text-white" fill="none" viewBox="0 0 24 24">
+                                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                                                        </svg>
+                                                    ) : null}
+                                                    {isCompletePending ? 'COMPLETING...' : 'Complete Order'}
                                                 </button>
                                             )}
                                         </RoleGuard>
@@ -390,6 +420,8 @@ export default function OrdersPage() {
                 onClose={() => setIsPaymentMethodModalOpen(false)}
                 onSelectCash={handleSelectCash}
                 onSelectBank={handleSelectBank}
+                isCashLoading={updatePaymentStatus.isPending}
+                isBankLoading={generatePaymentQr.isPending}
             />
 
             <QRModal

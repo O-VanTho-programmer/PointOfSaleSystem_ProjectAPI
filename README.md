@@ -18,6 +18,55 @@ A full-stack **Point of Sale (POS) system** built for restaurant operations. It 
 
 ---
 
+## User Interface
+
+Below are screenshots of the POS system interface demonstrating the live client screens for customers, cashiers, kitchen staff, and management:
+
+### 🛒 Ordering & POS Screen
+* **POS Checkout Dashboard**: Interface where staff/customers select menu items, view the current cart, and submit orders.
+  
+  ![POS Application Order](.github/assets/pos_app_order.png)
+
+### 🍳 Live Kitchen & Pickup Displays
+* **Kitchen Display System (KDS)**: Live queue where chefs track pending tickets, update preparation states (Pending → Cooking → Ready), and view items.
+  
+  ![Kitchen Screen](.github/assets/kitchen-screen.png)
+
+* **Service Pickup Board**: Screen for servers/waiters to monitor orders marked as "Ready for Pickup" and mark them as served.
+  
+  ![Ready for Pickup Screen](.github/assets/ready-food-for-serve-view.png)
+
+### 📊 Management & Admin Dashboards
+* **Order History & Status Manager**: Main console to review active, paid, completed, and cancelled order details.
+  
+  ![Order Management View](.github/assets/order-view.png)
+
+* **Sales Analytics & Reports**: Dashboard displaying hourly transaction breakdowns and aggregated revenue reports.
+  
+  ![Sales Report View](.github/assets/sale-report.png)
+
+* **Inventory & Menu Catalog Management**: Core console for adding, modifying, and assigning catalog items.
+  
+  ![Inventory View](.github/assets/inventory.png)
+
+* **Category Controls**: Panel to add and organize menu collections.
+  
+  ![Category View](.github/assets/category-view.png)
+
+* **Table Management Dashboard**: Interface showing layout status (Occupied, Reserved, Available) and active table details.
+  
+  ![Table View](.github/assets/table-view.png)
+
+* **Staff Registry**: Panel for managing workers and assigning access roles.
+  
+  ![Staff View](.github/assets/staff-view.png)
+
+* **Audit Log Board**: Real-time audit trails capturing CRUD actions and changes to database entities via EF Core interceptors.
+  
+  ![Audit Logs View](.github/assets/audit-log.png)
+
+---
+
 ## Architecture
 
 The system follows **Clean Architecture** with a strict separation of concerns across four layers:

@@ -136,7 +136,6 @@ builder.Services.AddHttpContextAccessor();
 // Add CORS
 var allowedDomains = new[]{
     "http://localhost:3000",
-    "http://localhost:3002",
     "https://point-of-sale-system-vert.vercel.app"
 };
 

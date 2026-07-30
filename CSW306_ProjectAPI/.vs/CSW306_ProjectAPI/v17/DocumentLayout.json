@@ -54,8 +54,7 @@
               "RelativeToolTip": "CSW306_ProjectAPI\\appsettings.Development.json",
               "ViewState": "AgIAAAMAAAAAAAAAAAAAAA8AAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-07-22T05:55:51.697Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-07-22T05:55:51.697Z"
             },
             {
               "$type": "Document",
@@ -67,8 +66,7 @@
               "RelativeToolTip": "CSW306_ProjectAPI\\Program.cs",
               "ViewState": "AgIAAKUAAAAAAAAAAAAAAIoAAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-22T05:46:56.32Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-07-22T05:46:56.32Z"
             },
             {
               "$type": "Document",
@@ -80,8 +78,7 @@
               "RelativeToolTip": "CSW306.Infrastructure\\Repositories\\OrderRepository.cs",
               "ViewState": "AgIAAAkAAAAAAAAAAAAAABsAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-24T01:14:54.902Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-24T01:14:54.902Z"
             },
             {
               "$type": "Document",
@@ -106,8 +103,7 @@
               "RelativeToolTip": "CSW306.Application\\Services\\OrderService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-22T15:32:16.095Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-22T15:32:16.095Z"
             }
           ]
         }
