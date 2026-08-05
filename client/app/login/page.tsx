@@ -9,8 +9,8 @@ import { ROLE_REDIRECT_MAP, UserRole } from '@/types/User';
 
 export default function LoginPage() {
     const router = useRouter();
-    const [phone, setPhone] = useState('');
-    const [password, setPassword] = useState('');
+    const [phone, setPhone] = useState('123456789');
+    const [password, setPassword] = useState('123456');
     const [validationError, setValidationError] = useState('');
 
     const { mutateLogin, isLoading, error: apiError } = useAuthLogin();
