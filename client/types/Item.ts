@@ -1,7 +1,7 @@
 export interface Item {
     itemId: number;
     name: string;
-    quantityInStock: number;
+    isSoldOut: boolean;
     price: number;
     imageUrl?: string;
     imagePublicId?: string;

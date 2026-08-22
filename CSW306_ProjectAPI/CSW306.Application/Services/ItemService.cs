@@ -1,4 +1,4 @@
-﻿using CSW306.Application.DTO.Upload;
+using CSW306.Application.DTO.Upload;
 using CSW306.Application.Interfaces;
 using CSW306.Application.Interfaces.IExternal;
 using CSW306.Application.Interfaces.IServices;
@@ -157,11 +157,10 @@ namespace CSW306.Application.Services
             item.Price = uploadDTO.Price;
             item.IsSoldOut = uploadDTO.IsSoldOut;
 
-            if (item.ImagePublicId != null) {
-                await _photoService.DeletePhotoAsync(item.ImagePublicId);
-            }
-
             if (uploadDTO.ImageStream != null) { 
+                if (item.ImagePublicId != null) {
+                    await _photoService.DeletePhotoAsync(item.ImagePublicId);
+                }
 
                 var fileName = uploadDTO.ImageName ?? Guid.NewGuid().ToString();
                 (string imageUrl, string imagePublicId) = await _photoService.AddPhotoAsync(uploadDTO.ImageStream, fileName);

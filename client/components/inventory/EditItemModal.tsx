@@ -33,7 +33,7 @@ export function EditItemModal({ isOpen, onClose, item }: EditItemModalProps) {
     if (isOpen && item) {
       setForm({
         name: item.name,
-        isSoldOut: item.quantityInStock <= 0,
+        isSoldOut: Boolean(item.isSoldOut),
         price: item.price,
         categoryId: item.categoryId,
         image: undefined,

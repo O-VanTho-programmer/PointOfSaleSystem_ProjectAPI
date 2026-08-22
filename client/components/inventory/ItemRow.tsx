@@ -11,9 +11,8 @@ const STATUS_CONFIG = {
     outOfStock: { label: 'Out of Stock', dot: 'bg-red-400', bg: 'bg-red-400/10', text: 'text-red-600' },
 } as const;
 
-function getStockStatus(qty: number) {
-    if (qty <= 0) return STATUS_CONFIG.outOfStock;
-    if (qty <= 10) return STATUS_CONFIG.lowStock;
+function getStockStatus(isSoldOut: boolean) {
+    if (isSoldOut) return STATUS_CONFIG.outOfStock;
     return STATUS_CONFIG.inStock;
 }
 
@@ -25,7 +24,7 @@ interface ItemRowProps {
 }
 
 export function ItemRow({ item, index, onEdit, onRemove }: ItemRowProps) {
-    const status = getStockStatus(item.quantityInStock);
+    const status = getStockStatus(item.isSoldOut);
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
 
@@ -69,7 +68,7 @@ export function ItemRow({ item, index, onEdit, onRemove }: ItemRowProps) {
                 </div>
             </td>
             <td className="px-5 py-4 font-mono text-sm text-slate-700 tabular-nums">
-                {item.quantityInStock}
+                {item.isSoldOut ? 'Sold out' : 'Available'}
             </td>
             <td className="px-5 py-4 font-mono text-sm font-medium text-slate-800 tabular-nums">
                 {formatUSD(item.price)}
